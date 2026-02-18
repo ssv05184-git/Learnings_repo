@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code - Practical Commands Guide | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Claude Code - Practical Commands Guide</h1>
+    <p class="subtitle">Real-world examples and expected outputs for all Claude Code commands</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../index.html">Home</a>
+        <span>›</span>
+        <a href="./index.html">Training</a>
+        <span>›</span>
+        <span>Claude Code - Practical Commands Guide</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+> <strong>Real-world examples and expected outputs for all Claude Code commands</strong>
+
+
+<h2>Context Management Commands</h2>
+
+<h3>/clear - Start Fresh</h3>
+
+<strong>When to use:</strong> You've been working for an hour and want to start a new task without context bias.
+
+<pre><code class="language-bash">claude
+# ... 30 minutes of working on feature A ...
+
+/clear
+# Now start completely fresh for feature B
+"Build a new dashboard for analytics"
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">✓ Conversation cleared
+✓ Context reset to 0 tokens  
+✓ Memory file (CLAUDE.md) preserved
+Ready for new task
+</code></pre>
+
+
+<h3>/compact - Summarize Context</h3>
+
+<strong>When to use:</strong> You're about to start a long session and want to keep cost low while retaining key info.
+
+<pre><code class="language-bash">claude -c  # Continue previous session
+
+/compact Summarize the authentication system we built, keep class names and file paths
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">✓ Summarizing conversation (38 messages)...
+✓ Reduced context from 12,000 → 2,400 tokens
+✓ Retained: AuthService class, JWT implementation, test files
+✓ Ready to continue from here
+</code></pre>
+
+
+<h3>/context - View Memory Usage</h3>
+
+<strong>When to use:</strong> You want to understand how much context you're using.
+
+<pre><code class="language-bash">claude
+/context
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">Context Grid:
+==============
+Memory File (CLAUDE.md): 400 tokens
+Conversation History: 8,234 tokens
+Current Input: 145 tokens
+Reserved Buffer: 2,000 tokens
+───────────────────────
+Total Used: 10,779 / 16,000 tokens (67%)
+
+Tip: Use /compact to reduce history from 8,234 → ~2,000 tokens
+</code></pre>
+
+
+<h3>/cost - Monitor Spending</h3>
+
+<strong>When to use:</strong> You're doing a large refactor and want to track expenses.
+
+<pre><code class="language-bash">claude "Build a complete REST API with 10 endpoints"
+# ... Claude works for 10 minutes ...
+
+/cost
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">Session Cost Breakdown:
+========================
+Start Time: 2:15 PM
+Duration: 10 minutes 23 seconds
+
+Input Tokens:  42,534 @ $0.003/1K = $0.128
+Output Tokens: 31,245 @ $0.012/1K = $0.375
+──────────────────────────────────
+Total Session Cost: $0.503
+Average Cost/Min: $0.048
+
+Budget remaining (if $10/month): $9.497
+</code></pre>
+
+
+<h2>Planning & Execution Commands</h2>
+
+<h3>Shift+Tab Shift+Tab - Enable Plan Mode</h3>
+
+<strong>When to use:</strong> Before making changes to critical files.
+
+<pre><code class="language-bash">claude
+
+Shift+Tab Shift+Tab  # Enable Plan Mode
+
+"Refactor the payment processing system in @backend/payments.py"
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">PLAN MODE ENABLED ✓
+
+Claude will now show you a detailed plan before making changes.
+
+Proposed Plan:
+==============
+1. Analyze current implementation
+   - Stripe integration in payments.py
+   - Database models in models.py
+   - Tests in tests/test_payments.py
+
+2. Refactor payment processing
+   - Extract payment logic into separate class
+   - Add error handling for failed transactions
+   - Implement transaction logging
+
+3. Update tests
+   - Update 8 existing tests
+   - Add 3 new edge case tests
+
+4. Update documentation
+   - Add docstrings to new functions
+   - Update API documentation
+
+Cost Estimate: ~$0.12
+Time Estimate: 5 minutes
+
+Continue with this plan? (Y/n): _
+</code></pre>
+
+<p>Type 'Y' to execute step-by-step.</p>
+
+
+<h3>/tasks - Manage Background Tasks</h3>
+
+<strong>When to use:</strong> You've asked Claude to spawn multiple subagents and want to monitor progress.
+
+<pre><code class="language-bash">claude
+
+"Use 3 subagents to:
+1. Write tests for the auth module
+2. Refactor database queries
+3. Update API documentation"
+
+# Check progress
+/tasks
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">Background Tasks:
+=================
+[◐] Subagent 1: Auth tests
+    Progress: Analyzing auth.py (1/3 stages)
+    Time: 2 min elapsed
+    
+[●] Subagent 2: Database refactoring  
+    Progress: Optimizing queries (2/3 stages)
+    Time: 3 min elapsed
+    
+[⏳] Subagent 3: Documentation
+    Progress: Queued, waiting for resources
+    Time: 0 min
+
+Total Estimated Time: 8 minutes remaining
+</code></pre>
+
+
+<h2>MCP & Integration Commands</h2>
+
+<h3>/mcp - Manage MCP Servers</h3>
+
+<strong>When to use:</strong> You need to check what MCP servers are available.
+
+<pre><code class="language-bash">claude
+/mcp
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">MCP Server Manager
+==================
+
+Connected Servers (2):
+├─ playwright (v1.45.1)
+│  ├─ browser_launch
+│  ├─ browser_navigate
+│  ├─ browser_take_screenshot
+│  ├─ browser_fill_field
+│  └─ ... 4 more tools
+│
+└─ github (via GitHub CLI)
+   ├─ list_repos
+   ├─ create_pr
+   ├─ get_file_content
+   └─ ... 9 more tools
+
+Available to Install:
+├─ figma-dev-mcp (npx figma-developer-mcp)
+├─ fred-mcp (for economic data)
+└─ webpack-mcp (build analysis)
+
+Command: claude mcp add playwright npx @playwright/mcp@latest
+</code></pre>
+
+
+<h3>Adding an MCP Server</h3>
+
+<strong>Set up Playwright for UI testing:</strong>
+
+<pre><code class="language-bash"># Exit Claude Code first
+exit
+
+# In terminal:
+claude mcp add playwright npx @playwright/mcp@latest
+
+# Launch Claude Code again
+claude
+
+# Verify
+/mcp
+</code></pre>
+
+<strong>Then use it:</strong>
+<pre><code class="language-bash">claude "Using Playwright, visit http://localhost:3000 and verify the login button is visible"
+</code></pre>
+
+
+<h2>File & Shell Commands</h2>
+
+<h3>@ Symbol - File References</h3>
+
+<strong>Precise referencing prevents mistakes:</strong>
+
+<pre><code class="language-bash"># Good - Claude knows exactly which files
+claude "Add logging to @src/handlers.py but NOT @src/controllers.py"
+
+# Also good - Multiple files
+claude "Update @schema.py, @models.py, and @migrations.py to support composite keys"
+
+# Avoid - Claude has to guess
+claude "Add logging everywhere"
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">✓ Modified @src/handlers.py (5 locations updated)
+✓ Skipped @src/controllers.py as requested  
+✓ Tests passing
+</code></pre>
+
+
+<h3>! Symbol - Run Shell Commands</h3>
+
+<strong>Execute terminal commands from within Claude Code:</strong>
+
+<pre><code class="language-bash">claude
+
+# Run tests
+!npm test
+
+# Check git status
+!git status
+
+# Run linter
+!npm run lint
+
+# Install dependencies
+!npm install new-dependency
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">Running: npm test
+
+PASS  src/__tests__/auth.test.js (234ms)
+PASS  src/__tests__/utils.test.js (145ms)
+
+Tests: 34 passed, 34 total
+Time: 2.456s
+
+Snapshots: 0 total
+</code></pre>
+
+
+<h2>Advanced Patterns</h2>
+
+<h3>Pattern: Safe Large Refactor</h3>
+
+<pre><code class="language-bash">claude
+
+# 1. Enable safety
+Shift+Tab Shift+Tab
+
+# 2. Reference specific files for precision
+"Refactor @backend/app.py, @backend/models.py, and @backend/database.py 
+to use a repository pattern instead of raw queries"
+
+# 3. Review the detailed plan
+# Press Y to approve
+
+# 4. After completion, verify
+!npm test              # Run tests
+/cost                  # Check cost
+</code></pre>
+
+
+<h3>Pattern: Continuous Development</h3>
+
+<pre><code class="language-bash"># Continue your last session
+claude -c
+
+# Summarize previous work
+/compact "Summarize the React components we built yesterday"
+
+# Continue with next task
+"Now add dark mode toggle to all components"
+
+# Check your progress
+/tasks
+
+# When done, export your work
+/export
+</code></pre>
+
+
+<h3>Pattern: Compare Approaches (Forking)</h3>
+
+<pre><code class="language-bash">claude
+
+# Main approach: Use REST API
+"Build a user authentication system using JWT tokens"
+
+# Explore alternative: GraphQL
+/fork
+"Build the same auth system but using GraphQL instead"
+
+# Go back to REST approach to compare
+/resume "Build a user authentication system using JWT tokens"
+
+# Choose the best approach based on comparison
+</code></pre>
+
+
+<h2>Daily Workflow Examples</h2>
+
+<h3>Morning: Continue Previous Work</h3>
+
+<pre><code class="language-bash">claude -c            # Continue last session
+/compact "Summarize yesterday's work"
+/mcp                 # Check MCP servers
+/cost                # See total spend
+
+# Review what's done
+/tasks
+
+# Start new task
+"Add the notification system feature"
+</code></pre>
+
+<h3>Mid-Day: Switch Tasks</h3>
+
+<pre><code class="language-bash">/clear               # Fresh start
+"Build the admin dashboard"
+</code></pre>
+
+<h3>End of Day: Save Work</h3>
+
+<pre><code class="language-bash">/cost               # Track daily spend
+/export             # Save conversation
+exit
+</code></pre>
+
+
+<h2>Troubleshooting Commands</h2>
+
+<h3>/doctor - Diagnose Issues</h3>
+
+<p>When Claude Code isn't working correctly:</p>
+
+<pre><code class="language-bash">claude
+/doctor
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">Claude Code Diagnostic Report
+==============================
+System Information:
+✓ Node.js: v20.10.0
+✓ OS: macOS 14.6
+✓ Disk Space: 245GB available
+
+Setup:
+✓ npm packages installed
+✓ Anthropic API key: configured
+✓ Git: initialized
+⚠ VS Code: Extension needs update
+✓ .claude config: found
+
+MCP Servers:
+✓ playwright: connected
+✓ github: connected
+✗ figma: not installed
+
+Recommendations:
+1. Update: bash &lt;(curl https://install.anthropic.com/claude-code)
+2. Install: claude mcp add figma ...
+
+Issues: 1 warning, 0 errors
+</code></pre>
+
+
+<h2>Power User Tips</h2>
+
+<h3>Tip 1: Create Reusable Commands</h3>
+
+<pre><code class="language-bash"># Create command directory
+mkdir -p .claude/commands
+
+# Create add-tests.md
+cat &gt; .claude/commands/add-tests.md &lt;&lt; 'EOF'
+Write comprehensive unit tests for: $ARGUMENTS
+
+Requirements:
+- Test all functions and methods
+- Include edge cases
+- Use mocks for external dependencies
+- Achieve &gt;80% coverage
+EOF
+
+# Now use it
+claude
+/add-tests "for the payment processing module in @payments.py"
+</code></pre>
+
+
+<h3>Tip 2: Use Hooks for Automation</h3>
+
+<p>In <code>.claude/hooks.yaml</code>:</p>
+
+<pre><code class="language-yaml">hooks:
+  after_tool_use:
+    - name: "Format code after edits"
+      command: "black . --quiet &amp;&amp; npm run lint"
+      
+  after_response:
+    - name: "Auto-commit if tests pass"
+      command: |
+        npm test &amp;&amp; 
+        git add -A &amp;&amp; 
+        git commit -m "Claude Code changes"
+</code></pre>
+
+
+<h2>Command Reference Card</h2>
+
+<pre><code class="language-text">╔════════════════════════════════════════════════════╗
+║ CLAUDE CODE COMMAND REFERENCE                     ║
+╠════════════════════════════════════════════════════╣
+║ Context                                           ║
+║  /clear        Clear conversation history        ║
+║  /compact      Summarize and compress context    ║
+║  /context      View memory usage                 ║
+║  /cost         Show session costs                ║
+║                                                   ║
+║ Planning                                          ║
+║  Shift+Tab×2   Enable Plan Mode                  ║
+║  Shift+Tab×1   Toggle Auto-Accept                ║
+║  /tasks        View background tasks             ║
+║  /plan         Review execution plan             ║
+║                                                  ║
+║ Integration                                       ║
+║  /mcp          Manage MCP servers               ║
+║  /permissions  Manage tool permissions          ║
+║  /hooks        Manage automation hooks           ║
+║                                                   ║
+║ File References                                   ║
+║  @filename     Include specific file             ║
+║  @folder/      Include folder contents           ║
+║  !command      Execute shell command             ║
+║                                                   ║
+║ Session Control                                   ║
+║  exit          Exit Claude Code                  ║
+║  ESC           Interrupt current task            ║
+║  ESC ESC       Rewind conversation               ║
+╚════════════════════════════════════════════════════╝
+</code></pre>
+
+
+<h2>Quick Wins (30-Second Tasks)</h2>
+
+<pre><code class="language-bash"># Fix a bug
+claude "The login function in @auth.py is throwing an error. Debug and fix it."
+
+# Add logging
+claude "Add logging statements to key functions in @database.py"
+
+# Generate tests
+claude "Write tests for @utils/validators.py"
+
+# Refactor a function
+claude "Optimize the query in @database.py getUser function"
+
+# Update documentation
+claude "Add docstrings to all functions in @api/handlers.py"
+</code></pre>
+
+<p>Each should take Claude 1-3 minutes and cost $0.01-0.05.</p>
+
+
+<h2>Next Steps</h2>
+
+<p>1. <strong>Bookmark this guide</strong> for quick reference</p>
+<p>2. <strong>Practice daily</strong> with <code>/clear</code>, <code>@files</code>, and Shift+Tab shortcuts</p>
+<p>3. <strong>Experiment with MCP servers</strong> once comfortable with basics</p>
+<p>4. <strong>Create custom commands</strong> for recurring tasks</p>
+<p>5. <strong>Use hooks</strong> for automated workflows</p>
+
+
+<strong>Master these commands and you'll be 10x more productive with Claude Code!</strong> 🚀
+
+    </article>
+
+</main>
+
+</body>
+</html>

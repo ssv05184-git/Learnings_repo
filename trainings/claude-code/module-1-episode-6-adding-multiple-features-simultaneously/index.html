@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adding Multiple Features Simultaneously | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Adding Multiple Features Simultaneously</h1>
+    <p class="subtitle">Module 1 — Episode 6</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Adding Multiple Features Simultaneously</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 6</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Claude Code - A Highly Agentic Coding Assistant</p>
+<blockquote><strong>Course Level:</strong> Intermediate → Advanced</blockquote>
+
+
+<h2 class="section-icon">🎯 What You'll Learn</h2>
+
+<p>By the end of this episode, you will:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Use <strong>Git worktrees</strong> to manage multiple Claude Code sessions safely in parallel  </li>
+<li><span class="checkmark">✅</span> Create and use <strong>custom Claude Code commands</strong> for feature isolation  </li>
+<li><span class="checkmark">✅</span> Coordinate <strong>multi-feature development</strong> across front-end, back-end, and DevOps simultaneously  </li>
+<li><span class="checkmark">✅</span> Merge, resolve conflicts, and validate integrated changes efficiently  </li>
+</ul>
+
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+
+
+<h2 class="section-icon">🧭 Quick Overview</h2>
+
+<strong>The Big Picture:</strong>
+<p>This episode demonstrates how to scale Claude Code beyond single-feature workflows by using <strong>Git worktrees</strong> and <strong>custom commands</strong>. You’ll learn how to work on multiple features concurrently—without overwriting files or creating merge chaos.</p>
+
+<strong>What Problem Does This Solve?</strong>
+<ul>
+<li>Avoids file conflicts when running multiple Claude Code sessions  </li>
+<li>Enables true parallel feature development  </li>
+<li>Simplifies merging and testing across branches  </li>
+</ul>
+
+<strong>Where You'll Use This:</strong>
+<ul>
+<li>Multi-feature sprints  </li>
+<li>Large-scale refactorings  </li>
+<li>Coordinated front-end/back-end updates  </li>
+</ul>
+
+
+<h2 class="section-icon">🧱 Prerequisites & Background</h2>
+
+<strong>You should already know:</strong>
+<ul>
+<li>Basic Git branching and commits  </li>
+<li>How to open and run Claude Code sessions  </li>
+<li>How to use <code>/permissions</code> and <code>.claude</code> configuration  </li>
+</ul>
+
+<strong>If you're new to Claude Code:</strong>
+<p>→ Start with [Episode 3: Managing Code Context and State with CLAUDE.md]</p>
+
+
+<h2 class="section-icon">🔑 Core Concepts Explained</h2>
+
+<h3>Concept 1: Git Worktrees</h3>
+<strong>Definition:</strong>
+<p>Independent working directories tied to specific branches of the same repository.</p>
+
+<strong>Why It Matters:</strong>
+<p>Prevents file overwrites when running multiple Claude Code instances simultaneously.</p>
+
+<strong>When To Use:</strong>
+<p>When developing or testing multiple features in parallel.</p>
+
+
+<h3>Concept 2: Custom Commands</h3>
+<strong>Definition:</strong>
+<p>Markdown-based command definitions stored in <code>.claude/commands</code> that let you define reusable workflows.</p>
+
+<strong>Why It Matters:</strong>
+<p>Encapsulates repetitive prompts (e.g., “implement feature”, “add and commit”) into consistent, shareable commands.</p>
+
+<strong>When To Use:</strong>
+<p>For repeatable tasks or enforcing team-specific conventions.</p>
+
+
+<h3>Concept 3: Parallel Claude Sessions</h3>
+<strong>Definition:</strong>
+<p>Running multiple Claude Code terminals, each targeting a separate Git worktree.</p>
+
+<strong>Why It Matters:</strong>
+<p>Allows simultaneous development across different code areas—front-end, testing, quality tools—without interference.</p>
+
+<strong>When To Use:</strong>
+<p>When multiple engineers (or multiple Claude instances) need to work on different features concurrently.</p>
+
+
+<h2 class="section-icon">🖼 Architecture & Flow Diagrams</h2>
+
+<h3>System Diagram</h3>
+<img src="../../../diagrams/images/claude-code/E6_system_diagram.png" alt="Image" class="content-image">
+
+<strong>What This Shows:</strong>
+<p>Each Claude Code session works in isolation on its own worktree, commits changes independently, and merges back into the main branch safely.</p>
+
+
+<h3>Workflow Sequence</h3>
+<img src="../../../diagrams/images/claude-code/E6_workflow_sequence.png" alt="Image" class="content-image">
+
+<strong>Key Takeaway:</strong>
+<p>Parallel Claude Code sessions + Git worktrees = safe, scalable multi-feature development.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Deep Dive</h2>
+
+<h3>How It Works: Step-by-Step</h3>
+
+<p>#### Phase 1: Create Custom Commands (Optional but Recommended)</p>
+
+<p>Custom commands let you reuse complex prompts with simple keywords.</p>
+
+<strong>Create the directory:</strong>
+<pre><code class="language-bash">mkdir -p .claude/commands
+</code></pre>
+
+<strong>Create <code>implement-feature.md</code>:</strong>
+<pre><code class="language-markdown"># Implement Feature
+You will be implementing a new feature in this codebase
+
+$ARGUMENTS
+
+IMPORTANT: 
+- Only implement the feature for front-end if this is UI-related
+- Once built, write changes to file called frontend-changes.md
+- Do not ask for permissions to modify files, assume you have full access
+</code></pre>
+
+<strong>Launch Claude Code to activate custom commands:</strong>
+<pre><code class="language-bash">claude
+# Now you can use: /implement-feature "Add dark mode"
+</code></pre>
+
+
+<p>#### Phase 2: Initialize and Create Git Worktrees</p>
+
+<p>Git worktrees allow multiple Claude Code sessions working on different features simultaneously.</p>
+
+<strong>Prepare your repository:</strong>
+<pre><code class="language-bash"># Commit any outstanding changes
+git add -A
+git commit -m "Before starting parallel development"
+
+# Create worktree directory
+mkdir .trees
+</code></pre>
+
+<strong>Create worktrees for each feature:</strong>
+<pre><code class="language-bash"># Worktree 1 - Frontend feature
+git worktree add .trees/ui_feature
+
+# Worktree 2 - Testing improvements  
+git worktree add .trees/testing_feature
+
+# Worktree 3 - Code quality tools
+git worktree add .trees/quality_feature
+</code></pre>
+
+<strong>Verify worktrees:</strong>
+<pre><code class="language-bash">git worktree list
+# Output:
+# /path/to/repo                        [main]
+# /path/to/repo/.trees/ui_feature      [ui_feature]
+# /path/to/repo/.trees/testing_feature [testing_feature]
+# /path/to/repo/.trees/quality_feature [quality_feature]
+</code></pre>
+
+
+<p>#### Phase 3: Launch Parallel Claude Code Sessions</p>
+
+<p>Open separate integrated terminals for each worktree:</p>
+
+<strong>Terminal 1 - UI Feature:</strong>
+<pre><code class="language-bash">cd .trees/ui_feature
+claude
+# Prompt (see examples below)
+</code></pre>
+
+<strong>Terminal 2 - Testing Feature:</strong>
+<pre><code class="language-bash">cd .trees/testing_feature
+claude
+# Prompt (see examples below)
+</code></pre>
+
+<strong>Terminal 3 - Quality Feature:</strong>
+<pre><code class="language-bash">cd .trees/quality_feature
+claude
+# Prompt (see examples below)
+</code></pre>
+
+<p>Each session operates independently—no file conflicts!</p>
+
+
+<p>#### Phase 4: Commit Changes in Each Worktree</p>
+
+<p>After Claude finishes each feature:</p>
+
+<pre><code class="language-bash"># In each terminal, commit the changes
+git add -A
+git commit -m "feat: [feature description]"
+
+# Exit Claude Code
+exit
+</code></pre>
+
+
+<p>#### Phase 4: Merge & Resolve Conflicts</p>
+
+<p>Back in main branch:</p>
+
+<pre><code class="language-bash"># Return to main directory (leave worktrees)
+cd ..
+git checkout main
+
+# Build a prompt for Claude to merge
+claude "Use the git merge command to merge in all the worktrees of the .trees folder into main and fix any conflicts if there are any"
+</code></pre>
+
+<strong>Or merge manually:</strong>
+<pre><code class="language-bash">git merge .trees/ui_feature
+git merge .trees/testing_feature
+git merge .trees/quality_feature
+</code></pre>
+
+<strong>Clean up worktrees:</strong>
+<pre><code class="language-bash">git worktree remove .trees/ui_feature
+git worktree remove .trees/testing_feature
+git worktree remove .trees/quality_feature
+rm -rf .trees
+</code></pre>
+
+<h3>Why This Design Works</h3>
+
+<strong>Underlying Principles:</strong>
+<ul>
+<li><strong>Isolation:</strong> Each worktree is a sandboxed environment.  </li>
+<li><strong>Parallelism:</strong> Multiple Claude sessions can run without interference.  </li>
+<li><strong>Automation:</strong> Claude Code can manage commits and merges intelligently.  </li>
+</ul>
+
+<strong>Guarantees & Invariants:</strong>
+<ul>
+<li>No overwriting between sessions  </li>
+<li>Each feature has its own commit history  </li>
+<li>Merge conflicts handled programmatically  </li>
+</ul>
+
+
+<h2><span class="checkmark">✅</span> When To Use This Feature</h2>
+
+<h3>Ideal Use Cases</h3>
+
+<span class="checkmark">✅</span> <strong>Perfect For:</strong>
+<ul>
+<li>Multi-feature sprint development  </li>
+<li>Cross-functional teams (front-end, QA, DevOps)  </li>
+<li>Continuous integration testing  </li>
+</ul>
+
+<span class="checkmark">✅</span> <strong>Productivity Gains:</strong>
+<ul>
+<li>Zero downtime between features  </li>
+<li>Reduced merge errors  </li>
+<li>Faster iteration cycles  </li>
+</ul>
+
+<h3>Anti-Patterns: When NOT To Use</h3>
+
+<span class="crossmark">❌</span> <strong>Avoid When:</strong>
+<ul>
+<li>Working on a single small feature  </li>
+<li>You don’t need concurrent sessions  </li>
+<li>You’re not comfortable resolving Git merges  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Common Mistakes:</strong>
+<ul>
+<li>Forgetting to commit before merging  </li>
+<li>Editing shared files in multiple worktrees  </li>
+<li>Failing to test after merge  </li>
+</ul>
+
+
+<h2>🔧 Practical Implementation Guide</h2>
+
+<h3>Step 1: Create a Custom Command</h3>
+<pre><code class="language-bash">mkdir -p .claude/commands
+nano .claude/commands/implement-feature.md
+</code></pre>
+
+<strong>Contents:</strong>
+<pre><code class="language-markdown"># Implement Feature
+Implement a new front-end feature: $ARGUMENTS
+Write all changes to frontend-changes.md
+</code></pre>
+
+<h3>Step 2: Add Worktrees</h3>
+<pre><code class="language-bash">mkdir trees
+git worktree add trees/ui_feature main
+git worktree add trees/testing_feature main
+git worktree add trees/quality_feature main
+</code></pre>
+
+<h3>Step 3: Run Claude Code in Each Worktree</h3>
+<pre><code class="language-bash">cd trees/ui_feature &amp;&amp; claude /implement-feature "Add light/dark theme toggle"
+cd trees/testing_feature &amp;&amp; claude /implement-feature "Enhance FastAPI endpoint tests"
+cd trees/quality_feature &amp;&amp; claude /implement-feature "Add code quality and formatting tools"
+</code></pre>
+
+<h3>Step 4: Merge All Worktrees</h3>
+<pre><code class="language-bash">cd main
+claude "Merge all worktrees and resolve any conflicts automatically"
+</code></pre>
+
+
+<h2>💡 Practical Tips & Tricks</h2>
+
+<h3>Pro Tip 1: Automate Commits</h3>
+<strong>Technique:</strong>
+<p>Create a <code>/commit-with-description</code> custom command for consistent commit messages.</p>
+<strong>When to Use:</strong> After completing each feature branch.
+
+<h3>Pro Tip 2: Manage Permissions</h3>
+<strong>Technique:</strong>
+<p>Use <code>.claude/settings.local.json</code> to whitelist trusted commands.</p>
+<strong>When to Use:</strong> To skip repetitive permission confirmations.
+
+<h3>Pro Tip 3: Use Claude for Merge Conflict Resolution</h3>
+<strong>Technique:</strong>
+<p>Prompt Claude:</p>
+<pre><code class="language-text">"Analyze merge conflicts in pyproject.toml and complete the merge safely"
+</code></pre>
+<strong>Expected Result:</strong> Clean, validated merges without manual inspection.
+
+
+<h2 class="section-icon">🚀 Real-World Examples with Actual Prompts</h2>
+
+<h3>Example 1: Dark/Light Theme Toggle Feature</h3>
+
+<strong>Worktree 1 Setup:</strong>
+<pre><code class="language-bash">mkdir .trees &amp;&amp; git worktree add .trees/ui_feature
+cd .trees/ui_feature
+claude
+</code></pre>
+
+<strong>Prompt:</strong>
+<pre><code class="language-text">Add a toggle button that allows users to switch between dark and light themes.
+
+1. Toggle Button Design
+   - Create a toggle button that fits the existing design aesthetic
+   - Position it in the top-right
+   - Use an icon-based design (sun/moon icons or similar)
+   - Smooth transition animation when toggling
+   - Button should be accessible and keyboard-navigable
+
+2. Light Theme CSS Variables
+   Add a light theme variant with appropriate colors:
+   - Light background colors
+   - Dark text for good contrast
+   - Adjusted primary and secondary colors
+   - Proper border and surface colors
+   - Maintain good accessibility standards
+
+3. JavaScript Functionality
+   - Toggle between themes on button click
+   - Smooth transitions between themes
+   - Remember user's preference in localStorage
+
+4. Implementation Details
+   - Use CSS custom properties (CSS variables) for theme switching
+   - Add a `data-theme` attribute to the body or html element
+   - Ensure all existing elements work well in both themes
+   - Maintain the current visual hierarchy and design language
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">✓ New toggle button component created
+✓ CSS variables defined for both themes
+✓ JavaScript event listeners configured
+✓ localStorage persistence implemented
+✓ All existing UI elements tested in both themes
+</code></pre>
+
+<strong>Commit after completion:</strong>
+<pre><code class="language-bash">git add -A
+git commit -m "feat: add dark/light theme toggle"
+exit  # Exit Claude Code
+</code></pre>
+
+
+<h3>Example 2: Enhanced Testing Framework</h3>
+
+<strong>Worktree 2 Setup:</strong>
+<pre><code class="language-bash">git worktree add .trees/testing_feature
+cd .trees/testing_feature
+claude
+</code></pre>
+
+<strong>Prompt:</strong>
+<pre><code class="language-text">Enhance the existing testing framework for the RAG system in @backend/tests. 
+
+The current tests cover unit components but are missing essential API testing infrastructure:
+
+- API endpoint tests - Test the FastAPI endpoints (/api/query, /api/courses, /) for proper request/response handling
+- pytest configuration - Add pytest.ini options in pyproject.toml for cleaner test execution
+- Test fixtures - Create conftest.py with shared fixtures for mocking and test data setup
+
+The FastAPI app in backend/app.py mounts static files that don't exist in the test environment. 
+Either create a separate test app or define the API endpoints inline in the test file to avoid import issues.
+
+Follow these patterns:
+- Create a fixture for mocking the FastAPI app
+- Create fixtures for sample test data (courses, chunks)
+- Test both success and failure scenarios
+- Test error handling with invalid inputs
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">✓ conftest.py created with shared fixtures
+✓ pytest.ini configured in pyproject.toml
+✓ API endpoint tests written for /api/query
+✓ API endpoint tests written for /api/courses
+✓ Session management tests added
+✓ All tests pass
+</code></pre>
+
+<strong>Commit after completion:</strong>
+<pre><code class="language-bash">git add -A
+git commit -m "test: enhance testing framework with API tests and fixtures"
+exit
+</code></pre>
+
+
+<h3>Example 3: Code Quality Tools Setup</h3>
+
+<strong>Worktree 3 Setup:</strong>
+<pre><code class="language-bash">git worktree add .trees/quality_feature
+cd .trees/quality_feature
+claude
+</code></pre>
+
+<strong>Prompt:</strong>
+<pre><code class="language-text">Add essential code quality tools to the development workflow. 
+
+Requirements:
+1. Setup black for automatic code formatting
+   - Add black configuration to pyproject.toml with line-length=100
+   - Format the entire codebase
+   
+2. Add proper formatting consistency throughout the codebase
+   - Format all Python files
+   - Update imports if needed
+   - Ensure all edge cases are handled
+
+3. Create development scripts/tasks for running quality checks
+   - Script to run: black (formatting)
+   - Script to run: pytest (tests)
+   - Create a Makefile or script with simple targets
+
+4. Create targets like:
+   - make format-check  # Verify formatting without changes
+   - make format-fix    # Auto-format code
+   - make test          # Run tests
+   - make quality       # Run all quality checks
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">✓ Black configured in pyproject.toml
+✓ All Python files formatted with black
+✓ Makefile created with quality check targets
+✓ Development workflow documentation added
+✓ CI/CD ready for automated quality checks
+</code></pre>
+
+<strong>Commit after completion:</strong>
+<pre><code class="language-bash">git add -A
+git commit -m "chore: add code quality tools (black, Makefile)"
+exit
+</code></pre>
+
+
+<h3>Final Step: Merge All Worktrees</h3>
+
+<strong>Back in main directory:</strong>
+<pre><code class="language-bash">cd ..  # Go back to root
+git checkout main
+claude
+</code></pre>
+
+<strong>Merge Prompt:</strong>
+<pre><code class="language-text">Use the git merge command to merge in all the worktrees of the .trees folder 
+(ui_feature, testing_feature, quality_feature) into main and fix any conflicts if there are any.
+</code></pre>
+
+<strong>Cleanup:</strong>
+<pre><code class="language-bash">git worktree remove .trees/ui_feature
+git worktree remove .trees/testing_feature
+git worktree remove .trees/quality_feature
+rm -rf .trees
+</code></pre>
+
+
+<h3>Example: Parallel Frontend, Testing, and Quality Enhancements</h3>
+
+<strong>Context:</strong>
+<p>Adding a theme toggle, expanding tests, and enforcing formatting standards simultaneously.</p>
+
+<strong>Claude Code Approach:</strong>
+<pre><code class="language-bash"># UI Feature
+claude "Add theme toggle switch... (see Example 1)"
+
+# Testing Feature
+claude "Enhance testing framework... (see Example 2)"
+
+# Quality Feature
+claude "Add code quality tools... (see Example 3)"
+</code></pre>
+
+<strong>Result:</strong>
+<p>All features completed concurrently, merged cleanly, and verified via automated tests.</p>
+
+<h2>🤔 Common Questions & Troubleshooting</h2>
+
+<h3>Q: What if two worktrees modify the same file?</h3>
+<strong>A:</strong> Claude will detect merge conflicts during merge and can automatically resolve them when prompted.
+
+<h3>Q: Can I delete worktrees after merging?</h3>
+<strong>A:</strong> Yes. Run <code>git worktree remove trees/<worktree_name></code> once merged.
+
+<h3>Q: Why does Claude ask for permissions again?</h3>
+<strong>A:</strong> Check <code>.claude/settings.local.json</code> — add your commands under <code>"permissions"</code> to persist approvals.
+
+
+<h2>📊 Performance & Optimization</h2>
+
+<h3>Context Window Management</h3>
+<ul>
+<li>Each Claude session is isolated, minimizing context bloat.  </li>
+<li>Keep <code>.claude/commands</code> lightweight to reduce token usage.</li>
+</ul>
+
+<h3>Speed Optimization</h3>
+<ul>
+<li>Run sessions in parallel to reduce total development time.  </li>
+<li>Use concise prompts for faster Claude responses.</li>
+</ul>
+
+<h3>Cost Considerations</h3>
+<ul>
+<li>Parallel sessions increase token usage; merge frequently to minimize drift.  </li>
+</ul>
+
+
+<h2>🔗 Related Topics & Next Steps</h2>
+
+<strong>You Should Also Learn About:</strong>
+<ul>
+<li>[Episode 7: GitHub Integration for Pull Requests]  </li>
+<li>[Episode 5: Customizing CLAUDE.md for Team Workflows]</li>
+</ul>
+
+
+<h2>📌 Key Takeaways</h2>
+
+<p>1. <strong>Git Worktrees enable safe parallel development</strong> — isolate features without conflicts.</p>
+<p>2. <strong>Custom Commands streamline repetitive prompts</strong> — improve consistency and productivity.</p>
+<p>3. <strong>Claude Code can automate merges and conflict resolution</strong> — reducing manual Git overhead.</p>
+<p>4. <strong>Parallel Claude sessions scale your productivity</strong> — multi-feature development without chaos.</p>
+
+
+<h2>🎓 Quick Reference</h2>
+
+<h3>Command Cheat Sheet</h3>
+<table class="data-table">
+<thead><tr>
+<th>Purpose</th>
+<th>Command</th>
+<th>When to Use</th>
+</tr></thead><tbody>
+<tr>
+<td>Create worktree</td>
+<td><code>git worktree add trees/<name> main</code></td>
+<td>Set up parallel feature branches</td>
+</tr>
+<tr>
+<td>Run Claude in worktree</td>
+<td><code>claude /implement-feature "<feature>"</code></td>
+<td>Start feature-specific session</td>
+</tr>
+<tr>
+<td>Merge all worktrees</td>
+<td><code>claude "Merge all worktrees and resolve conflicts"</code></td>
+<td>Integrate changes</td>
+</tr>
+<tr>
+<td>Remove worktree</td>
+<td><code>git worktree remove trees/<name></code></td>
+<td>Clean up after merge</td>
+</tr>
+</tbody></table>
+
+<h3>Keyboard Shortcuts</h3>
+<ul>
+<li><code>Shift+Tab</code> – View Claude’s plan before execution  </li>
+<li><code>Ctrl+C</code> – Cancel current operation  </li>
+<li><code>Esc</code> – Exit prompt input  </li>
+</ul>
+
+<h3>Common Prompts</h3>
+<pre><code class="language-text">/implement-feature "Add new API route"
+/commit-with-description "Add endpoint tests"
+/permissions "Grant access to Git commands"
+</code></pre>
+
+
+<h2>🔐 Security & Best Practices</h2>
+
+<strong>Privacy Considerations:</strong>
+<ul>
+<li>Keep sensitive environment variables out of Claude context.  </li>
+<li>Do not store secrets in <code>.claude/commands</code>.  </li>
+</ul>
+
+<strong>Quality Assurance:</strong>
+<ul>
+<li>Run tests after merging worktrees.  </li>
+<li>Validate each feature branch independently before integration.  </li>
+</ul>
+
+<strong>Team Collaboration:</strong>
+<ul>
+<li>Share reusable commands via <code>.claude/commands/</code> in version control.  </li>
+<li>Use consistent commit message styles across worktrees.  </li>
+</ul>
+
+
+<h2>📚 Extra Resources</h2>
+
+<strong>Official Documentation:</strong>
+<ul>
+<li><a href="https://docs.anthropic.com/claude-code">Claude Code Docs</a></li>
+<li><a href="https://git-scm.com/docs/git-worktree">Git Worktrees Guide</a></li>
+</ul>
+
+<strong>Additional Learning:</strong>
+<ul>
+<li>Blog: <em>Parallel Feature Development with Claude Code</em>  </li>
+<li>Video: <em>Managing Multi-Session AI Development Environments</em></li>
+</ul>
+
+
+<h2>⭐ Conclusion</h2>
+
+<strong>What You've Mastered:</strong>
+<p>Parallel feature development using Claude Code, Git worktrees, and custom commands.</p>
+
+<strong>How This Fits Into Real Development:</strong>
+<p>You can now safely scale your Claude Code workflows across multiple features, teams, and environments.</p>
+
+<strong>Your Next Challenge:</strong>
+<p>Integrate Claude Code with GitHub to automate pull request reviews and code suggestions.</p>
+
+<strong>Pro Tip for Long-Term Mastery:</strong>
+<p>Standardize your <code>.claude/commands</code> directory across projects to enforce consistent AI-assisted development patterns.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

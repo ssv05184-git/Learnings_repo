@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creating a Tool | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Creating a Tool</h1>
+    <p class="subtitle">Module 3 — Episode 2</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Creating a Tool</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 3 — Episode 2</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Explain how an LLM signals that it wants a function (tool) to be called  </li>
+<li><span class="checkmark">✅</span> Implement a basic mechanism for parsing and executing tool requests  </li>
+<li><span class="checkmark">✅</span> Debug the communication loop between an LLM and developer code when using tools  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode walks through how to enable a Large Language Model (LLM) to “call” a tool — such as a function that retrieves the current time.</p>
+<p>You’ll learn how, historically, developers instructed LLMs to request function calls using specific output formats and how developer-written code handled those requests.</p>
+<p>Understanding this process clarifies how modern LLMs now use built-in tool-use capabilities, and why older prompt-based methods were necessary precursors.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Basic Python function definitions  </li>
+<li>How LLMs generate text outputs token-by-token  </li>
+<li>The concept of a “tool” introduced in [Module 3, Episode 1: Introduction to Tools]  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Tool</strong> – A callable function that an LLM can request to execute, e.g., <code>getCurrentTime()</code>.  </li>
+<li><strong>Function Call Protocol</strong> – A structured way for the LLM to indicate which tool it wants to use and with what arguments.  </li>
+<li><strong>Developer Mediation</strong> – The process where developer code interprets the LLM’s output, executes the requested tool, and feeds the result back to the LLM.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_3/E2_calling_tool.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram illustrates the communication loop between the LLM, developer code, and tools, showing how the LLM requests functions without directly executing code.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Tool Definition:</strong>
+<p>Implement a function, e.g., <code>getCurrentTime()</code>, that returns the current time.</p>
+
+2. <strong>Prompt Setup:</strong>
+<p>Instruct the LLM that it can “use” a tool by outputting a specific format, such as:</p>
+<pre><code class="language-text">   FUNCTION: getCurrentTime
+   </code></pre>
+
+3. <strong>LLM Output Parsing:</strong>
+<p>Developer code monitors the LLM’s output for the keyword <code>FUNCTION:</code>.</p>
+<p>When detected, it extracts the function name and any arguments.</p>
+
+4. <strong>Tool Execution:</strong>
+<p>Developer code calls the corresponding function (e.g., <code>getCurrentTime("Pacific/Auckland")</code>).</p>
+
+5. <strong>Result Injection:</strong>
+<p>The tool’s return value (e.g., <code>"4 a.m."</code>) is appended to the conversation history and passed back into the LLM.</p>
+
+6. <strong>Final Response Generation:</strong>
+<p>The LLM uses the updated context to generate the final message, such as:</p>
+<code>"It is 4 a.m. in New Zealand."</code>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li>The LLM is trained to produce structured text outputs.  </li>
+<li>By defining a predictable format (<code>FUNCTION: ...</code>), developers can interpret the LLM’s intent.  </li>
+<li>The developer acts as the execution layer, bridging natural language reasoning (LLM) and deterministic computation (tools).  </li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios:</strong>
+
+<ul>
+<li>When working with older or untrained LLMs that lack native tool-use APIs.  </li>
+<li>When prototyping custom tool-calling protocols or middleware.  </li>
+<li>When debugging or auditing how an LLM decides to invoke tools.</li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid When:</strong>
+
+<ul>
+<li>Using modern LLMs that already support structured tool invocation (e.g., via JSON or OpenAI “function calling”).  </li>
+<li>You need high reliability or real-time execution — text parsing is fragile.  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Complexity:</strong> Requires maintaining prompt templates and parsing logic.  </li>
+<li><strong>Fragility:</strong> Small output variations can break the detection logic.  </li>
+<li><strong>Scalability:</strong> Managing multiple tools or complex arguments becomes cumbersome.  </li>
+<li><strong>Maintainability:</strong> Each new tool requires manual updates to prompts and parsers.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li>Minimal computational overhead — most cost is in text parsing.  </li>
+<li>Latency may increase due to the multi-step interaction (LLM → developer → tool → LLM).  </li>
+<li>For production systems, structured APIs or native tool-use syntax are preferred for reliability and speed.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python"># Define a simple tool
+def getCurrentTime(timezone=None):
+    if timezone == "Pacific/Auckland":
+        return "4 a.m."
+    return "8 a.m."
+
+# Simulated LLM output
+llm_output = "FUNCTION: getCurrentTime Pacific/Auckland"
+
+# Developer-side parsing logic
+if llm_output.startswith("FUNCTION:"):
+    parts = llm_output.split()
+    func_name = parts[1]
+    arg = parts[2] if len(parts) &gt; 2 else None
+
+    if func_name == "getCurrentTime":
+        result = getCurrentTime(arg)
+        # Feed result back to LLM
+        print(f"LLM receives tool output: {result}")
+</code></pre>
+
+<strong>Output:</strong>
+<pre><code class="language-text">LLM receives tool output: 4 a.m.
+</code></pre>
+
+<p>This example demonstrates the manual loop between the LLM and developer code — a precursor to modern structured tool invocation.</p>
+
+
+<h2 class="section-icon">🧩 Summary</h2>
+
+<p>In this episode, you learned how early LLMs required explicit prompting and manual parsing to “call” tools.</p>
+<p>The LLM never executed code directly; it produced structured text that developers interpreted and acted upon.</p>
+<p>This process laid the foundation for modern LLM architectures that now include built-in, natively trained tool-use capabilities — which will be explored in the next episode.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

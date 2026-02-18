@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creating and Executing LLM Plans | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Creating and Executing LLM Plans</h1>
+    <p class="subtitle">Module 5 — Episode 2</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Creating and Executing LLM Plans</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 5 — Episode 2</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Prompt an LLM to generate structured, machine-readable plans  </li>
+<li><span class="checkmark">✅</span> Interpret and execute multi-step plans from JSON or XML outputs  </li>
+<li><span class="checkmark">✅</span> Understand trade-offs between different plan representation formats  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode explores how to get large language models (LLMs) to produce actionable, structured plans that downstream systems can reliably execute.</p>
+<p>You’ll learn why developers often use structured formats like JSON or XML for plan generation, how these formats improve reliability, and how to parse and execute these plans programmatically.</p>
+<p>These techniques are foundational for building autonomous agents that can break down complex goals into discrete, executable actions.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Basic prompting strategies for LLMs  </li>
+<li>Fundamentals of tool-using agents (from Module 5, Episode 1)  </li>
+<li>JSON and XML data structures  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Structured Plan Representation</strong> – Encoding a plan in a structured format (e.g., JSON or XML) so that each step can be parsed and executed programmatically.  </li>
+<li><strong>System Prompt Specification</strong> – The initial instruction to the LLM defining the expected output format and schema for a plan.  </li>
+<li><strong>Downstream Execution</strong> – The process by which other code components read and perform each step of the generated plan sequentially.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_5/E2_executing_planner.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram shows the LLM planning workflow: developers define tools and schema in the system prompt, the LLM generates a structured plan in JSON, and the execution engine parses and executes steps sequentially.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+<p>1. <strong>Define the Prompt Schema</strong> – The system prompt informs the LLM which tools are available and specifies the desired output format (e.g., JSON).</p>
+<p>2. <strong>Generate the Plan</strong> – The LLM produces a structured list of steps, each with fields such as <code>step_number</code>, <code>description</code>, <code>tool</code>, and <code>arguments</code>.</p>
+<p>3. <strong>Parse the Plan</strong> – Downstream code reads the structured output to identify each step in sequence.</p>
+<p>4. <strong>Execute Sequentially</strong> – Each step is executed by invoking the specified tool with the given arguments.</p>
+
+
+<h3>Why It Works</h3>
+
+<p>Structured formats like JSON or XML eliminate ambiguity.</p>
+<p>They allow deterministic parsing and make it easier for automation frameworks to interpret and execute instructions without relying on natural language interpretation.</p>
+<p>Most modern LLMs are trained to produce well-formed JSON, making this approach highly reliable.</p>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+<ul>
+<li>When building autonomous or semi-autonomous agents that need multi-step reasoning.  </li>
+<li>When the system must execute plans programmatically or integrate with external APIs.  </li>
+<li>When you need reproducibility and clear execution traceability.</li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid When</strong>
+<ul>
+<li>The plan is purely descriptive and doesn’t require machine parsing.  </li>
+<li>The system cannot guarantee schema validation or structured parsing.</li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Complexity</strong> – Requires defining and maintaining a schema.  </li>
+<li><strong>Error Handling</strong> – LLMs may occasionally produce invalid JSON; validation logic is needed.  </li>
+<li><strong>Rigidity</strong> – Overly strict schemas can limit flexibility in plan generation.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Parsing Overhead</strong> – JSON parsing is lightweight, but XML can be heavier.  </li>
+<li><strong>Validation Cost</strong> – Schema validation adds minor CPU load but improves reliability.  </li>
+<li><strong>Execution Latency</strong> – Sequential execution of multi-step plans can add latency; consider parallelization when safe.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python"># Example: Prompting an LLM to produce a structured plan in JSON
+
+system_prompt = """
+You have access to the following tools: search, summarize, and notify.
+Create a step-by-step plan in JSON format.
+Each step should include: step_number, description, tool, and arguments.
+"""
+
+# Example LLM output (simplified)
+plan = {
+  "steps": [
+    {
+      "step_number": 1,
+      "description": "Search for the latest customer support tickets.",
+      "tool": "search",
+      "arguments": {"query": "latest support tickets"}
+    },
+    {
+      "step_number": 2,
+      "description": "Summarize the top issues found.",
+      "tool": "summarize",
+      "arguments": {"input": "search_results"}
+    }
+  ]
+}
+
+# Downstream code executes each step
+for step in plan["steps"]:
+    execute_tool(step["tool"], **step["arguments"])
+</code></pre>
+
+
+<h3>Alternative Representation (XML)</h3>
+
+<pre><code class="language-xml">&lt;plan&gt;
+  &lt;step number="1"&gt;
+    &lt;description&gt;Search for the latest customer support tickets.&lt;/description&gt;
+    &lt;tool&gt;search&lt;/tool&gt;
+    &lt;arguments&gt;
+      &lt;query&gt;latest support tickets&lt;/query&gt;
+    &lt;/arguments&gt;
+  &lt;/step&gt;
+  &lt;step number="2"&gt;
+    &lt;description&gt;Summarize the top issues found.&lt;/description&gt;
+    &lt;tool&gt;summarize&lt;/tool&gt;
+    &lt;arguments&gt;
+      &lt;input&gt;search_results&lt;/input&gt;
+    &lt;/arguments&gt;
+  &lt;/step&gt;
+&lt;/plan&gt;
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Key Takeaway</h2>
+
+<p>By prompting LLMs to output structured plans in formats like JSON or XML, developers can build reliable, autonomous agents that interpret and execute multi-step workflows programmatically.</p>
+<p>This approach bridges the gap between natural language reasoning and deterministic system execution.</p>
+
+    </article>
+
+</main>
+
+</body>
+</html>

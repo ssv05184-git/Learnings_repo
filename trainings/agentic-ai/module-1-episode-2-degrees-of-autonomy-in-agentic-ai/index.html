@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Degrees of Autonomy in Agentic AI | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Degrees of Autonomy in Agentic AI</h1>
+    <p class="subtitle">Module 1 — Episode 2</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Degrees of Autonomy in Agentic AI</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 2</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Explain the concept of <strong>degrees of autonomy</strong> in agentic systems  </li>
+<li><span class="checkmark">✅</span> Differentiate between <strong>less autonomous</strong>, <strong>semi-autonomous</strong>, and <strong>highly autonomous</strong> agents  </li>
+<li><span class="checkmark">✅</span> Identify where to apply each level of autonomy in real-world AI workflows  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode explores how <strong>agentic AI systems</strong> can vary in their level of autonomy — from strictly programmed workflows to self-directed agents capable of dynamic decision-making.</p>
+<p>Understanding these degrees of autonomy helps developers design systems that balance <strong>control</strong>, <strong>flexibility</strong>, and <strong>safety</strong>.</p>
+<p>You’ll see how autonomy affects agent behavior, tool usage, and the degree to which an LLM (Large Language Model) determines its own actions.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>The concept of <strong>agentic workflows</strong> (see Episode 1)  </li>
+<li>Basic familiarity with <strong>LLMs</strong> and <strong>tool use</strong> in AI systems  </li>
+<li>Foundational knowledge of <strong>prompt-based task execution</strong></li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Agentic AI</strong> – A system that can perform tasks with varying levels of independence, often involving reasoning, planning, and tool use.  </li>
+<li><strong>Degree of Autonomy</strong> – The extent to which the system decides <em>how</em> to achieve a goal without explicit step-by-step instructions from a human.  </li>
+<li><strong>Tool Use</strong> – When an agent calls external software (e.g., APIs, code execution, or web search) as part of its reasoning or task completion process.  </li>
+<li><strong>Deterministic Workflow</strong> – A predefined, linear sequence of steps hard-coded by a human engineer.  </li>
+<li><strong>Self-Directed Workflow</strong> – A dynamic process where the LLM decides which tools or actions to invoke based on intermediate results.</li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+<img src="../../../diagrams/images/agentic-ai/module_1/E2_Degrees_of_autonomy.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram illustrates the continuum from <strong>less autonomous</strong> to <strong>highly autonomous</strong> agents.</p>
+<ul>
+<li>The left side: fully deterministic, human-defined workflows.  </li>
+<li>The middle: semi-autonomous systems with limited decision-making.  </li>
+<li>The right side: highly autonomous agents capable of self-directed planning, tool creation, and reflection.</li>
+</ul>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Less Autonomous Agents</strong>
+<p>- Follow a fixed, human-defined sequence of steps.</p>
+<p>- Example: Writing an essay by executing a predetermined series of web searches and summarizations.</p>
+<p>- The LLM’s role is limited to text generation; all tool calls are hard-coded.</p>
+<img src="../../../diagrams/images/agentic-ai/module_1/E2_Less_autonomous.png" alt="Image" class="content-image">
+
+2. <strong>Semi-Autonomous Agents</strong>
+<p>- The LLM can choose among predefined tools or paths.</p>
+<p>- Example: The LLM decides whether to search the web or query a research database but uses predefined APIs.</p>
+
+<img src="../../../diagrams/images/agentic-ai/module_1/E2_semi_autonomous.png" alt="Image" class="content-image">
+3. <strong>Highly Autonomous Agents</strong>
+<p>- The LLM determines both <em>what tools to use</em> and <em>when</em> to use them.</p>
+<p>- Can dynamically decide the sequence of actions, generate new functions, or even create new tools.</p>
+<p>- Example: The agent decides to fetch PDFs, convert them to text, reflect on results, and iterate to improve its output.</p>
+
+<img src="../../../diagrams/images/agentic-ai/module_1/E2_highly_autonomous.png" alt="Image" class="content-image">
+
+<h3>Why It Works</h3>
+
+<ul>
+<li><strong>Flexibility:</strong> Allowing the LLM to make decisions enables adaptability to new or ambiguous tasks.  </li>
+<li><strong>Efficiency:</strong> Autonomous agents can optimize their workflow dynamically.  </li>
+<li><strong>Innovation:</strong> High autonomy can lead to novel problem-solving approaches not explicitly programmed by humans.  </li>
+</ul>
+
+<p>However, autonomy introduces unpredictability — a trade-off between <strong>control</strong> and <strong>capability</strong>.</p>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+<ul>
+<li>Less autonomous: Repetitive, well-defined business workflows (e.g., report generation).  </li>
+<li>Semi-autonomous: Contextual tasks needing limited decision-making (e.g., customer support bots).  </li>
+<li>Highly autonomous: Research or creative tasks where exploration is valuable (e.g., automated scientific literature reviews).</li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid Over-Autonomy When</strong>
+<ul>
+<li>Tasks require strict compliance, auditability, or deterministic behavior.  </li>
+<li>The cost of unpredictable outputs outweighs the benefits of flexibility.  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Aspect</th>
+<th>Less Autonomous</th>
+<th>Highly Autonomous</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Control</strong></td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Flexibility</strong></td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>Predictability</strong></td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>Safety</strong></td>
+<td>Easier to ensure</td>
+<td>Harder to guarantee</td>
+</tr>
+</tbody></table>
+
+<p>Developers must choose autonomy levels based on <strong>task criticality</strong>, <strong>risk tolerance</strong>, and <strong>domain constraints</strong>.</p>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Computation Cost:</strong> Higher autonomy may involve more reasoning steps and tool calls.  </li>
+<li><strong>Latency:</strong> Dynamic decision-making can increase response time.  </li>
+<li><strong>Monitoring:</strong> Semi- and highly-autonomous systems require observability to detect undesired behaviors.  </li>
+<li><strong>Resource Management:</strong> Limit recursive or reflective loops to prevent runaway processes.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example — Comparing Autonomy Levels</h3>
+
+<pre><code class="language-python"># Less Autonomous Agent
+def write_essay_simple(topic):
+    search_results = web_search(f"{topic} overview")
+    content = summarize(search_results)
+    return generate_text(f"Write an essay on {topic} using: {content}")
+
+# More Autonomous Agent
+def write_essay_agentic(topic, llm):
+    plan = llm.decide_plan(f"How should I research and write an essay on {topic}?")
+    for step in plan:
+        if step["action"] == "search":
+            results = web_search(step["query"])
+        elif step["action"] == "fetch_pdf":
+            pdf_text = fetch_and_convert_pdf(step["url"])
+        elif step["action"] == "reflect":
+            llm.reflect_on_output()
+    return llm.compose_final_essay()
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Key Takeaways</h2>
+
+<ul>
+<li>Autonomy in agentic AI exists on a <strong>spectrum</strong>, not a binary distinction.  </li>
+<li>Developers can <strong>tune autonomy</strong> to match the reliability and flexibility needs of their applications.  </li>
+<li>Even <strong>less autonomous</strong> agents can deliver significant business value today, while <strong>highly autonomous</strong> systems remain an area of active research.  </li>
+</ul>
+
+
+<h2 class="section-icon">🚀 Next Steps</h2>
+
+<p>In the next episode, we’ll explore the <strong>benefits of agentic systems</strong> and how they enable capabilities beyond traditional LLM applications.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

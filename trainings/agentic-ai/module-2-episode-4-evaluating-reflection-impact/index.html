@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluating the Impact of Reflection | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Evaluating the Impact of Reflection</h1>
+    <p class="subtitle">Module 2 — Episode 4</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Evaluating the Impact of Reflection</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 2 — Episode 4</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Design and implement evaluation (eval) workflows for reflection-based agentic systems  </li>
+<li><span class="checkmark">✅</span> Compare objective and subjective evaluation methods for LLM-driven tasks  </li>
+<li><span class="checkmark">✅</span> Identify bias and calibration issues when using LLMs as evaluators  </li>
+<li><span class="checkmark">✅</span> Use rubrics to improve consistency in subjective evaluation scenarios  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode explores how to measure the effectiveness of reflection in agentic AI workflows.</p>
+<p>You’ll learn how to evaluate whether reflection truly improves system performance, both in objective tasks (like database query generation) and subjective tasks (like visualization quality).</p>
+<p>Understanding eval design is critical for systematically improving reflection prompts and maintaining reliable performance as your system evolves.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>The concept of <strong>reflection</strong> in agentic AI (from earlier episodes)  </li>
+<li>How LLMs generate and refine outputs such as SQL queries or visualizations  </li>
+<li>Basic familiarity with <strong>evaluation metrics</strong> and <strong>prompt engineering</strong></li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Reflection Evaluation (Eval):</strong> A systematic process to measure whether reflection steps improve model outputs.  </li>
+<li><strong>Objective Evaluation:</strong> Quantitative assessment based on ground truth (e.g., correct vs. incorrect database query results).  </li>
+<li><strong>Subjective Evaluation:</strong> Qualitative assessment where correctness is ambiguous (e.g., determining which visualization “looks better”).  </li>
+<li><strong>LLM-as-a-Judge:</strong> Using a language model to compare or score outputs according to defined criteria.  </li>
+<li><strong>Rubric-Based Scoring:</strong> A structured method using binary or categorical criteria to increase consistency in subjective evaluations.</li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+<img src="../../../diagrams/images/agentic-ai/module_2/E4_objective.png" alt="Image" class="content-image">
+<img src="../../../diagrams/images/agentic-ai/module_2/E4_subjective.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>These diagrams illustrate objective evaluation (measuring correctness against ground truth) and subjective evaluation (using rubrics and LLM-based scoring) to assess reflection impact on workflow quality.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Define Evaluation Dataset:</strong>
+<p>Collect a set of prompts and known correct answers (for objective tasks) or sample outputs (for subjective tasks).</p>
+
+2. <strong>Run Baseline Workflow (No Reflection):</strong>
+<p>Execute the system using only the first LLM’s output.</p>
+
+3. <strong>Run Reflection Workflow:</strong>
+<p>Add a reflection step where a second LLM reviews and improves the initial output.</p>
+
+4. <strong>Compare Results:</strong>
+<p>- For objective tasks: Measure the percentage of correct answers.</p>
+<p>- For subjective tasks: Use an LLM grader or rubric-based scoring.</p>
+
+5. <strong>Iterate on Prompts:</strong>
+<p>Adjust generation and reflection prompts, then re-run evals to quantify improvements.</p>
+
+
+<h3>Why It Works</h3>
+
+<p>Reflection introduces an iterative improvement mechanism, but its benefits must be empirically validated.</p>
+<p>By measuring performance before and after reflection, developers can confirm whether additional reasoning steps yield measurable accuracy or quality gains.</p>
+<p>Evals provide data-driven feedback loops, enabling systematic prompt optimization and model tuning.</p>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios:</strong>
+
+<ul>
+<li>When reflection steps add measurable improvement to structured outputs (SQL, code, etc.)  </li>
+<li>When testing multiple prompt variations and needing objective feedback  </li>
+<li>When refining subjective outputs such as visualizations, summaries, or designs  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid When:</strong>
+
+<ul>
+<li>The evaluation criteria are undefined or inconsistent  </li>
+<li>The reflection step adds latency without measurable benefit  </li>
+<li>LLM-as-a-judge results are too noisy or biased to trust  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Overhead:</strong> Reflection adds computational and latency costs.  </li>
+<li><strong>Bias:</strong> LLM judges may favor certain options due to position bias.  </li>
+<li><strong>Calibration:</strong> LLM scoring may be inconsistent without well-defined rubrics.  </li>
+<li><strong>Complexity:</strong> Managing both objective and subjective eval pipelines increases system complexity.</li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Objective Evals:</strong> Can be automated and scaled easily for regression testing.  </li>
+<li><strong>Subjective Evals:</strong> Require careful rubric design and validation against human judgment.  </li>
+<li><strong>Prompt Sensitivity:</strong> Small changes in wording can significantly affect LLM-as-judge outcomes.  </li>
+<li><strong>Optimization:</strong> Binary rubric scoring (0/1 per criterion) tends to yield more stable results than 1–5 scales.</li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example — Objective Eval for Reflection</h3>
+
+<pre><code class="language-python"># Example: Evaluating reflection impact on SQL query accuracy
+
+prompts = [
+    {"question": "Which color product has the highest total sales?", "ground_truth": "Blue"},
+    {"question": "How many items were sold in May 2025?", "ground_truth": "1301"},
+]
+
+def run_query(llm, question):
+    """Generate and execute an SQL query using the given LLM."""
+    query = llm.generate_sql(question)
+    return execute_database_query(query)
+
+def evaluate(llm_base, llm_reflect, prompts):
+    results = {"no_reflection": 0, "with_reflection": 0}
+
+    for p in prompts:
+        # Baseline
+        answer1 = run_query(llm_base, p["question"])
+        if answer1 == p["ground_truth"]:
+            results["no_reflection"] += 1
+
+        # Reflection-enhanced
+        initial_query = llm_base.generate_sql(p["question"])
+        improved_query = llm_reflect.improve_query(initial_query)
+        answer2 = execute_database_query(improved_query)
+        if answer2 == p["ground_truth"]:
+            results["with_reflection"] += 1
+
+    total = len(prompts)
+    print(f"No Reflection Accuracy: {results['no_reflection']/total:.2%}")
+    print(f"With Reflection Accuracy: {results['with_reflection']/total:.2%}")
+
+# Example outcome:
+# No Reflection Accuracy: 87%
+# With Reflection Accuracy: 95%
+</code></pre>
+
+
+<h3>Subjective Eval with Rubric Scoring</h3>
+
+<pre><code class="language-python"># Example: Evaluating visualization quality using rubric-based LLM grading
+
+rubric = [
+    "Has a clear title",
+    "Axes are labeled",
+    "Appropriate chart type",
+    "Legends are readable",
+    "Colors are distinct"
+]
+
+def grade_plot(llm_judge, image):
+    """Ask LLM to score plot based on binary rubric."""
+    scores = []
+    for criterion in rubric:
+        prompt = f"Does the plot satisfy this criterion? '{criterion}' Answer 1 for Yes, 0 for No."
+        score = int(llm_judge.evaluate_image(image, prompt))
+        scores.append(score)
+    return sum(scores)
+
+# Compare reflection vs. non-reflection plots
+baseline_score = grade_plot(llm_judge, baseline_plot)
+reflected_score = grade_plot(llm_judge, reflected_plot)
+
+print(f"Baseline Score: {baseline_score}/5")
+print(f"Reflected Score: {reflected_score}/5")
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Key Takeaways</h2>
+
+<ul>
+<li>Reflection should be <strong>measured</strong>, not assumed to help.  </li>
+<li>Use <strong>objective evals</strong> when ground truth exists and <strong>rubric-based evals</strong> for subjective tasks.  </li>
+<li>LLMs as judges can be useful but require <strong>careful calibration</strong>.  </li>
+<li>Binary rubric scoring improves consistency and reduces bias.  </li>
+<li>Evals enable <strong>prompt iteration</strong> and <strong>systematic improvement</strong> of reflection workflows.</li>
+</ul>
+
+
+<h2>📘 Next Episode Preview</h2>
+
+<p>In the next and final episode of this module, we’ll explore how <strong>incorporating external information</strong> can significantly enhance reflection workflows — making them more robust and contextually accurate.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

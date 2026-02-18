@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Address Problems You Identify | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>How to Address Problems You Identify</h1>
+    <p class="subtitle">Module 4 — Episode 5</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>How to Address Problems You Identify</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 4 — Episode 5</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Identify and tune parameters in both LLM-based and non-LLM-based components of agentic workflows  </li>
+<li><span class="checkmark">✅</span> Apply structured techniques to improve model performance through prompting, decomposition, and fine-tuning  </li>
+<li><span class="checkmark">✅</span> Develop intuition for selecting and evaluating large language models for specific tasks  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode explores practical techniques for improving components within agentic AI workflows.</p>
+<p>It covers both non-LLM-based components (like retrieval systems or search engines) and LLM-based components (prompting, model selection, fine-tuning).</p>
+<p>You’ll also learn how to build intuition for choosing the right model for your task — a key skill for developing efficient, high-performing agentic systems.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Basics of agentic AI workflows and their component structure  </li>
+<li>Concepts from previous episodes on workflow evaluation and debugging  </li>
+<li>Familiarity with LLM prompting and Retrieval-Augmented Generation (RAG)  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Component Optimization</strong> – The process of improving individual workflow components to enhance overall system performance.  </li>
+<li><strong>Hyperparameter Tuning</strong> – Adjusting configuration parameters (e.g., similarity thresholds, chunk sizes, detection sensitivities) to optimize non-LLM components.  </li>
+<li><strong>Prompt Engineering</strong> – Crafting and refining LLM instructions, examples, and structure to improve response quality and consistency.  </li>
+<li><strong>Few-Shot Prompting</strong> – Providing examples within prompts to guide model behavior more effectively.  </li>
+<li><strong>Model Intuition</strong> – Developing a sense for which models perform best for specific tasks based on experimentation and observation.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_4/E5_improve_perfomance.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram illustrates pathways for optimizing workflow components: parameter tuning and replacement for non-LLM components, and prompt refinement, model selection, decomposition, and fine-tuning for LLM-based components.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+<p>1. <strong>Identify the underperforming component</strong> — Determine whether the issue lies in a retrieval engine, model output, or another subsystem.</p>
+2. <strong>Non-LLM Components</strong>
+<p>- Tune hyperparameters (e.g., retrieval similarity threshold, search result count, detection sensitivity).</p>
+<p>- Replace components (e.g., swap retrieval engines or ML models).</p>
+3. <strong>LLM Components</strong>
+<p>- Refine prompts by adding clarity or examples (few-shot prompting).</p>
+<p>- Try alternative models using tools like AI Suite to evaluate performance.</p>
+<p>- Decompose complex tasks into smaller, sequential steps (e.g., generate → reflect).</p>
+<p>- Fine-tune the model if incremental improvements are needed and justified by cost.</p>
+<p>4. <strong>Evaluate Results</strong> — Use component-level or end-to-end evals to measure improvement.</p>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li><strong>Parameter tuning</strong> aligns component behavior with the specific data or workflow context.  </li>
+<li><strong>Prompt optimization</strong> leverages the LLM’s contextual reasoning capabilities more effectively.  </li>
+<li><strong>Model experimentation</strong> exposes performance differences across architectures and training data.  </li>
+<li><strong>Task decomposition</strong> simplifies complex reasoning chains, improving consistency.  </li>
+<li><strong>Fine-tuning</strong> embeds domain-specific knowledge directly into model weights for maximum accuracy.  </li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<p><span class="checkmark">✅</span> Use these techniques when:</p>
+<ul>
+<li>A workflow component consistently produces low-quality or inconsistent results.  </li>
+<li>You are preparing an agentic system for production and need higher reliability or accuracy.  </li>
+<li>You want to compare cost, latency, and performance trade-offs across models.  </li>
+</ul>
+
+<p><span class="crossmark">❌</span> Avoid when:</p>
+<ul>
+<li>The workflow is still in early prototyping (fine-tuning may be premature).  </li>
+<li>You lack sufficient evaluation metrics to measure improvement.  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Complexity</strong> – Fine-tuning requires significant data preparation and infrastructure.  </li>
+<li><strong>Cost</strong> – Larger models and multiple eval runs can increase operational expense.  </li>
+<li><strong>Scalability</strong> – Highly tuned or fine-tuned components may not generalize across tasks.  </li>
+<li><strong>Maintainability</strong> – Frequent model changes can complicate version control and testing.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Latency</strong> – Larger or chained models may increase response time.  </li>
+<li><strong>Cost Optimization</strong> – Use smaller models for simpler tasks when possible.  </li>
+<li><strong>Caching & Reuse</strong> – Cache results of stable components to reduce repeated computation.  </li>
+<li><strong>Eval Efficiency</strong> – Automate model evaluations to quickly compare performance and cost.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example: Comparing Models for PII Redaction</h3>
+
+<pre><code class="language-python">from ai_suite import LLM, evaluate
+
+# Define two models to test
+models = [
+    LLM(provider="openai", model="gpt-4-turbo"),
+    LLM(provider="meta", model="llama-3.1-8b")
+]
+
+prompt = """
+Identify and redact all personally identifiable information (PII) in the text below.
+Return only the redacted text.
+
+Text:
+"On July 14th, 2023, Jessica Alvarez with SSN 123-45-6789 called support."
+"""
+
+# Evaluate both models
+for model in models:
+    output = model.generate(prompt)
+    print(f"Model: {model.model_name}\n{output}\n")
+
+# Use evals to measure which model performs better for instruction following
+results = evaluate(models, task="pii_redaction")
+print(results.summary())
+</code></pre>
+
+
+<h3>Example: Task Decomposition</h3>
+
+<pre><code class="language-python"># Step 1: Generation
+summary = llm.generate("Summarize the following call transcript...")
+
+# Step 2: Reflection
+reviewed_summary = llm.generate(f"Check the following summary for missing key details:\n{summary}")
+
+# Combine results
+final_summary = f"{summary}\n\nReviewed Version:\n{reviewed_summary}"
+</code></pre>
+
+
+<h2 class="section-icon">🧠 Pro Tip</h2>
+
+<p>Regularly read and analyze other developers’ prompts to understand best practices.</p>
+<p>Experimenting with multiple models and maintaining your own set of “prompt evals” will sharpen your intuition for model selection and improve your workflow design efficiency.</p>
+
+
+<h2 class="section-icon">🚀 Next Steps</h2>
+
+<p>In the next episode, we’ll explore methods to <strong>optimize cost and latency</strong> in agentic workflows — ensuring that your high-quality system also runs efficiently at scale.</p>
+
+    </article>
+
+</main>
+
+</body>
+</html>

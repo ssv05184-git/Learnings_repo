@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Development Process Summary | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Development Process Summary</h1>
+    <p class="subtitle">Module 4 — Episode 7</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Development Process Summary</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 4 — Episode 7</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Describe the iterative build–analyze cycle used in developing agentic AI workflows  </li>
+<li><span class="checkmark">✅</span> Apply structured error analysis and evaluation methods to guide improvements  </li>
+<li><span class="checkmark">✅</span> Balance end-to-end and component-level optimization for system maturity  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode summarizes the practical development process for building agentic AI workflows.</p>
+<p>It emphasizes the interplay between <em>building</em> (coding and improving systems) and <em>analyzing</em> (evaluating outputs, running error analysis, and refining components).</p>
+<p>The approach mirrors real-world AI development, where iteration, measurement, and targeted improvements drive progress.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>The concept of <strong>agentic workflows</strong> and their component structure  </li>
+<li>How to perform <strong>basic evaluation (evals)</strong> and <strong>error analysis</strong>  </li>
+<li>Concepts covered in earlier episodes of this module (e.g., workflow design, debugging strategies)</li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Build–Analyze Cycle</strong> – The iterative process of alternating between coding improvements and analyzing system performance to guide next steps.  </li>
+<li><strong>End-to-End Evaluation</strong> – Assessing the overall workflow’s performance to understand aggregate strengths and weaknesses.  </li>
+<li><strong>Component-Level Evaluation</strong> – Measuring the performance of individual workflow components to pinpoint local issues.  </li>
+<li><strong>Error Analysis</strong> – Systematic review of incorrect or suboptimal outputs to determine root causes and improvement opportunities.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+<img src="../../../diagrams/images/agentic-ai/module_4/E7_Development_Process.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram illustrates the cyclical development process: build an initial workflow, analyze outputs and traces, identify weak points, improve components, and repeat with refined metrics.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Initial Build:</strong>
+<p>Start with a quick, functional end-to-end workflow — even if imperfect.</p>
+<p>This version provides a baseline for analysis.</p>
+
+2. <strong>Manual Analysis:</strong>
+<p>Review traces and outputs to gain intuition about where the workflow succeeds or fails.</p>
+
+3. <strong>Early Evals:</strong>
+<p>Create small evaluation datasets (10–20 examples) to measure end-to-end performance.</p>
+
+4. <strong>Structured Error Analysis:</strong>
+<p>Quantify which components most frequently cause subpar results.</p>
+
+5. <strong>Component-Level Evals:</strong>
+<p>As the system matures, introduce targeted metrics for specific modules or functions.</p>
+
+6. <strong>Iterative Refinement:</strong>
+<p>Alternate between improving components and re-evaluating the full system.</p>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li><strong>Focuses developer effort:</strong> Analysis directs attention to the most impactful improvements.  </li>
+<li><strong>Prevents premature optimization:</strong> You validate end-to-end performance before deep-diving into details.  </li>
+<li><strong>Builds measurable progress:</strong> Each iteration yields data-driven evidence of improvement.  </li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<p><span class="checkmark">✅</span> Use this process when:</p>
+<ul>
+<li>Developing complex, multi-agent or multi-component AI workflows  </li>
+<li>Refining early prototypes into production-ready systems  </li>
+<li>Diagnosing unexpected behavior or performance regressions  </li>
+</ul>
+
+<p><span class="crossmark">❌</span> Avoid skipping analysis when:</p>
+<ul>
+<li>You’re tempted to keep coding without measuring results  </li>
+<li>You lack representative eval data — analysis without data can mislead  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Time Investment:</strong> Analysis can feel slow but prevents wasted build cycles.  </li>
+<li><strong>Tooling Overhead:</strong> Off-the-shelf tools may not fully capture your workflow’s unique behavior.  </li>
+<li><strong>Custom Evals Required:</strong> Generic metrics often fail to reflect domain-specific correctness.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Trace Logging:</strong> Use detailed traces to identify performance bottlenecks and runtime costs.  </li>
+<li><strong>Eval Efficiency:</strong> Keep early eval datasets small for rapid iteration.  </li>
+<li><strong>Custom Metrics:</strong> Tailor metrics to capture both correctness and efficiency (e.g., latency, token usage).  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python"># Pseudocode illustrating the build–analyze cycle
+
+def build_workflow():
+    # Step 1: Build or update the agentic workflow
+    return AgenticWorkflow(components=[...])
+
+def analyze_workflow(workflow, eval_data):
+    # Step 2: Run evaluation and error analysis
+    results = workflow.run(eval_data)
+    errors = identify_errors(results)
+    return summarize_analysis(errors)
+
+def improve_components(workflow, analysis):
+    # Step 3: Apply targeted improvements
+    for component, issues in analysis.items():
+        workflow.tune_component(component, issues)
+    return workflow
+
+# Iterative development loop
+workflow = build_workflow()
+for iteration in range(5):
+    analysis = analyze_workflow(workflow, eval_data)
+    workflow = improve_components(workflow, analysis)
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Key Takeaways</h2>
+
+<ul>
+<li>Agentic AI development is <em>iterative</em>, not linear — expect to alternate between building and analyzing.  </li>
+<li>Early, small-scale evals are better than no evals — they guide intuition and prioritization.  </li>
+<li>Custom evaluation metrics often outperform generic tools for specialized workflows.  </li>
+<li>Mature systems rely on disciplined error analysis to focus engineering effort efficiently.  </li>
+</ul>
+
+
+<h2 class="section-icon">🚀 Next Steps</h2>
+
+<p>In the next module, we’ll explore <strong>advanced design patterns</strong> for building <em>highly autonomous agents</em> — taking the foundational workflow discipline from this module to a new level of sophistication.</p>
+
+    </article>
+
+</main>
+
+</body>
+</html>

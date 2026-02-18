@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component-Level Evals | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Component-Level Evals</h1>
+    <p class="subtitle">Module 4 — Episode 4</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Component-Level Evals</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 4 — Episode 4</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Explain what component-level evaluations (evals) are and why they are useful  </li>
+<li><span class="checkmark">✅</span> Design targeted evals to measure the performance of individual components in an agentic AI workflow  </li>
+<li><span class="checkmark">✅</span> Implement and interpret metrics to guide component-specific improvements efficiently  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode introduces <strong>component-level evals</strong> — a method for evaluating the performance of individual components within a larger agentic AI system.</p>
+<p>Instead of rerunning full end-to-end evaluations every time a small change is made, developers can isolate and test the performance of a single component (like a web search module).</p>
+<p>This approach provides clearer performance signals, reduces noise from other components, and accelerates iteration cycles.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>The concept of <strong>end-to-end evals</strong> and their role in AI workflow validation  </li>
+<li>The structure of <strong>agentic AI workflows</strong> (e.g., multi-component systems with search, reasoning, and synthesis modules)  </li>
+<li>Basic familiarity with <strong>evaluation metrics</strong> such as precision, recall, and F1 score  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Component-Level Eval</strong> – An evaluation focused on a single subsystem or component within a larger AI workflow. Its goal is to measure that component’s quality independently of the rest of the system.  </li>
+<li><strong>End-to-End Eval</strong> – A holistic evaluation of the entire workflow’s performance from input to final output.  </li>
+<li><strong>Gold Standard Resources</strong> – Expert-validated reference data used to benchmark the quality of a component’s output (e.g., authoritative web pages for search results).  </li>
+<li><strong>Signal Isolation</strong> – The process of reducing noise from unrelated components to better understand the true impact of changes in one part of the system.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_4/E4_Level_Analysis.png" alt="Image" class="content-image">
+<img src="../../../diagrams/images/agentic-ai/module_4/E4_component_level.png" alt="Image" class="content-image">
+<img src="../../../diagrams/images/agentic-ai/module_4/E4_end_to_end_level.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>These diagrams show how component-level evaluations isolate individual modules for independent testing while end-to-end evaluations measure overall system performance.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Identify the Component</strong>
+<p>Choose a specific part of the workflow (e.g., web search, summarization, or reasoning).</p>
+
+2. <strong>Define Gold Standards</strong>
+<p>For the selected component, create a set of expert-approved outputs.</p>
+<p>Example: For a web search module, define a list of authoritative web pages relevant to specific queries.</p>
+
+3. <strong>Generate Component Outputs</strong>
+<p>Run the component independently to produce results for each test case.</p>
+
+4. <strong>Compare Against Gold Standards</strong>
+<p>Use metrics such as precision, recall, or F1 score to quantify how closely the component’s output matches the gold standard.</p>
+
+5. <strong>Iterate and Tune</strong>
+<p>Adjust parameters (e.g., search engine choice, number of results, date ranges) and re-run the component-level eval to measure incremental improvements.</p>
+
+6. <strong>Validate End-to-End</strong>
+<p>Once satisfied with component-level performance, re-run a full system eval to confirm that improvements translate to overall performance gains.</p>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li><strong>Reduces Evaluation Cost:</strong> Running end-to-end evals can be computationally and time expensive; component-level evals are faster and cheaper.  </li>
+<li><strong>Improves Signal Clarity:</strong> By isolating one component, developers can detect subtle improvements that might be masked by noise in the full system.  </li>
+<li><strong>Supports Parallel Development:</strong> Different teams can optimize their respective components independently, improving development velocity.  </li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<p><span class="checkmark">✅</span> Use component-level evals when:</p>
+<ul>
+<li>Tuning or replacing a specific subsystem (e.g., switching web search providers).  </li>
+<li>Diagnosing performance issues localized to one part of the workflow.  </li>
+<li>Iterating rapidly on a component before integrating it back into the full pipeline.  </li>
+</ul>
+
+<p><span class="crossmark">❌</span> Avoid relying solely on component-level evals when:</p>
+<ul>
+<li>You need to measure <strong>overall system performance</strong> or emergent behavior.  </li>
+<li>The component’s performance is tightly coupled to other modules (e.g., reasoning depending on search context).  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Limited Context Awareness:</strong> Component-level evals may not capture downstream effects on other modules.  </li>
+<li><strong>Requires Gold Standard Data:</strong> Building reliable benchmarks can be time-consuming.  </li>
+<li><strong>Risk of Overfitting:</strong> Over-optimizing a component for its eval metric may not translate to better end-to-end results.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Efficiency:</strong> Component-level tests can be run frequently, enabling faster feedback loops.  </li>
+<li><strong>Scalability:</strong> As systems grow, component evals help maintain performance visibility across modules.  </li>
+<li><strong>Noise Reduction:</strong> Isolating components reduces random variability from unrelated subsystems.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python"># Example: Component-level evaluation for a web search module
+
+gold_standard = {
+    "what is agentic AI": {"https://example.com/agentic-ai-overview", "https://example.com/ai-agents"},
+    "how to fine-tune llms": {"https://example.com/fine-tuning-guide"}
+}
+
+def evaluate_search_component(search_fn, queries, gold_standard):
+    from sklearn.metrics import precision_score, recall_score, f1_score
+    
+    all_precisions, all_recalls, all_f1s = [], [], []
+    
+    for query in queries:
+        results = set(search_fn(query))
+        gold = gold_standard[query]
+        
+        tp = len(results &amp; gold)
+        fp = len(results - gold)
+        fn = len(gold - results)
+        
+        precision = tp / (tp + fp + 1e-8)
+        recall = tp / (tp + fn + 1e-8)
+        f1 = 2 * precision * recall / (precision + recall + 1e-8)
+        
+        all_precisions.append(precision)
+        all_recalls.append(recall)
+        all_f1s.append(f1)
+    
+    return {
+        "precision": sum(all_precisions) / len(all_precisions),
+        "recall": sum(all_recalls) / len(all_recalls),
+        "f1": sum(all_f1s) / len(all_f1s)
+    }
+
+# Example usage
+results = evaluate_search_component(my_search_function, gold_standard.keys(), gold_standard)
+print(results)
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Key Takeaways</h2>
+
+<ul>
+<li>Component-level evals provide <strong>fast, targeted, and interpretable feedback</strong> for improving specific modules.  </li>
+<li>They help teams <strong>iterate efficiently</strong> without the overhead of full system testing.  </li>
+<li>Always confirm improvements with a <strong>final end-to-end eval</strong> before deployment.  </li>
+</ul>
+
+
+<h2 class="section-icon">🚀 Next Steps</h2>
+
+<p>In the next episode, we’ll explore <strong>how to improve individual components</strong> once you’ve identified performance gaps through component-level evals.</p>
+
+
+<strong>File:</strong> <code>module-4-episode-4-component-level-evals.md</code>
+    </article>
+
+</main>
+
+</body>
+</html>

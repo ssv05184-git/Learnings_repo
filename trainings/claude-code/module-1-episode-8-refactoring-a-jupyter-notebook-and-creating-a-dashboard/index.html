@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refactoring a Jupyter Notebook and Creating a Dashboard | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Refactoring a Jupyter Notebook and Creating a Dashboard</h1>
+    <p class="subtitle">Module 1 — Episode 8</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Refactoring a Jupyter Notebook and Creating a Dashboard</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 8</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Claude Code - A Highly Agentic Coding Assistant</p>
+<blockquote><strong>Course Level:</strong> Intermediate → Advanced</blockquote>
+
+
+<h2 class="section-icon">🎯 What You'll Learn</h2>
+
+<p>By the end of this episode, you will:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Use Claude Code to refactor a messy Jupyter notebook into modular Python files  </li>
+<li><span class="checkmark">✅</span> Separate business logic from presentation using Claude Code’s file editing tools  </li>
+<li><span class="checkmark">✅</span> Convert a refactored notebook into an interactive Streamlit dashboard  </li>
+<li><span class="checkmark">✅</span> Implement iteration cycles with Claude Code to debug and enhance dashboards  </li>
+</ul>
+
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+
+
+<h2 class="section-icon">🧭 Quick Overview</h2>
+
+<strong>The Big Picture:</strong>
+<p>This episode demonstrates how Claude Code can transform a disorganized Jupyter notebook into a clean, maintainable, and production-ready data dashboard. You’ll see how to refactor notebook logic into reusable Python modules and then evolve that into a Streamlit-based web interface.</p>
+
+<strong>What Problem Does This Solve?</strong>
+<ul>
+<li>Jupyter notebooks often mix business logic, data manipulation, and visualizations in one place  </li>
+<li>Hard-to-debug, repetitive code makes scaling or reusing logic difficult  </li>
+<li>Manual dashboard creation is time-consuming  </li>
+</ul>
+
+<strong>Where You'll Use This:</strong>
+<ul>
+<li>Data analysis pipelines  </li>
+<li>Business intelligence dashboards  </li>
+<li>Machine learning experiment visualization  </li>
+</ul>
+
+
+<h2 class="section-icon">🧱 Prerequisites & Background</h2>
+
+<strong>You should already know:</strong>
+<ul>
+<li>Python and Pandas basics  </li>
+<li>Jupyter Notebook usage  </li>
+<li>Fundamentals of Claude Code file operations (from previous episodes)  </li>
+</ul>
+
+<strong>If you're new to Claude Code:</strong>
+<p>→ Review <strong>Episode 3: Working with Files and Projects</strong> for foundational file manipulation.</p>
+
+
+<h2 class="section-icon">🔑 Core Concepts Explained</h2>
+
+<h3>Concept 1: Refactoring Notebooks with Claude Code</h3>
+<strong>Definition:</strong> Using Claude Code’s notebook reading and file editing tools to modularize and restructure Jupyter notebooks.
+<strong>Why It Matters:</strong> Promotes maintainability, testing, and scalability.
+<strong>When To Use:</strong> Anytime a notebook becomes cluttered with mixed logic and visualization code.
+
+<h3>Concept 2: Separation of Concerns</h3>
+<strong>Definition:</strong> Dividing code into distinct modules—data loading, metric calculation, and visualization.
+<strong>Why It Matters:</strong> Enables independent testing and improves readability.
+<strong>When To Use:</strong> When business logic and presentation layers are intertwined.
+
+<h3>Concept 3: Dashboard Conversion via Streamlit</h3>
+<strong>Definition:</strong> Transforming a refactored notebook into an interactive web dashboard using Streamlit.
+<strong>Why It Matters:</strong> Allows non-technical users to explore data without running notebooks.
+<strong>When To Use:</strong> When sharing insights or deploying visual analytics to teams.
+
+
+<h2 class="section-icon">⚙️ Technical Deep Dive</h2>
+
+<h3>How It Works: Step-by-Step</h3>
+
+<strong>Phase 1: Notebook Refactoring</strong>
+<p>1. Developer provides Claude with the original Jupyter notebook and refactoring requirements.</p>
+<p>2. Claude reads notebook cells using its <code>read_notebook</code> tool.</p>
+<p>3. It generates modular Python files:</p>
+<p>- <code>data_loader.py</code> for CSV ingestion</p>
+<p>- <code>metrics.py</code> for calculations</p>
+<p>- Updated notebook referencing these modules</p>
+
+<strong>Phase 2: Debugging & Validation</strong>
+<p>1. Developer runs the refactored notebook.</p>
+<p>2. Encounters a <code>KeyError</code> → sends error context to Claude.</p>
+<p>3. Claude identifies the issue and patches the code automatically.</p>
+
+<strong>Phase 3: Dashboard Conversion</strong>
+<p>1. Developer creates a prompt file <code>convert-to-dashboard.md</code> describing layout and KPIs.</p>
+<p>2. Claude generates <code>dashboard.py</code> using Streamlit and Plotly.</p>
+<p>3. Developer installs dependencies (<code>pip install -r requirements.txt</code>) and launches the dashboard via:</p>
+<pre><code class="language-bash">   streamlit run dashboard.py
+   </code></pre>
+
+<h3>Why This Design Works</h3>
+
+<strong>Underlying Principles:</strong>
+<ul>
+<li><strong>Modularity:</strong> Code is split into reusable components.  </li>
+<li><strong>Agentic Execution:</strong> Claude autonomously reads, edits, and organizes files.  </li>
+<li><strong>Iterative Refinement:</strong> Developer feedback drives quick, targeted improvements.</li>
+</ul>
+
+<strong>Guarantees & Invariants:</strong>
+<ul>
+<li>Refactored code remains executable and testable.  </li>
+<li>Dashboards reflect the same data logic as the original notebook.  </li>
+<li>Each iteration preserves prior improvements.</li>
+</ul>
+
+
+<h2><span class="checkmark">✅</span> When To Use This Feature</h2>
+
+<h3>Ideal Use Cases</h3>
+
+<span class="checkmark">✅</span> <strong>Perfect For:</strong>
+<ul>
+<li>Refactoring legacy notebooks  </li>
+<li>Building internal analytics tools  </li>
+<li>Automating dashboard creation  </li>
+</ul>
+
+<span class="checkmark">✅</span> <strong>Productivity Gains:</strong>
+<ul>
+<li>5–10x faster dashboard development  </li>
+<li>Reduced debugging time  </li>
+<li>Cleaner, reusable codebase  </li>
+</ul>
+
+<h3>Anti-Patterns: When NOT To Use</h3>
+
+<span class="crossmark">❌</span> <strong>Avoid When:</strong>
+<ul>
+<li>Notebook logic is trivial (no need for modularization)  </li>
+<li>You lack clear data separation requirements  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Common Mistakes:</strong>
+<ul>
+<li>Not specifying file structure in the prompt  </li>
+<li>Forgetting to describe desired layout in dashboard conversion  </li>
+<li>Overwriting existing files without version control  </li>
+</ul>
+
+
+<h2>🔧 Practical Implementation Guide</h2>
+
+<h3>Step 1: Setup & Configuration</h3>
+<pre><code class="language-bash"># Clone your project repo and open Claude Code
+cd ecommerce-analysis
+claude
+</code></pre>
+<strong>What This Does:</strong>
+<p>Launches Claude Code in your project directory for contextual file access.</p>
+
+<h3>Step 2: Refactor the Notebook</h3>
+<p>Create a file <code>refactor-notebook.md</code>:</p>
+
+<p>Refactor ecommerce_analysis.ipynb into:</p>
+<ul>
+<li>data_loader.py for reading CSVs</li>
+<li>metrics.py for calculations</li>
+<li>A cleaner notebook using these modules</li>
+</ul>
+<p>Add docstrings and improve visualizations.</p>
+<pre><code class="language-text">Then run:
+</code></pre>bash
+<p>claude "Refactor notebook using refactor-notebook.md"</p>
+
+
+<h3>Step 3: Convert to Dashboard</h3>
+<p>Create <code>convert-to-dashboard.md</code>:</p>
+
+<p>Convert refactored notebook into a Streamlit dashboard with:</p>
+<ul>
+<li>Header and filters</li>
+<li>KPI cards: revenue, growth, AOV, total orders</li>
+<li>Charts: revenue trends, category performance, satisfaction</li>
+</ul>
+<pre><code class="language-text">
+Run:
+</code></pre>bash
+<p>claude "Convert notebook to Streamlit dashboard using convert-to-dashboard.md"</p>
+<pre><code class="language-text">
+
+## 💡 Practical Tips &amp; Tricks
+
+### Pro Tip 1: Always Specify File Outputs
+**Technique:**  
+List desired filenames (`data_loader.py`, `metrics.py`, etc.) in your prompt.  
+**When to Use:**  
+When refactoring large notebooks or multi-step pipelines.  
+**Result:**  
+Claude generates a predictable, organized project structure.
+
+
+### Pro Tip 2: Debug by Context Injection
+**Technique:**  
+Copy the exact error trace (e.g., `KeyError`) into Claude’s prompt.  
+**When to Use:**  
+When runtime issues occur after refactoring.  
+**Result:**  
+Claude resolves issues faster with full context.
+
+
+### Pro Tip 3: Iterative Dashboard Refinement
+**Technique:**  
+Ask Claude to modify existing dashboard code rather than regenerate.  
+**When to Use:**  
+When tweaking filters, default years, or layout.  
+**Result:**  
+Preserves styling and logic while improving UX.
+
+
+## 🚀 Real-World Examples
+
+### Example 1: From Notebook to Modular Python
+
+**Context:**  
+An e-commerce analyst has a messy notebook with CSV merges and visualizations.
+
+**Claude Code Approach:**
+</code></pre>bash
+<p>claude "Refactor ecommerce_analysis.ipynb into separate modules for data loading and metrics"</p>
+<pre><code class="language-text">
+**Generated Files:**
+</code></pre>python
+<h1>data_loader.py</h1>
+<p>import pandas as pd</p>
+<p>def load_sales_data(path): ...</p>
+<pre><code class="language-text"></code></pre>python
+<h1>metrics.py</h1>
+<p>def calculate_revenue_growth(df_2022, df_2023): ...</p>
+<pre><code class="language-text">
+**Result:**  
+Cleaner structure, reusable components, and testable code.
+
+
+### Example 2: From Refactored Notebook to Streamlit Dashboard
+
+**Context:**  
+The same analyst wants a shareable dashboard.
+
+**Claude Code Approach:**
+</code></pre>bash
+<p>claude "Convert refactored notebook into Streamlit dashboard with revenue KPIs and filters"</p>
+<pre><code class="language-text">
+**Output:**  
+`dashboard.py` with Streamlit layout, Plotly charts, and CSS styling.
+
+**Result:**  
+Interactive dashboard with filters for year and month, ready for deployment.
+
+
+## 🤔 Common Questions &amp; Troubleshooting
+
+### Q: Why is Claude not showing the full prompt after pasting?
+**A:** Claude truncates long inputs for readability but still processes full content.
+
+### Q: How do I fix missing dependencies in the dashboard?
+**A:** Run:
+</code></pre>bash
+<p>pip install -r requirements.txt</p>
+<pre><code class="language-text">
+### Q: What if Streamlit charts show empty data?
+**A:** Verify the default year filter and ensure data exists for that range.
+
+
+## 📊 Performance &amp; Optimization
+
+### Context Window Management
+- **Context Cost:** Moderate (notebook + refactor plan)  
+- **Optimization Strategy:** Use prompt files (`.md`) instead of inline text.  
+- **When To Compact:** After major refactor steps.
+
+### Speed Optimization
+- **Typical Duration:** 1–3 minutes per refactor  
+- **Acceleration Techniques:** Limit file scope and use targeted prompts.
+
+### Cost Considerations
+- **Token Usage:** Medium (~5–10k tokens per refactor)  
+- **Ways to Reduce Costs:** Modularize refactors; reuse existing modules.
+
+
+## 🔗 Related Topics &amp; Next Steps
+
+**You Should Also Learn About:**
+- Episode 9: Building a Next.js App with MCP Integration  
+- Episode 5: Debugging and Fixing Code Automatically  
+
+**Previous Episodes to Review:**
+- Episode 6: Working with Multi-File Projects  
+- Episode 7: Advanced File Operations  
+
+
+## 📌 Key Takeaways
+
+1. **Refactor for clarity** – Claude excels at modularizing messy notebooks.  
+2. **Iterate interactively** – Use error feedback to refine code quickly.  
+3. **Leverage Streamlit** – Rapidly turn notebooks into shareable dashboards.  
+4. **Prompt precisely** – Detailed structure and layout instructions yield better results.
+
+
+## 🎓 Quick Reference
+
+### Command Cheat Sheet
+| Purpose | Command | When to Use |
+|----------|----------|-------------|
+| Refactor notebook | `claude "Refactor notebook using refactor-notebook.md"` | Clean up messy notebooks |
+| Convert to dashboard | `claude "Convert notebook to Streamlit dashboard"` | Build interactive dashboards |
+| Run dashboard | `streamlit run dashboard.py` | Launch web interface |
+
+### Keyboard Shortcuts
+- `Shift+Tab` – View Claude’s plan before execution  
+- `Ctrl+C` – Stop Claude’s current operation  
+- `Escape` – Cancel input or command  
+
+### Common Prompts
+</code></pre>
+<p>"Refactor ecommerce_analysis.ipynb into modular Python files for data loading and metrics calculation."</p>
+<p>"Convert refactored notebook into Streamlit dashboard with KPIs and filters."</p>
+<code>`</code>
+
+
+<h2>🔐 Security & Best Practices</h2>
+
+<strong>Privacy Considerations:</strong>
+<ul>
+<li>Keep sensitive data local; only share code structure with Claude.  </li>
+<li>Use <code>.gitignore</code> for CSVs or credentials.</li>
+</ul>
+
+<strong>Quality Assurance:</strong>
+<ul>
+<li>Validate outputs before deployment.  </li>
+<li>Use unit tests for <code>metrics.py</code> functions.</li>
+</ul>
+
+<strong>Team Collaboration:</strong>
+<ul>
+<li>Store <code>CLAUDE.md</code> with shared prompt patterns.  </li>
+<li>Document refactoring steps in project README.</li>
+</ul>
+
+
+<h2>📚 Extra Resources</h2>
+
+<strong>Official Documentation:</strong>
+<ul>
+<li><a href="https://docs.anthropic.com/claude-code">Claude Code Docs</a>  </li>
+<li><a href="https://docs.streamlit.io">Streamlit Documentation</a>  </li>
+</ul>
+
+<strong>Additional Learning:</strong>
+<ul>
+<li>Streamlit + Plotly integration guides  </li>
+<li>Blog: “From Notebook to Dashboard in Minutes with Claude Code”</li>
+</ul>
+
+
+<h2>⭐ Conclusion</h2>
+
+<strong>What You've Mastered:</strong>
+<ul>
+<li>Refactoring notebooks into clean, modular Python code  </li>
+<li>Debugging and iterating interactively with Claude Code  </li>
+<li>Building and refining Streamlit dashboards  </li>
+</ul>
+
+<strong>How This Fits Into Real Development:</strong>
+<p>This workflow bridges data exploration and production deployment—turning analytical notebooks into maintainable, shareable applications.</p>
+
+<strong>Your Next Challenge:</strong>
+<p>Use Claude Code to connect your dashboard to live APIs or databases.</p>
+
+<strong>Pro Tip for Long-Term Mastery:</strong>
+<p>Maintain a library of reusable prompt templates (<code>refactor.md</code>, <code>dashboard.md</code>) for future projects.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

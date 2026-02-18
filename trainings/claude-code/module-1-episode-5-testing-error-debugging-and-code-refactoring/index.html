@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing, Error Debugging and Code Refactoring | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Testing, Error Debugging and Code Refactoring</h1>
+    <p class="subtitle">Module 1 — Episode 5</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Testing, Error Debugging and Code Refactoring</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 5</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Claude Code - A Highly Agentic Coding Assistant</p>
+<blockquote><strong>Course Level:</strong> Intermediate → Advanced</blockquote>
+
+
+<h2 class="section-icon">🎯 What You'll Learn</h2>
+
+<p>By the end of this episode, you will:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Use Claude Code to <strong>write and run automated tests</strong> for complex AI systems  </li>
+<li><span class="checkmark">✅</span> Apply <strong>structured debugging workflows</strong> using test-driven prompts  </li>
+<li><span class="checkmark">✅</span> Perform <strong>multi-agent code refactoring</strong> with parallel planning and plan mode  </li>
+<li><span class="checkmark">✅</span> Build a <strong>robust, test-backed development foundation</strong> for RAG-based applications  </li>
+</ul>
+
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+
+
+<h2 class="section-icon">🧭 Quick Overview</h2>
+
+<strong>The Big Picture:</strong>
+<p>This episode demonstrates how Claude Code can serve as a full-stack debugging partner—writing tests, identifying errors, and refactoring code autonomously. You’ll see how to use plan mode, subagents, and iterative tool calls to stabilize and evolve a Retrieval-Augmented Generation (RAG) chatbot.</p>
+
+<strong>What Problem Does This Solve?</strong>
+<ul>
+<li>Developers often rely on trial-and-error debugging instead of reproducible tests  </li>
+<li>Complex RAG pipelines hide errors across multiple files and components  </li>
+<li>Manual refactoring introduces regressions without adequate test coverage  </li>
+</ul>
+
+<strong>Where You'll Use This:</strong>
+<ul>
+<li>Debugging production AI pipelines (e.g., RAG systems, LLM orchestration)  </li>
+<li>Refactoring backend logic for multi-tool workflows  </li>
+<li>Creating regression-safe environments for continuous Claude Code development  </li>
+</ul>
+
+
+<h2 class="section-icon">🧱 Prerequisites & Background</h2>
+
+<strong>You should already know:</strong>
+<ul>
+<li>How to navigate and edit files with Claude Code  </li>
+<li>How to use <strong>Plan Mode</strong> for reviewing Claude’s reasoning  </li>
+<li>Fundamentals of <strong>pytest</strong> and Python module testing  </li>
+</ul>
+
+<strong>If you're new to Claude Code:</strong>
+→ Start with <em>Episode 2: Understanding Agentic Workflows and Plan Mode</em>
+
+
+<h2 class="section-icon">🔑 Core Concepts Explained</h2>
+
+<h3>Concept 1: Test-Driven Debugging with Claude Code</h3>
+<strong>Definition:</strong>
+<p>A workflow where Claude automatically writes, runs, and interprets tests to localize and fix bugs.</p>
+
+<strong>Why It Matters:</strong>
+<p>It turns debugging into a reproducible, automated process instead of ad-hoc guesswork.</p>
+
+<strong>When To Use:</strong>
+<p>When errors appear across multiple files or when you need confidence before refactoring.</p>
+
+
+<h3>Concept 2: Plan Mode for Controlled Execution</h3>
+<strong>Definition:</strong>
+<p>A mode (activated via <code>Shift+Tab</code> twice) where Claude reveals its full plan before execution.</p>
+
+<strong>Why It Matters:</strong>
+<p>You can review and approve test-writing or refactoring strategies before changes occur.</p>
+
+<strong>When To Use:</strong>
+<p>For multi-file edits, test generation, or major backend refactors.</p>
+
+
+<h3>Concept 3: Multi-Agent Refactoring</h3>
+<strong>Definition:</strong>
+<p>A Claude Code feature where multiple subagents brainstorm parallel solutions before implementation.</p>
+
+<strong>Why It Matters:</strong>
+<p>It allows developers to compare multiple refactor strategies (e.g., iterative vs recursive) safely.</p>
+
+<strong>When To Use:</strong>
+<p>For uncertain or complex architectural changes where trade-offs exist.</p>
+
+
+<h2 class="section-icon">🖼 Architecture & Flow Diagrams</h2>
+
+<h3>System Overview</h3>
+<img src="../../../diagrams/images/claude-code/E5_system_overview.png" alt="Image" class="content-image">
+
+<strong>What This Shows:</strong>
+<p>Claude Code acts as a continuous agentic loop—reading files, generating tests, running them, identifying issues, and refactoring safely.</p>
+
+
+<h3>Debugging Workflow Sequence</h3>
+<img src="../../../diagrams/images/claude-code/E5_debug_flow.png" alt="Image" class="content-image">
+
+<strong>Key Takeaway:</strong>
+<p>Claude Code can autonomously complete the full test-debug-fix loop with human oversight.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Deep Dive</h2>
+
+<h3>Phase 1: Setup & Initialization</h3>
+<p>1. Open Claude Code in your project directory</p>
+<p>2. Enable <strong>Plan Mode</strong> (<code>Shift+Tab</code> twice)</p>
+<p>3. Prompt Claude:</p>
+<pre><code class="language-bash">   claude "Write pytest unit and integration tests for AIGenerator, rag_system.py, and search_tools.py"
+   </code></pre>
+<p>4. Approve the plan before execution</p>
+
+
+<h3>Phase 2: Execution & Processing</h3>
+<ul>
+<li>Claude reads target files and identifies dependencies  </li>
+<li>Mocks external services (e.g., ChromaDB)  </li>
+<li>Writes test scaffolds under <code>/tests</code>  </li>
+<li>Runs tests using:</li>
+</ul>
+<pre><code class="language-bash">  uv run pytest
+  </code></pre>
+<ul>
+<li>Detects failure in RAG pipeline (<code>MAX_RESULTS=0</code>)</li>
+</ul>
+
+
+<h3>Phase 3: Output & Integration</h3>
+<ul>
+<li>Claude proposes a fix (update <code>MAX_RESULTS</code> configuration)  </li>
+<li>Applies patch and re-runs tests  </li>
+<li>Reports passing results and summarizes changes  </li>
+<li>Optionally continues into refactoring phase for multi-tool support  </li>
+</ul>
+
+
+<h3>Why This Design Works</h3>
+
+<strong>Underlying Principles:</strong>
+<ul>
+<li><strong>Test-first debugging</strong> ensures reproducibility  </li>
+<li><strong>Plan Mode</strong> provides transparency and control  </li>
+<li><strong>Parallel subagents</strong> explore multiple refactor paths safely  </li>
+</ul>
+
+<strong>Guarantees & Invariants:</strong>
+<ul>
+<li>No code changes occur without developer approval  </li>
+<li>All fixes validated by automated tests  </li>
+<li>Backward compatibility preserved unless explicitly changed  </li>
+</ul>
+
+
+<h2><span class="checkmark">✅</span> When To Use This Feature</h2>
+
+<h3>Ideal Use Cases</h3>
+
+<span class="checkmark">✅</span> <strong>Perfect For:</strong>
+<ul>
+<li>Debugging RAG or LLM orchestration pipelines  </li>
+<li>Refactoring backend AI logic  </li>
+<li>Expanding test coverage with minimal manual effort  </li>
+</ul>
+
+<span class="checkmark">✅</span> <strong>Productivity Gains:</strong>
+<ul>
+<li>3–5× faster debugging cycles  </li>
+<li>Automated regression prevention  </li>
+<li>Reduced cognitive load on complex systems  </li>
+</ul>
+
+
+<h3>Anti-Patterns: When NOT To Use</h3>
+
+<span class="crossmark">❌</span> <strong>Avoid When:</strong>
+<ul>
+<li>Working on trivial scripts (manual debugging is faster)  </li>
+<li>You lack testable entry points (e.g., missing modular design)  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Common Mistakes:</strong>
+<ul>
+<li>Skipping Plan Mode → unexpected file edits  </li>
+<li>Ignoring test failures → false confidence  </li>
+<li>Forgetting dependency installation (<code>pytest</code>, <code>uv</code>, etc.)</li>
+</ul>
+
+
+<h2>🔧 Practical Implementation Guide</h2>
+
+<h3>Step 1: Install Dependencies</h3>
+<pre><code class="language-bash">uv pip install pytest
+</code></pre>
+
+<strong>What This Does:</strong>
+<p>Installs the testing framework used by Claude Code for automated debugging.</p>
+
+
+<h3>Step 2: Generate Tests</h3>
+<pre><code class="language-bash">claude "Write pytest tests for ai_generator.py, rag_system.py, and search_tools.py"
+</code></pre>
+
+<strong>Expected Output:</strong>
+<ul>
+<li><code>/tests/test_ai_generator.py</code></li>
+<li><code>/tests/test_rag_system.py</code></li>
+<li><code>/tests/test_search_tools.py</code></li>
+</ul>
+
+
+<h3>Step 3: Run Tests</h3>
+<pre><code class="language-bash">uv run pytest
+</code></pre>
+
+<strong>Expected Result:</strong>
+<pre><code class="language-text">FAILED test_rag_system.py::test_vector_search - AssertionError: MAX_RESULTS=0
+</code></pre>
+
+
+<h3>Step 4: Apply Fix</h3>
+<p>Claude identifies <code>MAX_RESULTS = 0</code> as root cause and updates configuration.</p>
+<p>Re-run tests → all pass <span class="checkmark">✅</span></p>
+
+
+<h3>Step 5: Refactor for Multi-Tool Support</h3>
+<pre><code class="language-bash">claude "Refactor ai_generator.py to support multiple tool calls per query"
+</code></pre>
+
+<p>Claude dispatches <strong>two subagents</strong>:</p>
+<ul>
+<li><strong>Option A:</strong> Iterative tool calling (simpler, safer)</li>
+<li><strong>Option B:</strong> Recursive multi-round logic (more flexible)</li>
+</ul>
+
+<p>Select and approve desired plan.</p>
+
+
+<h2>💡 Practical Tips & Tricks</h2>
+
+<h3>Pro Tip 1: Always Use Plan Mode for Multi-File Changes</h3>
+<strong>The Technique:</strong>
+<p>Enable Plan Mode before any large-scale test or refactor operation.</p>
+
+<strong>When to Use It:</strong>
+<p>Whenever Claude edits multiple files or proposes structural changes.</p>
+
+
+<h3>Pro Tip 2: Use Parallel Subagents for Design Exploration</h3>
+<strong>The Technique:</strong>
+<p>Ask Claude to “dispatch two subagents to brainstorm refactor options.”</p>
+
+<strong>When to Use It:</strong>
+<p>When you’re uncertain about the optimal architecture.</p>
+
+
+<h3>Pro Tip 3: Validate Behavior, Not Implementation</h3>
+<strong>The Technique:</strong>
+<p>Write tests for external behavior instead of internal states.</p>
+
+<strong>When to Use It:</strong>
+<p>During refactors to ensure backward compatibility.</p>
+
+
+<h2 class="section-icon">🚀 Real-World Examples</h2>
+
+<h3>Example 1: Debugging a RAG Chatbot</h3>
+
+<strong>Context:</strong>
+<p>Chatbot queries fail unexpectedly.</p>
+
+<strong>Challenge:</strong>
+<p>Identify root cause across multiple modules.</p>
+
+<strong>Claude Code Approach:</strong>
+<pre><code class="language-bash">claude "Write pytest tests for rag_system.py and ai_generator.py"
+uv run pytest
+</code></pre>
+
+<strong>Result:</strong>
+<p>Claude finds <code>MAX_RESULTS=0</code>, fixes it, re-runs tests, and restores chatbot function.</p>
+
+
+<h3>Example 2: Refactoring Tool Logic</h3>
+
+<strong>Context:</strong>
+<p>Backend only supports one tool call per query.</p>
+
+<strong>Challenge:</strong>
+<p>Enable multi-round reasoning.</p>
+
+<strong>Claude Code Approach:</strong>
+<pre><code class="language-bash">claude "Refactor ai_generator.py to support two tool calls per query"
+</code></pre>
+
+<strong>Result:</strong>
+<p>Claude generates iterative logic for multi-tool execution and verifies with tests.</p>
+
+
+<h2>🤔 Common Questions & Troubleshooting</h2>
+
+<h3>Q: Why are my tests failing after Claude’s fix?</h3>
+<strong>A:</strong> Check dependency versions and mocks. Run <code>uv pip install -r requirements.txt</code> to sync environments.
+
+<h3>Q: How do I stop Claude mid-execution?</h3>
+<strong>A:</strong> Press <code>Ctrl+C</code> or disable auto-accept to manually approve each step.
+
+<h3>Q: How can I see what Claude plans to change?</h3>
+<strong>A:</strong> Enable Plan Mode (<code>Shift+Tab</code> twice) before running the command.
+
+
+<h2>📊 Performance & Optimization</h2>
+
+<h3>Context Window Management</h3>
+<ul>
+<li><strong>Context Cost:</strong> Medium (reads multiple files + test output)</li>
+<li><strong>Optimization Strategy:</strong> Use file-specific prompts</li>
+<li><strong>When To Compact:</strong> After major refactor completion</li>
+</ul>
+
+<h3>Speed Optimization</h3>
+<ul>
+<li>Use <code>uv</code> for faster dependency installs  </li>
+<li>Limit test scope with <code>pytest -k "target_test"</code></li>
+</ul>
+
+<h3>Cost Considerations</h3>
+<ul>
+<li>Moderate token usage (multi-file read + test generation)  </li>
+<li>Reduce cost by summarizing logs before re-prompting  </li>
+</ul>
+
+
+<h2>🔗 Related Topics & Next Steps</h2>
+
+<strong>You Should Also Learn About:</strong>
+<ul>
+<li>Episode 6: <em>Parallel Sessions and Git Worktrees</em>  </li>
+<li>Episode 4: <em>Automating Feature Development with Claude Code</em>  </li>
+</ul>
+
+<strong>Previous Episodes to Review:</strong>
+<ul>
+<li>Episode 3: <em>Plan Mode and Controlled Execution</em>  </li>
+</ul>
+
+
+<h2>📌 Key Takeaways</h2>
+
+<p>1. <strong>Claude Code can autonomously test and debug</strong> — treat it like a continuous integration assistant.</p>
+<p>2. <strong>Plan Mode is your safety net</strong> — always review before execution.</p>
+<p>3. <strong>Parallel subagents expand creativity</strong> — compare multiple refactor paths.</p>
+<p>4. <strong>Test-driven workflows = long-term stability</strong> — every fix becomes a safeguard.</p>
+
+
+<h2>🎓 Quick Reference</h2>
+
+<h3>Command Cheat Sheet</h3>
+<table class="data-table">
+<thead><tr>
+<th>Purpose</th>
+<th>Command</th>
+<th>When to Use</th>
+</tr></thead><tbody>
+<tr>
+<td>Generate tests</td>
+<td><code>claude "Write pytest tests for <file>"</code></td>
+<td>When adding test coverage</td>
+</tr>
+<tr>
+<td>Run tests</td>
+<td><code>uv run pytest</code></td>
+<td>Validate code changes</td>
+</tr>
+<tr>
+<td>Enable plan mode</td>
+<td><code>Shift+Tab</code> (twice)</td>
+<td>Review Claude’s plan</td>
+</tr>
+<tr>
+<td>Dispatch subagents</td>
+<td><code>claude "Dispatch two subagents to brainstorm options"</code></td>
+<td>Multi-strategy refactors</td>
+</tr>
+</tbody></table>
+
+<h3>Keyboard Shortcuts</h3>
+<ul>
+<li><code>Shift+Tab</code> – Toggle Plan Mode  </li>
+<li><code>Ctrl+C</code> – Interrupt execution  </li>
+<li><code>Enter</code> – Approve next step  </li>
+</ul>
+
+<h3>Common Prompts</h3>
+<pre><code class="language-text">"Write pytest tests for ai_generator.py and identify potential failure points."
+"Refactor backend to support multiple tool calls per query."
+"Dispatch two subagents to propose refactor options."
+</code></pre>
+
+
+<h2>🔐 Security & Best Practices</h2>
+
+<strong>Privacy Considerations:</strong>
+<ul>
+<li>Only send non-sensitive code to Claude  </li>
+<li>Keep secrets (API keys, credentials) excluded from context  </li>
+</ul>
+
+<strong>Quality Assurance:</strong>
+<ul>
+<li>Always run tests locally before merging changes  </li>
+<li>Validate Claude’s output against existing CI pipelines  </li>
+</ul>
+
+<strong>Team Collaboration:</strong>
+<ul>
+<li>Store Claude-generated test plans in <code>CLAUDE.md</code>  </li>
+<li>Share refactor strategies via version control branches  </li>
+</ul>
+
+
+<h2>📚 Extra Resources</h2>
+
+<strong>Official Documentation:</strong>
+<ul>
+<li><a href="https://docs.anthropic.com">Claude Code Docs</a></li>
+<li><a href="https://docs.pytest.org">pytest Documentation</a></li>
+<li><a href="https://github.com/anthropic/mcp">MCP Server Integration Guide</a></li>
+</ul>
+
+<strong>Recommended Tools:</strong>
+<ul>
+<li><code>uv</code> for Python dependency management  </li>
+<li><code>pytest-cov</code> for coverage reports  </li>
+</ul>
+
+
+<h2>⭐ Conclusion</h2>
+
+<strong>What You've Mastered:</strong>
+<ul>
+<li>Test-driven debugging and refactoring with Claude Code  </li>
+<li>Safe, transparent plan-based execution  </li>
+<li>Multi-agent reasoning for complex backend improvements  </li>
+</ul>
+
+<strong>How This Fits Into Real Development:</strong>
+<p>You’ve learned to transform Claude from a reactive assistant into a proactive engineering partner capable of maintaining and evolving production systems.</p>
+
+<strong>Your Next Challenge:</strong>
+<p>Implement continuous testing and refactoring pipelines using Claude Code in your own project.</p>
+
+<strong>Pro Tip for Long-Term Mastery:</strong>
+<p>Treat every debugging session as an opportunity to expand your automated test suite — Claude will thank you later.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

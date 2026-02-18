@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is Claude Code | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>What is Claude Code</h1>
+    <p class="subtitle">Module 1 — Episode 2</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>What is Claude Code</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 2</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Claude Code - A Highly Agentic Coding Assistant</p>
+<blockquote><strong>Course Level:</strong> Beginner → Intermediate</blockquote>
+
+
+<h2 class="section-icon">🎯 What You'll Learn</h2>
+
+<p>By the end of this episode, you will:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Understand what Claude Code is and how it differs from a regular language model  </li>
+<li><span class="checkmark">✅</span> Learn how Claude Code uses <strong>tools</strong>, <strong>memory</strong>, and <strong>environment context</strong> to act agentically  </li>
+<li><span class="checkmark">✅</span> Explore how to use Claude Code for <strong>code exploration, visualization, and explanation</strong>  </li>
+<li><span class="checkmark">✅</span> Understand how <strong>MCP servers</strong> extend Claude Code’s capabilities  </li>
+</ul>
+
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+
+
+<h2 class="section-icon">🧭 Quick Overview</h2>
+
+<strong>The Big Picture:</strong>
+<p>Claude Code is not just a model—it’s an <em>agentic coding environment</em> that combines a large language model (LLM) with tools, memory, and an execution environment. This allows it to autonomously plan, navigate, and act within your codebase.</p>
+
+<strong>What Problem Does This Solve?</strong>
+<ul>
+<li>Traditional LLMs can’t <em>see</em> or <em>navigate</em> your codebase.  </li>
+<li>Developers waste time copy-pasting files or context into prompts.  </li>
+<li>Claude Code provides a lightweight harness that gives the model access to tools and memory—enabling true agentic behavior.</li>
+</ul>
+
+<strong>Where You'll Use This:</strong>
+<ul>
+<li>Rapidly understanding unfamiliar codebases  </li>
+<li>Debugging and refactoring large projects  </li>
+<li>Generating visualizations or assets directly from the terminal  </li>
+</ul>
+
+
+<h2 class="section-icon">🧱 Prerequisites & Background</h2>
+
+<strong>You should already know:</strong>
+<ul>
+<li>Basic command-line usage  </li>
+<li>Familiarity with VS Code or similar editors  </li>
+<li>General understanding of LLMs and prompt-driven workflows  </li>
+</ul>
+
+<strong>If you're new to Claude Code:</strong>
+<p>→ Start with [Episode 1: Introduction to Agentic Coding Workflows] for foundational setup and CLI basics.</p>
+
+
+<h2 class="section-icon">🔑 Core Concepts Explained</h2>
+
+<h3>Concept 1: The Agentic Harness</h3>
+<strong>Definition:</strong>
+<p>A lightweight runtime environment that wraps the Claude model, providing it with tools and a context in which it can plan and act.</p>
+
+<strong>Why It Matters:</strong>
+<p>Without this harness, the model can only respond to text—it cannot read files, execute commands, or remember prior actions.</p>
+
+<strong>When To Use:</strong>
+<p>Whenever you want Claude Code to perform multi-step operations like exploring a repo, editing files, or running shell commands.</p>
+
+
+<h3>Concept 2: Tool Use</h3>
+<strong>Definition:</strong>
+<p>The mechanism by which Claude Code performs real-world actions—reading files, editing code, searching patterns, or executing shell commands.</p>
+
+<strong>Why It Matters:</strong>
+<p>This transforms Claude from a passive assistant into an <em>active agent</em> capable of reasoning about and manipulating your environment.</p>
+
+<strong>When To Use:</strong>
+<p>When working with large codebases, automating repetitive edits, or when you need Claude to gather data autonomously.</p>
+
+
+<h3>Concept 3: Memory (CLAUDE.md)</h3>
+<strong>Definition:</strong>
+<p>A markdown file (<code>claude.md</code>) that stores persistent preferences, context, and configuration for Claude Code sessions.</p>
+
+<strong>Why It Matters:</strong>
+<p>It allows Claude to remember your coding style, project conventions, and conversation history—without sending your data externally.</p>
+
+<strong>When To Use:</strong>
+<p>For maintaining continuity across sessions, enforcing style guidelines, or defining reusable project-level context.</p>
+
+
+<h3>Concept 4: Model Context Protocol (MCP)</h3>
+<strong>Definition:</strong>
+<p>An open-source protocol that enables Claude Code to connect to external servers (e.g., GitHub, Playwright, Figma) for additional capabilities.</p>
+
+<strong>Why It Matters:</strong>
+<p>You can extend Claude Code’s native functionality—adding new tools for testing, deployment, or design integration.</p>
+
+<strong>When To Use:</strong>
+<p>When you need Claude Code to interact with third-party APIs or perform specialized tasks beyond built-in tools.</p>
+
+
+<h2 class="section-icon">🖼 Architecture & Flow Diagrams</h2>
+
+<h3>System Diagram</h3>
+<img src="../../../diagrams/images/claude-code/E2_system_architecture.png" alt="Image" class="content-image">
+
+
+<strong>What This Shows:</strong>
+<p>Claude Code acts as a bridge between the user, the model, and the local environment. The harness coordinates reasoning, tool invocation, and memory persistence.</p>
+
+
+<h3>Claude Code Capability</h3>
+<img src="../../../diagrams/images/claude-code/E2_Claude_possibility.png" alt="Image" class="content-image">
+
+<strong>What This Shows:</strong>
+<p>This image showcases what all can be done usign the claude-code setup.</p>
+
+
+
+<h3>Workflow Sequence</h3>
+<img src="../../../diagrams/images/claude-code/E2_tool_use_workflow_sequence.png" alt="Image" class="content-image">
+
+<strong>Key Takeaway:</strong>
+<p>Claude Code plans tasks, executes them via tools, and interacts with your environment—allowing seamless automation from prompt to output.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Deep Dive</h2>
+
+<h3>How It Works: Step-by-Step</h3>
+
+<strong>Phase 1: Setup & Initialization</strong>
+<p>1. Launch Claude Code in your terminal:</p>
+<pre><code class="language-bash">   claude
+   </code></pre>
+<p>2. Trust the workspace when prompted (first-time setup).</p>
+<p>3. Claude loads your <code>claude.md</code> memory file and initializes tool access.</p>
+
+<strong>Phase 2: Execution & Processing</strong>
+<p>1. You enter a natural-language task (e.g., “Make a cool visualization”).</p>
+<p>2. Claude Code formulates a plan and displays actionable steps.</p>
+<p>3. It uses built-in tools (read/edit/run) to perform operations.</p>
+
+<strong>Phase 3: Output & Integration</strong>
+<p>1. Changes appear visually in VS Code.</p>
+<p>2. You can preview, approve, or auto-accept future edits.</p>
+<p>3. Outputs can be opened, executed, or extended interactively.</p>
+
+
+<h3>Why This Design Works</h3>
+
+<strong>Underlying Principles:</strong>
+<ul>
+<li><strong>Agentic Autonomy:</strong> The model can plan and act, not just respond.  </li>
+<li><strong>Tool-Oriented Execution:</strong> Decouples reasoning from environment control.  </li>
+<li><strong>Local Privacy:</strong> Code never leaves your machine.  </li>
+</ul>
+
+<strong>Guarantees & Invariants:</strong>
+<ul>
+<li>Local data remains private.  </li>
+<li>Memory (<code>claude.md</code>) persists across sessions.  </li>
+<li>Tools are sandboxed to your environment.  </li>
+</ul>
+
+
+<h2><span class="checkmark">✅</span> When To Use This Feature</h2>
+
+<h3>Ideal Use Cases</h3>
+
+<span class="checkmark">✅</span> <strong>Perfect For:</strong>
+<ul>
+<li>Exploring unknown codebases  </li>
+<li>Refactoring or debugging complex projects  </li>
+<li>Generating visualizations or quick prototypes  </li>
+</ul>
+
+<span class="checkmark">✅</span> <strong>Productivity Gains:</strong>
+<ul>
+<li>3–5× faster context gathering  </li>
+<li>Reduced manual searching and file navigation  </li>
+<li>Consistent memory and style adherence  </li>
+</ul>
+
+<h3>Anti-Patterns: When NOT To Use</h3>
+
+<span class="crossmark">❌</span> <strong>Avoid When:</strong>
+<ul>
+<li>You need static, one-off code snippets (use chat instead)  </li>
+<li>Working in environments without local file access  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Common Mistakes:</strong>
+<ul>
+<li>Forgetting to load/update <code>claude.md</code>  </li>
+<li>Overloading context with irrelevant prior sessions  </li>
+</ul>
+
+
+<h2>🔧 Practical Implementation Guide</h2>
+
+<h3>Step 1: Launch Claude Code</h3>
+<pre><code class="language-bash">claude
+</code></pre>
+<strong>What This Does:</strong>
+<p>Starts the Claude Code CLI session and loads your local memory file.</p>
+
+<h3>Step 2: Run a Simple Task</h3>
+<pre><code class="language-bash">claude "Make a cool visualization for me"
+</code></pre>
+<strong>Expected Output:</strong>
+<pre><code class="language-text">Planning steps...
+1. Create visualization file
+2. Add particle animation
+3. Open in browser
+</code></pre>
+
+<h3>Step 3: Approve & Execute</h3>
+<p>Claude Code will show file diffs in VS Code. Approve them to apply changes and view results directly in your browser.</p>
+
+
+<h2>💡 Practical Tips & Tricks</h2>
+
+<h3>Pro Tip 1: Use Plan Mode for Transparency</h3>
+<strong>The Technique:</strong>
+<p>Press <code>Shift+Tab</code> twice to preview Claude’s full plan before execution.</p>
+
+<strong>When to Use It:</strong>
+<p>When running multi-step tasks or editing multiple files.</p>
+
+
+<h3>Pro Tip 2: Keep <code>claude.md</code> Organized</h3>
+<strong>The Technique:</strong>
+<p>Store project-specific guidelines, naming conventions, or test instructions.</p>
+
+<strong>When to Use It:</strong>
+<p>When working across multiple repos or team projects.</p>
+
+
+<h3>Pro Tip 3: Extend with MCP Servers</h3>
+<strong>The Technique:</strong>
+<p>Connect Claude Code to external tools (e.g., GitHub, Playwright) via MCP.</p>
+
+<strong>When to Use It:</strong>
+<p>When you need Claude to perform testing, CI/CD, or design integration tasks.</p>
+
+
+<h2 class="section-icon">🚀 Real-World Example</h2>
+
+<h3>Example: Generating a Visualization</h3>
+
+<strong>Context:</strong>
+<p>You want to quickly generate a particle-based visualization for a demo.</p>
+
+<strong>Claude Code Approach:</strong>
+<pre><code class="language-bash">claude "Make a cool visualization for me"
+</code></pre>
+
+<strong>Result:</strong>
+<p>Claude Code creates and opens an animated visualization file in your browser—no manual setup required.</p>
+
+<strong>Time Saved:</strong>
+<p>~10 minutes vs manual setup and coding.</p>
+
+
+<h2>🤔 Common Questions & Troubleshooting</h2>
+
+<h3>Q: Where is my Claude Code memory stored?</h3>
+<strong>A:</strong> In the local <code>claude.md</code> file within your project directory.
+
+<h3>Q: Does Claude Code index my entire codebase?</h3>
+<strong>A:</strong> No. It uses <em>agentic search</em> to find relevant files dynamically—avoiding full indexing for privacy and performance.
+
+<h3>Q: What if I want to reset context?</h3>
+<strong>A:</strong> Use the command palette or delete session history to start fresh.
+
+
+<h2>📊 Performance & Optimization</h2>
+
+<h3>Context Window Management</h3>
+<ul>
+<li><strong>Context Cost:</strong> Low—only relevant files are loaded.  </li>
+<li><strong>Optimization Strategy:</strong> Clear old history when switching projects.  </li>
+</ul>
+
+<h3>Speed Optimization</h3>
+<ul>
+<li><strong>Typical Duration:</strong> 2–10 seconds for small tasks.  </li>
+<li><strong>Acceleration Techniques:</strong> Use Opus for complex multi-file reasoning.  </li>
+</ul>
+
+<h3>Cost Considerations</h3>
+<ul>
+<li><strong>Token Usage:</strong> Minimal due to agentic search.  </li>
+<li><strong>Ways to Reduce Costs:</strong> Keep prompts focused and concise.  </li>
+</ul>
+
+
+<h2>🔗 Related Topics & Next Steps</h2>
+
+<strong>You Should Also Learn About:</strong>
+<ul>
+<li>[Episode 3: Exploring Codebases with Claude Code]  </li>
+<li>[Episode 4: Refactoring and Debugging Workflows]  </li>
+</ul>
+
+<strong>Previous Episodes to Review:</strong>
+<ul>
+<li>[Episode 1: Introduction to Agentic Coding Workflows]  </li>
+</ul>
+
+
+<h2>📌 Key Takeaways</h2>
+
+1. <strong>Claude Code = Model + Tools + Memory + Environment</strong>
+<p>2. <strong>Agentic workflows</strong> enable autonomous problem-solving.</p>
+<p>3. <strong>Tool use</strong> transforms Claude from assistant to developer partner.</p>
+<p>4. <strong>Memory files</strong> persist preferences and context locally.</p>
+<p>5. <strong>MCP integration</strong> extends Claude’s capabilities across ecosystems.</p>
+
+
+<h2>🎓 Quick Reference</h2>
+
+<h3>Command Cheat Sheet</h3>
+<table class="data-table">
+<thead><tr>
+<th>Purpose</th>
+<th>Command</th>
+<th>When to Use</th>
+</tr></thead><tbody>
+<tr>
+<td>Launch Claude Code</td>
+<td><code>claude</code></td>
+<td>Start a new session</td>
+</tr>
+<tr>
+<td>Run a task</td>
+<td><code>claude "your task"</code></td>
+<td>Execute any agentic command</td>
+</tr>
+<tr>
+<td>Reset context</td>
+<td><code>claude --clear</code></td>
+<td>Start fresh</td>
+</tr>
+<tr>
+<td>Enable plan mode</td>
+<td><code>Shift+Tab</code> (twice)</td>
+<td>Preview plan before execution</td>
+</tr>
+</tbody></table>
+
+<h3>Keyboard Shortcuts</h3>
+<ul>
+<li><code>Shift+Tab</code> – Toggle plan preview  </li>
+<li><code>Ctrl+C</code> – Cancel current operation  </li>
+<li><code>Escape</code> – Exit prompt input  </li>
+</ul>
+
+<h3>Claude code Tools</h3>
+<table class="data-table">
+<thead><tr>
+<th>Purpose</th>
+<th>Command</th>
+</tr></thead><tbody>
+<tr>
+<td><code>Bash</code></td>
+<td>Run a shell command</td>
+</tr>
+<tr>
+<td><code>Edit</code></td>
+<td>Edit a file</td>
+</tr>
+<tr>
+<td><code>Glob</code></td>
+<td>Find files based on a pattern</td>
+</tr>
+<tr>
+<td><code>Grep</code></td>
+<td>Search for patterns in file contents</td>
+</tr>
+<tr>
+<td><code>LS</code></td>
+<td>List files and directories</td>
+</tr>
+<tr>
+<td><code>MultiEdit</code></td>
+<td>make several edits at teh same time</td>
+</tr>
+<tr>
+<td><code>NotebookEdit</code></td>
+<td>Modify Jupyter notebook cells</td>
+</tr>
+<tr>
+<td><code>NotebookRead</code></td>
+<td>Read and display Jupyter notebook cells</td>
+</tr>
+<tr>
+<td><code>Read</code></td>
+<td>Read a file</td>
+</tr>
+<tr>
+<td><code>Task</code></td>
+<td>Runs a sub agent to hanfle complex multi-step tasks</td>
+</tr>
+<tr>
+<td><code>TodoWrite</code></td>
+<td>Creates and manages structured task lists</td>
+</tr>
+<tr>
+<td><code>WebFetch</code></td>
+<td>Fetch contents from URL</td>
+</tr>
+<tr>
+<td><code>WebSearch</code></td>
+<td>Search the web</td>
+</tr>
+<tr>
+<td><code>Write</code></td>
+<td>Create or overwrite files</td>
+</tr>
+</tbody></table>
+
+<h3>Common Prompts</h3>
+<pre><code class="language-text">"Explain what this function does"
+"Refactor this module for readability"
+"Generate a visualization from this dataset"
+</code></pre>
+
+
+<h2>🔐 Security & Best Practices</h2>
+
+<strong>Privacy Considerations:</strong>
+<ul>
+<li>All code and memory are stored locally.  </li>
+<li>No external indexing or code uploads.  </li>
+</ul>
+
+<strong>Quality Assurance:</strong>
+<ul>
+<li>Always review generated diffs before applying changes.  </li>
+<li>Use Plan Mode to verify intent.  </li>
+</ul>
+
+<strong>Team Collaboration:</strong>
+<ul>
+<li>Share <code>claude.md</code> across teams for consistent behavior.  </li>
+<li>Keep memory files version-controlled (if appropriate).  </li>
+</ul>
+
+
+<h2>📚 Extra Resources</h2>
+
+<strong>Official Documentation:</strong>
+<ul>
+<li><a href="https://docs.anthropic.com/claude-code">Claude Code CLI Docs</a></li>
+<li><a href="https://github.com/modelcontextprotocol">Model Context Protocol (MCP)</a></li>
+</ul>
+
+<strong>Additional Learning:</strong>
+<ul>
+<li>Community tutorials on GitHub  </li>
+<li>Blog posts on agentic development workflows  </li>
+</ul>
+
+
+<h2>⭐ Conclusion</h2>
+
+<strong>What You've Mastered:</strong>
+<ul>
+<li>The foundational architecture and purpose of Claude Code  </li>
+<li>How tools, memory, and environment enable agentic coding  </li>
+<li>How to execute and visualize tasks directly from the CLI  </li>
+</ul>
+
+<strong>How This Fits Into Real Development:</strong>
+<p>Claude Code bridges the gap between AI reasoning and developer environments—turning natural language into executable, context-aware action.</p>
+
+<strong>Your Next Challenge:</strong>
+<p>Use Claude Code to explore an unfamiliar repository and summarize its architecture.</p>
+
+<strong>Pro Tip for Long-Term Mastery:</strong>
+<p>Keep refining your <code>claude.md</code>—it’s the key to building a truly personalized coding assistant.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

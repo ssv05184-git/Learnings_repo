@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup & Code Base Understanding | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Setup & Code Base Understanding</h1>
+    <p class="subtitle">Module 1 — Episode 3</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Setup & Code Base Understanding</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 3</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Claude Code - A Highly Agentic Coding Assistant</p>
+<blockquote><strong>Course Level:</strong> Intermediate</blockquote>
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+
+
+<h2 class="section-icon">🎯 What You'll Learn</h2>
+
+<p>By the end of this episode, you will:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Use Claude Code to explore and understand unfamiliar codebases  </li>
+<li><span class="checkmark">✅</span> Initialize and configure project memory with <code>CLAUDE.md</code>  </li>
+<li><span class="checkmark">✅</span> Leverage built-in commands for IDE integration and context management  </li>
+<li><span class="checkmark">✅</span> Apply best practices for code comprehension, visualization, and version control  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Quick Overview</h2>
+
+<strong>The Big Picture:</strong>
+<p>This episode teaches how to use Claude Code as an intelligent partner for exploring, documenting, and understanding existing codebases. You’ll learn to initialize project memory, visualize system architecture, and set up your environment for efficient collaboration.</p>
+
+<strong>What Problem Does This Solve?</strong>
+<ul>
+<li>Developers waste time manually reading through large, unfamiliar projects.  </li>
+<li>Onboarding to new repositories is slow and error-prone.  </li>
+<li>Maintaining project memory and consistent setup across teams is difficult.  </li>
+</ul>
+
+<strong>Where You'll Use This:</strong>
+<ul>
+<li>When joining a new engineering team or project.  </li>
+<li>When auditing or debugging a large codebase.  </li>
+<li>When documenting architecture or preparing for feature development.  </li>
+</ul>
+
+
+<h2 class="section-icon">🧱 Prerequisites & Background</h2>
+
+<strong>You should already know:</strong>
+<ul>
+<li>Basic command-line and Git usage  </li>
+<li>How to open and navigate a project in VS Code  </li>
+<li>Fundamentals of Claude Code interaction (see Episode 2: <em>Introduction to Agentic Workflows</em>)  </li>
+</ul>
+
+<strong>If you're new to Claude Code:</strong>
+<p>→ Start with [Episode 1: Getting Started with Claude Code] before continuing.</p>
+
+
+<h2 class="section-icon">🔑 Core Concepts Explained</h2>
+
+<h3>Concept 1: Agentic Codebase Exploration  </h3>
+<strong>Definition:</strong> Claude Code’s ability to autonomously scan, summarize, and explain codebases.
+<strong>Why It Matters:</strong> Saves hours of manual navigation and helps developers understand unfamiliar systems quickly.
+<strong>When To Use:</strong> When onboarding, debugging, or preparing to extend an existing project.
+
+<h3>Concept 2: Project Memory with <code>CLAUDE.md</code>  </h3>
+<strong>Definition:</strong> A persistent configuration file that stores project-specific instructions, dependencies, and context.
+<strong>Why It Matters:</strong> Enables Claude Code to remember how to operate within a project, ensuring consistent behavior across sessions.
+<strong>When To Use:</strong> During initial setup or when defining project conventions and environment details.
+
+<h3>Concept 3: IDE & Context Integration  </h3>
+<strong>Definition:</strong> Linking Claude Code to your development environment (e.g., VS Code) for file-aware assistance.
+<strong>Why It Matters:</strong> Provides Claude with precise context of your current file, improving response accuracy.
+<strong>When To Use:</strong> Whenever you need Claude to reason about specific code sections or files.
+
+
+<h2 class="section-icon">⚙️ Technical Deep Dive</h2>
+
+<h3>How It Works: Step-by-Step</h3>
+
+<strong>Phase 1: Setup & Initialization</strong>
+<p>1. Launch Claude Code in terminal:</p>
+<pre><code class="language-bash">   claude
+   </code></pre>
+<p>2. Ask a high-level question:</p>
+<pre><code class="language-bash">   claude "Give me an overview of this codebase"
+   </code></pre>
+<p>3. Claude Code scans and summarizes architecture, components, and dependencies.</p>
+
+<strong>Phase 2: Memory Initialization</strong>
+<p>1. Run <code>/init</code> to generate a <code>CLAUDE.md</code> file:</p>
+<pre><code class="language-bash">   /init
+   </code></pre>
+<p>2. Review generated sections:</p>
+<p>- Project overview</p>
+<p>- Key technologies</p>
+<p>- Architecture diagram</p>
+<p>- Core components</p>
+<p>3. Customize or add project-specific instructions.</p>
+
+<strong>Phase 3: IDE Integration</strong>
+<p>1. Connect IDE context:</p>
+<pre><code class="language-bash">   /ide
+   </code></pre>
+<p>2. Claude recognizes your active file for contextual assistance.</p>
+<p>3. Add persistent memory entries using:</p>
+<pre><code class="language-bash">   # always use UV to run the server
+   </code></pre>
+
+
+<h2><span class="checkmark">✅</span> When To Use This Feature</h2>
+
+<h3>Ideal Use Cases</h3>
+
+<span class="checkmark">✅</span> <strong>Perfect For:</strong>
+<ul>
+<li>Onboarding to new repositories  </li>
+<li>Understanding legacy systems  </li>
+<li>Documenting architecture for handoff  </li>
+<li>Preparing for RAG or LLM-integrated apps  </li>
+</ul>
+
+<span class="checkmark">✅</span> <strong>Productivity Gains:</strong>
+<ul>
+<li>5–10x faster codebase comprehension  </li>
+<li>Reduced onboarding friction  </li>
+<li>Automatic architecture documentation  </li>
+</ul>
+
+<h3>Anti-Patterns: When NOT To Use</h3>
+
+<span class="crossmark">❌</span> <strong>Avoid When:</strong>
+<ul>
+<li>Codebase is extremely small or trivial  </li>
+<li>You already have complete system knowledge  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Common Mistakes:</strong>
+<ul>
+<li>Forgetting to commit <code>CLAUDE.md</code> to version control  </li>
+<li>Overwriting local memory unintentionally  </li>
+<li>Ignoring context setup before asking deep technical questions  </li>
+</ul>
+
+
+<h2>🔧 Practical Implementation Guide</h2>
+
+<h3>Step 1: Explore the Codebase</h3>
+<pre><code class="language-bash">claude "Explain the architecture of this project"
+</code></pre>
+<strong>What This Does:</strong>
+<p>Claude Code performs an agentic search and summarizes the system’s key modules.</p>
+
+<h3>Step 2: Initialize Project Memory</h3>
+<pre><code class="language-bash">/init
+</code></pre>
+<strong>Expected Output:</strong>
+<pre><code class="language-text">CLAUDE.md created with:
+- Project overview
+- Key technologies
+- Architectural diagram
+</code></pre>
+
+<h3>Step 3: Connect IDE Context</h3>
+<pre><code class="language-bash">/ide
+</code></pre>
+<strong>Purpose:</strong>
+<p>Links Claude Code to your VS Code instance for file-aware assistance.</p>
+
+<h3>Step 4: Add Custom Memory</h3>
+<pre><code class="language-bash"># always use UV to manage dependencies
+</code></pre>
+<strong>What This Does:</strong>
+<p>Adds a persistent project instruction to <code>CLAUDE.md</code>.</p>
+
+
+<h2>💡 Practical Tips & Tricks</h2>
+
+<h3>Pro Tip 1: Use <code>/compact</code> to Manage Context</h3>
+<strong>Technique:</strong>
+<p>Run <code>/compact</code> to summarize and clear conversation history.</p>
+<strong>When to Use:</strong>
+<p>Before switching tasks or after long sessions.</p>
+<strong>Expected Result:</strong>
+<p>Smaller context window, faster responses.</p>
+
+
+<h3>Pro Tip 2: Visualize Architecture Automatically</h3>
+<strong>Technique:</strong>
+<p>Ask Claude Code to “Draw a diagram of the data flow from frontend to backend.”</p>
+<strong>When to Use:</strong>
+<p>When exploring complex systems.</p>
+<strong>Expected Result:</strong>
+<p>Auto-generated ASCII or Mermaid diagrams.</p>
+
+
+<h3>Pro Tip 3: Use Git Integration for Smart Commits</h3>
+<strong>Technique:</strong>
+<p>Let Claude Code generate descriptive commit messages.</p>
+<strong>Command Example:</strong>
+<pre><code class="language-bash">claude "Add and commit recent changes"
+</code></pre>
+<strong>Expected Result:</strong>
+<p>Automated, context-aware Git commits with meaningful summaries.</p>
+
+
+<h2 class="section-icon">🚀 Real-World Example</h2>
+
+<h3>Example: Understanding a RAG Chatbot Codebase</h3>
+
+<strong>Context:</strong>
+<p>A developer inherits a RAG-based chatbot application.</p>
+
+<strong>The Challenge:</strong>
+<p>Understand the flow from user query → retrieval → LLM response.</p>
+
+<strong>Claude Code Approach:</strong>
+<pre><code class="language-bash">claude "Trace the process of handling a user's query from frontend to backend"
+</code></pre>
+
+<strong>Generated Diagram (Simplified):</strong>
+<pre><code class="language-text">User → Frontend → API Endpoint → RAG Pipeline → Vector DB (ChromaDB)
+→ Response Generator → Frontend UI
+</code></pre>
+
+<strong>Result:</strong>
+<p>Claude Code produces a step-by-step explanation and diagram, reducing hours of manual tracing to minutes.</p>
+
+
+<h2>🤔 Common Questions & Troubleshooting</h2>
+
+<h3>Q: What’s the difference between <code>CLAUDE.md</code>, <code>CLAUDE.local.md</code>, and global <code>.claude/CLAUDE.md</code>?</h3>
+<strong>A:</strong>
+<ul>
+<li><strong><code>CLAUDE.md</code></strong>: Project-level, shared with team via Git.  </li>
+<li><strong><code>CLAUDE.local.md</code></strong>: Developer-specific, gitignored.  </li>
+<li><strong>Global <code>.claude/CLAUDE.md</code></strong>: Applies to all projects on your machine.</li>
+</ul>
+
+<h3>Q: How do I stop a running process?</h3>
+<strong>A:</strong> Press <code>Escape</code> to interrupt any ongoing operation.
+
+<h3>Q: How can I reset Claude’s memory?</h3>
+<strong>A:</strong> Use <code>/clear</code> to remove all context or <code>/compact</code> to retain a summary.
+
+
+<h2>📊 Performance & Optimization</h2>
+
+<h3>Context Window Management</h3>
+<ul>
+<li><strong>Context Cost:</strong> Moderate during large codebase analysis.  </li>
+<li><strong>Optimization:</strong> Use <code>/compact</code> regularly.  </li>
+<li><strong>When To Compact:</strong> After major exploration sessions.</li>
+</ul>
+
+<h3>Speed Optimization</h3>
+<ul>
+<li><strong>Typical Duration:</strong> 5–15 seconds for medium repositories.  </li>
+<li><strong>Acceleration:</strong> Limit scope with specific queries.</li>
+</ul>
+
+<h3>Cost Considerations</h3>
+<ul>
+<li><strong>Token Usage:</strong> Scales with repository size.  </li>
+<li><strong>Cost Reduction:</strong> Use targeted prompts and summaries.</li>
+</ul>
+
+
+<h2>🔗 Related Topics & Next Steps</h2>
+
+<strong>You Should Also Learn About:</strong>
+<ul>
+<li>Memory persistence and advanced <code>/init</code> usage  </li>
+<li>Feature building workflows (Episode 4)  </li>
+<li>Context compaction strategies  </li>
+</ul>
+
+<strong>Previous Episodes to Review:</strong>
+<ul>
+<li>Episode 2: <em>Introduction to Agentic Workflows</em>  </li>
+</ul>
+
+<strong>Next Episodes to Master:</strong>
+<ul>
+<li>Episode 4: <em>Building Features with Claude Code</em>  </li>
+</ul>
+
+
+<h2>📌 Key Takeaways</h2>
+
+<p>1. <strong>Claude Code can agentically explore codebases</strong> — use it instead of manual file browsing.</p>
+<p>2. <strong>Initialize project memory early</strong> with <code>/init</code> to persist context.</p>
+<p>3. <strong>Use <code>CLAUDE.md</code> hierarchy wisely</strong> for team vs personal configs.</p>
+<p>4. <strong>Integrate with your IDE</strong> for file-aware assistance.</p>
+<p>5. <strong>Leverage built-in commands</strong> (<code>/help</code>, <code>/clear</code>, <code>/compact</code>, <code>/ide</code>) to stay efficient.</p>
+
+
+<h2>🎓 Quick Reference</h2>
+
+<h3>Command Cheat Sheet</h3>
+<table class="data-table">
+<thead><tr>
+<th>Purpose</th>
+<th>Command</th>
+<th>When to Use</th>
+</tr></thead><tbody>
+<tr>
+<td>Explore codebase</td>
+<td><code>claude "Explain this codebase"</code></td>
+<td>Initial exploration</td>
+</tr>
+<tr>
+<td>Initialize memory</td>
+<td><code>/init</code></td>
+<td>First setup in new project</td>
+</tr>
+<tr>
+<td>Connect IDE</td>
+<td><code>/ide</code></td>
+<td>Enable file-aware context</td>
+</tr>
+<tr>
+<td>Clear context</td>
+<td><code>/clear</code></td>
+<td>Start fresh</td>
+</tr>
+<tr>
+<td>Compact context</td>
+<td><code>/compact</code></td>
+<td>Summarize and reset</td>
+</tr>
+<tr>
+<td>View help</td>
+<td><code>/help</code></td>
+<td>Discover all commands</td>
+</tr>
+</tbody></table>
+
+<h3>Keyboard Shortcuts</h3>
+<ul>
+<li><code>Escape</code> – Interrupt current operation  </li>
+<li><code>Shift+Tab</code> – View Claude’s plan before execution  </li>
+<li><code>Ctrl+C</code> – Stop terminal process  </li>
+</ul>
+
+<h3>Common Prompts</h3>
+<pre><code class="language-text">"Trace the flow of user input through the backend"
+"Draw a diagram of the system architecture"
+"Explain how dependencies are managed"
+</code></pre>
+
+
+<h2>🔐 Security & Best Practices</h2>
+
+<strong>Privacy Considerations:</strong>
+<ul>
+<li>Only analyzed code is sent to Claude; local data stays secure.  </li>
+<li>Use <code>CLAUDE.local.md</code> for personal configurations.  </li>
+</ul>
+
+<strong>Quality Assurance:</strong>
+<ul>
+<li>Validate generated summaries.  </li>
+<li>Keep <code>CLAUDE.md</code> version-controlled.  </li>
+</ul>
+
+<strong>Team Collaboration:</strong>
+<ul>
+<li>Share <code>CLAUDE.md</code> for consistent context.  </li>
+<li>Use nested files for specialized subsystems (e.g., <code>/backend/CLAUDE.md</code>).  </li>
+</ul>
+
+
+<h2>📚 Extra Resources</h2>
+
+<strong>Official Documentation:</strong>
+<ul>
+<li><a href="https://docs.anthropic.com/claude-code">Claude Code Docs</a>  </li>
+<li><a href="https://docs.anthropic.com/mcp">MCP Server Reference</a>  </li>
+</ul>
+
+<strong>Additional Learning:</strong>
+<ul>
+<li>DeepLearning.AI: <em>Build Rich-Context AI Apps with Anthropic</em>  </li>
+<li>Anthropic Blog: <em>Agentic Workflows in Practice</em>  </li>
+</ul>
+
+
+<h2>⭐ Conclusion</h2>
+
+<strong>What You've Mastered:</strong>
+<ul>
+<li>Setting up Claude Code for codebase exploration  </li>
+<li>Creating and managing project memory (<code>CLAUDE.md</code>)  </li>
+<li>Integrating with VS Code and Git  </li>
+<li>Using Claude Code as your intelligent engineering partner  </li>
+</ul>
+
+<strong>How This Fits Into Real Development:</strong>
+<p>These skills form the foundation for advanced agentic workflows—enabling you to build, refactor, and document applications with Claude Code as a true collaborator.</p>
+
+<strong>Your Next Challenge:</strong>
+<p>Use Claude Code to document your own project’s architecture and generate a custom <code>CLAUDE.md</code>.</p>
+
+<strong>Pro Tip for Long-Term Mastery:</strong>
+<p>Continuously refine your <code>CLAUDE.md</code> files—treat them as living documentation that evolves with your codebase.</p>
+
+    </article>
+
+</main>
+
+</body>
+</html>

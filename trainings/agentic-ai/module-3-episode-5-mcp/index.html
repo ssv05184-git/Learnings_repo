@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP (Model Context Protocol) | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>MCP (Model Context Protocol)</h1>
+    <p class="subtitle">Module 3 — Episode 5</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>MCP (Model Context Protocol)</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 3 — Episode 5</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Explain what the Model Context Protocol (MCP) is and why it exists  </li>
+<li><span class="checkmark">✅</span> Understand how MCP standardizes LLM access to external tools and data sources  </li>
+<li><span class="checkmark">✅</span> Implement or integrate an MCP client or server in your own applications  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode introduces the <strong>Model Context Protocol (MCP)</strong> — a standard originally proposed by Anthropic and now adopted widely across the AI ecosystem. MCP enables Large Language Models (LLMs) to access external data and tools in a consistent, standardized way.</p>
+<p>By learning MCP, developers can connect their AI applications to services like GitHub, Slack, or Google Drive without building custom integrations for each. This dramatically reduces redundant effort across the developer community.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Fundamentals of <strong>tool use</strong> in agentic AI systems  </li>
+<li>How <strong>LLMs</strong> call external APIs or functions  </li>
+<li>Basic knowledge of <strong>client-server architectures</strong></li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>MCP (Model Context Protocol)</strong> – A standard interface for connecting LLM-based applications to external data sources and tools.  </li>
+<li><strong>Client</strong> – The application (often an LLM-based system) that requests access to data or functionality.  </li>
+<li><strong>Server</strong> – The service providing access to data or performing actions (e.g., a GitHub MCP server).  </li>
+<li><strong>Resources</strong> – Data-fetching endpoints exposed via MCP (e.g., fetching files, listing pull requests).  </li>
+<li><strong>Tools</strong> – Functional endpoints exposed via MCP that perform actions or computations.</li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_3/E5_mcp.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This architecture diagram shows how MCP reduces integration complexity from M × N (each app with each tool) to M + N (each app and tool integrating once with the protocol).</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+<p>1. <strong>MCP Clients</strong> send standardized requests to MCP servers.</p>
+<p>2. <strong>MCP Servers</strong> wrap external APIs (e.g., GitHub, Slack) and expose them through the MCP interface.</p>
+<p>3. The <strong>LLM</strong> or application uses these standardized calls to fetch data or perform actions.</p>
+<p>4. Responses from the MCP server are fed back into the <strong>LLM’s context</strong>, enabling the model to reason about and summarize the fetched information.</p>
+
+<strong>Example Workflow:</strong>
+<ul>
+<li>The LLM (client) requests: <em>“Summarize the README.md from this GitHub repo.”</em>  </li>
+<li>The MCP client sends a request to the <strong>GitHub MCP server</strong> to fetch the file.  </li>
+<li>The server responds with the file contents.  </li>
+<li>The client feeds this data into the LLM’s context.  </li>
+<li>The LLM generates a summary.</li>
+</ul>
+
+<h3>Why It Works</h3>
+
+<p>MCP introduces a <strong>common language</strong> between AI models and external systems.</p>
+<p>Instead of each developer writing custom wrappers for every API, MCP defines a <strong>shared protocol</strong> that both clients and servers can implement once.</p>
+<p>This standardization:</p>
+<ul>
+<li>Reduces duplicated effort  </li>
+<li>Improves interoperability  </li>
+<li>Simplifies tool discovery and integration  </li>
+</ul>
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+<ul>
+<li>Building AI applications that need access to multiple external data sources  </li>
+<li>Developing tools or APIs you want to make easily accessible to LLMs  </li>
+<li>Creating modular, pluggable AI systems  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid / Misuse</strong>
+<ul>
+<li>When a system only needs a single, tightly controlled API  </li>
+<li>For highly specialized integrations that don’t benefit from a shared standard  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Complexity:</strong> Requires understanding the MCP specification and implementing both client and server sides properly.  </li>
+<li><strong>Performance:</strong> Adds an intermediate layer between the LLM and the underlying APIs.  </li>
+<li><strong>Ecosystem Maturity:</strong> While rapidly growing, MCP is still evolving, and tooling may vary in stability.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Latency:</strong> Each MCP request introduces network overhead.  </li>
+<li><strong>Caching:</strong> Implement caching where possible to reduce repeated data fetches.  </li>
+<li><strong>Scalability:</strong> Servers should handle concurrent requests efficiently, especially for popular resources like GitHub or Slack.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example (Conceptual)</h3>
+
+<pre><code class="language-python"># Example: Using an MCP client to fetch data from a GitHub MCP server
+
+from mcp_client import MCPClient
+
+# Initialize the MCP client and connect to the GitHub MCP server
+client = MCPClient(server_url="https://mcp.github.com")
+
+# Example request: Fetch a README.md file from a repository
+response = client.request(
+    resource="file",
+    params={"repo": "ai-suite", "path": "README.md"}
+)
+
+# Feed the response into your LLM for summarization
+summary = llm.summarize(response.content)
+
+print(summary)
+</code></pre>
+
+
+<h2 class="section-icon">🚀 Key Takeaways</h2>
+
+<ul>
+<li>MCP standardizes how LLMs interact with external tools and data.  </li>
+<li>It transforms integration complexity from <em>M × N</em> to <em>M + N</em>, saving massive developer effort.  </li>
+<li>You can build both <strong>MCP clients</strong> (applications consuming tools) and <strong>MCP servers</strong> (services exposing tools).  </li>
+<li>The MCP ecosystem is expanding rapidly — learning it will position you well for building next-generation agentic applications.</li>
+</ul>
+
+
+<h2>📚 Further Learning</h2>
+
+<ul>
+<li><a href="https://www.deeplearning.ai">DeepLearning.AI — Model Context Protocol Course</a> (for in-depth MCP implementation details)  </li>
+<li>Official MCP documentation and community repositories  </li>
+</ul>
+
+
+> 🧩 <strong>Next Module Preview:</strong>
+<p>> The next module focuses on <strong>Evaluations and Error Analysis</strong> — a critical skill for systematically improving agentic workflows and ensuring reliable AI system performance.</p>
+
+    </article>
+
+</main>
+
+</body>
+</html>

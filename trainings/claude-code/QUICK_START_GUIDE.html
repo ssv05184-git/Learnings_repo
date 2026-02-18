@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code - Quick Start Guide for Beginners | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Claude Code - Quick Start Guide for Beginners</h1>
+    <p class="subtitle">A practical hands-on guide to get productive with Claude Code in 30 minutes</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../index.html">Home</a>
+        <span>›</span>
+        <a href="./index.html">Training</a>
+        <span>›</span>
+        <span>Claude Code - Quick Start Guide for Beginners</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+> <strong>A practical hands-on guide to get productive with Claude Code in 30 minutes</strong>
+
+
+<h2>Installation (5 minutes)</h2>
+
+<h3>Prerequisites</h3>
+<ul>
+<li><strong>Node.js 18+</strong>: <a href="https://nodejs.org/en/download/">Download here</a></li>
+<li><strong>VS Code or Terminal</strong>: Any IDE/terminal where you can run commands</li>
+<li><strong>Anthropic API Key</strong>: Get it from <a href="https://console.anthropic.com/">Anthropic Console</a></li>
+</ul>
+
+<h3>Installation Steps</h3>
+
+<pre><code class="language-bash"># Install Claude Code globally
+npm install -g @anthropic-ai/claude-code
+
+# Verify installation
+claude --version
+</code></pre>
+
+<h3>For Windows Users</h3>
+<ul>
+<li><strong>Option 1 (Recommended)</strong>: Use Git Bash (requires <a href="https://git-scm.com/downloads">Git for Windows</a>)</li>
+<li><strong>Option 2</strong>: Use WSL (Windows Subsystem for Linux)</li>
+</ul>
+
+
+<h2>Your First 5-Minute Example</h2>
+
+<h3>Step 1: Create a Test Project</h3>
+<pre><code class="language-bash"># Create a project folder
+mkdir my-claude-project
+cd my-claude-project
+
+# Initialize git (Claude Code works best with git)
+git init
+git config user.name "Your Name"
+git config user.email "your@email.com"
+
+# Create a simple Python file to work with
+cat &gt; hello.py &lt;&lt; 'EOF'
+def greet(name):
+    print(f"Hello, {name}!")
+
+if __name__ == "__main__":
+    greet("World")
+EOF
+
+# Commit it
+git add hello.py
+git commit -m "Initial commit"
+</code></pre>
+
+<h3>Step 2: Launch Claude Code</h3>
+<pre><code class="language-bash">claude
+</code></pre>
+
+<p>You should see:</p>
+<pre><code class="language-text">Claude Code v1.x.x
+Ready for commands!
+</code></pre>
+
+<h3>Step 3: Ask Claude to Enhance Your Code</h3>
+<pre><code class="language-bash"># Inside Claude Code terminal, type:
+Add type hints to @hello.py and create a function to add numbers
+</code></pre>
+
+<strong>What happens:</strong>
+<ul>
+<li>Claude analyzes your file</li>
+<li>Proposes changes</li>
+<li>Asks for approval</li>
+<li>Makes the changes</li>
+<li>You'll see the updated file in your editor</li>
+</ul>
+
+<h3>Step 4: Review and Commit</h3>
+<pre><code class="language-bash"># In Claude Code:
+# Press 'Y' to approve changes shown in the approval prompt
+
+# Then exit and commit:
+exit
+
+# Back in regular terminal:
+git add hello.py
+git commit -m "Add type hints and calculator function"
+</code></pre>
+
+<strong>That's it!</strong> You've successfully used Claude Code. 🎉
+
+
+<h2>Core Concepts Explained Simply</h2>
+
+<h3>1. <strong>Plan Mode</strong> (Safety First)</h3>
+<pre><code class="language-text">Press: Shift + Tab (twice)
+</code></pre>
+<strong>What it does:</strong> Shows you Claude's plan BEFORE making changes
+<ul>
+<li>Review what Claude will do</li>
+<li>Approve or reject the plan</li>
+<li>Safe for important projects</li>
+</ul>
+
+<h3>2. <strong>File References</strong> (@syntax)</h3>
+<pre><code class="language-bash"># Reference files in your prompts to give Claude context
+claude "Fix the bug in @src/utils/helpers.py and also check @src/main.py"
+</code></pre>
+<strong>Why:</strong> Prevents Claude from modifying wrong files
+
+<h3>3. <strong>Memory File</strong> (CLAUDE.md)</h3>
+<p>Every project can have a <code>CLAUDE.md</code> file that Claude automatically reads:</p>
+<pre><code class="language-bash"># Generate one
+/init
+
+# Or create manually with project preferences:
+# My Project Notes:
+# - Use Python 3.11+
+# - Always write tests alongside code
+# - Never run the server automatically
+# - Use 2-space indentation
+</code></pre>
+
+<h3>4. <strong>Context Commands</strong></h3>
+<pre><code class="language-bash">/clear      # Clear conversation history (start fresh)
+/compact    # Summarize what we've talked about
+/cost       # Check API usage and costs
+/mcp        # Manage MCP server connections
+</code></pre>
+
+
+<h2>Practical Workflow Examples</h2>
+
+<h3>Example 1: Simple Feature Addition</h3>
+
+<pre><code class="language-bash">claude
+# In Claude Code terminal:
+
+Add a function called calculate_tax that takes a price (float) and returns the tax (5%)
+</code></pre>
+
+<strong>Claude will:</strong>
+<p>1. Ask "Should I add this to hello.py?"</p>
+<p>2. Write the function</p>
+<p>3. Add tests (if you asked)</p>
+<p>4. Show you the changes</p>
+
+
+<h3>Example 2: Debug an Issue</h3>
+
+<pre><code class="language-bash">claude
+
+# Paste error or describe issue:
+The function is returning 'undefined' - please debug and fix @src/calculator.py
+
+# Or paste actual error:
+TypeError: 'NoneType' object is not iterable at line 42
+</code></pre>
+
+<strong>Claude will:</strong>
+<p>1. Read your file</p>
+<p>2. Identify the issue</p>
+<p>3. Write tests to reproduce it</p>
+<p>4. Fix it</p>
+<p>5. Verify tests pass</p>
+
+
+<h3>Example 3: Refactor Code with Plan Review</h3>
+
+<pre><code class="language-bash"># Press Shift+Tab twice to enable Plan Mode first
+
+claude "Refactor @src/data_processor.py to use async/await instead of callbacks"
+</code></pre>
+
+<strong>Claude will:</strong>
+<p>1. Show detailed plan with steps</p>
+<p>2. Wait for your approval</p>
+<p>3. Implement the refactoring</p>
+<p>4. Run tests to ensure it still works</p>
+
+
+<h2>Essential Keyboard Shortcuts</h2>
+
+<table class="data-table">
+<thead><tr>
+<th>Action</th>
+<th>Shortcut</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Enable Plan Mode</strong></td>
+<td><code>Shift + Tab</code> (twice)</td>
+</tr>
+<tr>
+<td><strong>Toggle Auto-Accept</strong></td>
+<td><code>Shift + Tab</code> (once)</td>
+</tr>
+<tr>
+<td><strong>Take Screenshot</strong> (to show Claude)</td>
+<td>Windows: <code>Win + Shift + S</code> / Mac: <code>Cmd + Shift + 4</code></td>
+</tr>
+<tr>
+<td><strong>Paste Screenshot</strong></td>
+<td><code>Ctrl + V</code></td>
+</tr>
+<tr>
+<td><strong>Interrupt Claude</strong></td>
+<td><code>ESC</code></td>
+</tr>
+<tr>
+<td><strong>Rewind Conversation</strong></td>
+<td><code>ESC</code> (twice)</td>
+</tr>
+<tr>
+<td><strong>Exit Claude Code</strong></td>
+<td>Type <code>exit</code></td>
+</tr>
+</tbody></table>
+
+
+<h2>Common First-Time Mistakes & How to Fix Them</h2>
+
+<h3><span class="crossmark">❌</span> Mistake 1: Not Including File References</h3>
+<pre><code class="language-bash"># Bad - Claude might modify the wrong file
+claude "Add a new function"
+
+# Good - Claude knows exactly where to add it
+claude "Add a function to @src/utils.py"
+</code></pre>
+<strong>Fix:</strong> Always use <code>@filename</code> when referencing specific files
+
+
+<h3><span class="crossmark">❌</span> Mistake 2: Forgetting to Commit Before Large Changes</h3>
+<pre><code class="language-bash"># Before asking Claude for big changes, commit first:
+git add -A
+git commit -m "Before attempting large refactor"
+</code></pre>
+<strong>Fix:</strong> Git allows you to undo mistakes easily
+
+
+<h3><span class="crossmark">❌</span> Mistake 3: Too Much Context at Once</h3>
+<pre><code class="language-bash"># Bad - Claude gets overwhelmed
+claude "Here's my entire codebase. Refactor everything to be better."
+
+# Good - Specific, focused request
+claude "In @src/auth.py, refactor the login function to handle error cases better"
+</code></pre>
+<strong>Fix:</strong> Break large tasks into smaller, focused requests
+
+
+<h3><span class="crossmark">❌</span> Mistake 4: Not Using Plan Mode for Important Changes</h3>
+<pre><code class="language-bash"># Before enabling auto-accept, always review:
+Shift + Tab Shift+Tab
+
+# Then describe your change
+# Review the plan Claude shows
+# Press 'Y' to approve
+</code></pre>
+<strong>Fix:</strong> Use Plan Mode for anything production-related
+
+
+<h2>Setting Up for Success</h2>
+
+<h3>1. Initialize Your Project Memory</h3>
+<pre><code class="language-bash">cd your-project
+claude
+/init
+# Review and customize the generated CLAUDE.md file
+exit
+</code></pre>
+
+<h3>2. Create a .gitignore</h3>
+<pre><code class="language-bash"># Make sure these are ignored:
+echo ".env" &gt;&gt; .gitignore
+echo "node_modules/" &gt;&gt; .gitignore
+echo "__pycache__/" &gt;&gt; .gitignore
+echo ".DS_Store" &gt;&gt; .gitignore
+git add .gitignore
+git commit -m "Add gitignore"
+</code></pre>
+
+<h3>3. Keep Your Commits Atomic</h3>
+<pre><code class="language-bash"># Good workflow:
+git commit -m "feature: add login function"
+claude "Enhance the login function"
+git commit -m "refactor: improve login error handling"
+</code></pre>
+
+
+<h2>Advanced Features to Explore Later</h2>
+
+<p>Once you're comfortable with basics:</p>
+
+<h3>MCP Servers (Extend Capabilities)</h3>
+<pre><code class="language-bash"># Add Playwright for UI testing
+claude mcp add playwright npx @playwright/mcp@latest
+
+# Take automated screenshots and test UIs
+claude "Using Playwright, visit http://localhost:3000 and verify the button is clickable"
+</code></pre>
+
+<h3>Git Worktrees (Work on Multiple Features)</h3>
+<pre><code class="language-bash"># Work on 3 features in parallel without conflicts
+git worktree add .trees/feature1
+git worktree add .trees/feature2
+git worktree add .trees/feature3
+
+# Each worktree isindependent
+cd .trees/feature1 &amp;&amp; claude "Build feature 1"
+cd .trees/feature2 &amp;&amp; claude "Build feature 2"
+</code></pre>
+
+<h3>Custom Commands (Reuse Prompts)</h3>
+<pre><code class="language-bash">mkdir -p .claude/commands
+# Create .claude/commands/add-tests.md with your prompt template
+# Then reuse: /add-tests "For the auth module"
+</code></pre>
+
+
+<h2>How to Get Help</h2>
+
+<h3>When Something Goes Wrong</h3>
+
+<strong>Claude is getting confused:</strong>
+<pre><code class="language-bash">/clear          # Clear history and start fresh
+/compact        # Summarize the conversation  
+ESC ESC         # Rewind to an earlier point
+</code></pre>
+
+<strong>You want to check costs:</strong>
+<pre><code class="language-bash">/cost           # See API usage
+</code></pre>
+
+<strong>You need to troubleshoot:</strong>
+<pre><code class="language-bash">!echo $PWD      # Run shell commands (prefix with !)
+!ls -la         # List files to verify what exists
+!python --version  # Check Python version
+</code></pre>
+
+<h3>Official Resources</h3>
+<ul>
+<li><strong>Documentation</strong>: https://docs.anthropic.com/en/docs/claude-code/overview</li>
+<li><strong>Common Workflows</strong>: https://docs.anthropic.com/en/docs/claude-code/common-workflows</li>
+<li><strong>Best Practices</strong>: https://www.anthropic.com/engineering/claude-code-best-practices</li>
+<li><strong>Troubleshooting</strong>: https://docs.anthropic.com/en/docs/claude-code/troubleshooting</li>
+</ul>
+
+
+<h2>30-Day Learning Path</h2>
+
+<h3>Day 1-3: Fundamentals</h3>
+<ul>
+<li><span class="checkmark">✅</span> Installation and first feature addition</li>
+<li><span class="checkmark">✅</span> Understanding Plan Mode</li>
+<li><span class="checkmark">✅</span> Learning file references (@syntax)</li>
+<li><span class="checkmark">✅</span> Committing changes properly</li>
+</ul>
+
+<h3>Day 4-7: Build Real Features</h3>
+<ul>
+<li><span class="checkmark">✅</span> Add features to a real project</li>
+<li><span class="checkmark">✅</span> Debug actual errors</li>
+<li><span class="checkmark">✅</span> Refactor messy code</li>
+<li><span class="checkmark">✅</span> Write tests alongside features</li>
+</ul>
+
+<h3>Day 8-14: Workflow Optimization</h3>
+<ul>
+<li><span class="checkmark">✅</span> Master keyboard shortcuts</li>
+<li><span class="checkmark">✅</span> Create custom CLAUDE.md for your projects</li>
+<li><span class="checkmark">✅</span> Learn context management (/clear, /compact)</li>
+<li><span class="checkmark">✅</span> Build a project from scratch with Claude</li>
+</ul>
+
+<h3>Day 15-30: Advanced Features</h3>
+<ul>
+<li><span class="checkmark">✅</span> Set up MCP servers (Playwright, GitHub)</li>
+<li><span class="checkmark">✅</span> Use Git worktrees for parallel development</li>
+<li><span class="checkmark">✅</span> Create custom commands for your workflow</li>
+<li><span class="checkmark">✅</span> Integrate with GitHub Actions</li>
+</ul>
+
+
+<h2>Pro Tips from Experienced Users</h2>
+
+<h3>Tip 1: Start Small, Build Big</h3>
+<pre><code class="language-bash"># Don't ask Claude to build your entire app in one prompt
+# Instead:
+1. Build the data model
+   claude "Create data.py with User and Post classes"
+2. Add one API endpoint
+   claude "Add /api/posts GET endpoint to app.py"
+3. Add tests
+   claude "Write tests for the POST endpoint"
+4. Iterate and improve
+</code></pre>
+
+<h3>Tip 2: Use Specific Language</h3>
+<pre><code class="language-bash"># Vague
+claude "Make the code better"
+
+# Specific
+claude "Refactor the form validation in @components/LoginForm.tsx to use a custom hook instead of inline logic"
+</code></pre>
+
+<h3>Tip 3: Let Claude Explain Before Changing</h3>
+<pre><code class="language-bash"># Ask Claude to understand first
+claude "Explain the flow of data in @src/data_pipeline.py step by step"
+
+# Then ask it to improve
+claude "Now refactor @src/data_pipeline.py to be more efficient"
+</code></pre>
+
+<h3>Tip 4: Test After Every Change</h3>
+<pre><code class="language-bash"># Always ask Claude to write tests or run them
+claude "Write unit tests for the new calculateTax function in @utils/tax.js"
+claude "Run the test suite and show me results"
+</code></pre>
+
+
+<h2>Pricing & Cost Management</h2>
+
+<strong>Claude Code subscription options:</strong>
+<ul>
+<li><strong>Pro</strong>: $20/month (includes Sonnet model)</li>
+<li><strong>Max</strong>: $100/month (includes Opus + advanced features)</li>
+<li><strong>Pay-as-you-go</strong>: Charged per API call (Sonnet: ~$0.003 per 1K tokens)</li>
+</ul>
+
+<strong>For the lessons in this course:</strong>
+<ul>
+<li>Budget: $12-20 total for all hands-on exercises</li>
+<li>Typical session: $1-3 depending on complexity</li>
+</ul>
+
+<strong>Monitor costs:</strong>
+<pre><code class="language-bash">/cost    # See current session costs
+</code></pre>
+
+
+<h2>Next Steps</h2>
+
+<p>1. <strong>Complete your first feature</strong>: Follow Example 1 above</p>
+<p>2. <strong>Read Episode 1-3</strong>: Understand core concepts deeper</p>
+<p>3. <strong>Try a real project</strong>: Apply Claude Code to one of your codebases</p>
+<p>4. <strong>Explore MCP servers</strong>: Add Playwright for UI testing</p>
+<p>5. <strong>Join the community</strong>: Check Anthropic's forums for tips and tricks</p>
+
+
+<h2>Quick Reference Card</h2>
+
+<pre><code class="language-text">╔════════════════════════════════════════════════════════╗
+║ CLAUDE CODE QUICK REFERENCE                           ║
+╠════════════════════════════════════════════════════════╣
+║ Launch         │ claude                               ║
+║ Plan Mode      │ Shift + Tab (×2)                    ║
+║ Clear History  │ /clear                              ║
+║ Check Costs    │ /cost                               ║
+║ Reference Files│ @filename.ext                       ║
+║ Run Commands   │ ! &lt;command&gt;                         ║
+║ Exit          │ exit                                 ║
+╚════════════════════════════════════════════════════════╝
+</code></pre>
+
+
+<strong>Happy coding! You're now ready to use Claude Code productively.</strong> 🚀
+
+    </article>
+
+</main>
+
+</body>
+</html>

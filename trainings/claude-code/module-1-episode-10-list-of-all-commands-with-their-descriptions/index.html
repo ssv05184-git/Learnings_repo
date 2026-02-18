@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of All Commands with Their Descriptions | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>List of All Commands with Their Descriptions</h1>
+    <p class="subtitle">Module 1 — Episode 10</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>List of All Commands with Their Descriptions</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 10</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Claude Code - A Highly Agentic Coding Assistant</p>
+<blockquote><strong>Course Level:</strong> Intermediate</blockquote>
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+
+
+<h2 class="section-icon">🎯 What You'll Learn</h2>
+
+<p>By the end of this episode, you will:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Understand every core Claude Code command and its purpose  </li>
+<li><span class="checkmark">✅</span> Learn how to navigate and control Claude Code efficiently  </li>
+<li><span class="checkmark">✅</span> Master quick keyboard shortcuts for faster workflows  </li>
+<li><span class="checkmark">✅</span> Apply command-based automation in real-world development tasks  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Quick Overview</h2>
+
+<strong>The Big Picture:</strong>
+<p>Claude Code provides a rich command ecosystem designed to streamline development workflows, automate repetitive tasks, and manage AI-assisted coding sessions efficiently. This episode covers every command, keyboard shortcut, and control pattern available in Claude Code.</p>
+
+<strong>What Problem Does This Solve?</strong>
+<ul>
+<li>Developers often forget or underutilize available commands.  </li>
+<li>Manual navigation wastes time when Claude Code can automate it.  </li>
+<li>Understanding command scope helps prevent context bloat and inefficiency.</li>
+</ul>
+
+<strong>Where You'll Use This:</strong>
+<ul>
+<li>Daily AI-assisted coding sessions  </li>
+<li>Debugging and reviewing pull requests  </li>
+<li>Managing long-running or multi-file projects  </li>
+</ul>
+
+
+<h2 class="section-icon">🧱 Prerequisites & Background</h2>
+
+<strong>You should already know:</strong>
+<ul>
+<li>How to start and use Claude Code in interactive mode  </li>
+<li>Basic command-line operations  </li>
+<li>How Claude Code interacts with your local environment  </li>
+</ul>
+
+<strong>If you're new to Claude Code:</strong>
+→ Start with <em>Episode 1: Getting Started with Claude Code</em>
+
+
+<h2 class="section-icon">🔑 Core Concepts Explained</h2>
+
+<h3>Concept 1: Command Prefixes</h3>
+<strong>Definition:</strong>
+<p>Claude Code uses special prefixes (<code>/</code>, <code>!</code>, <code>@</code>, <code>&</code>) to differentiate between commands, shell instructions, file paths, and background processes.</p>
+
+<strong>Why It Matters:</strong>
+<p>Understanding prefixes ensures Claude interprets your intent correctly — whether you’re running a shell command or invoking a tool.</p>
+
+<strong>When To Use:</strong>
+<p>Use <code>/</code> for Claude Code commands, <code>!</code> for shell execution, and <code>@</code> for referencing files.</p>
+
+
+<h3>Concept 2: Context Management</h3>
+<strong>Definition:</strong>
+<p>Context commands control the session’s memory footprint and relevance, including <code>/clear</code>, <code>/compact</code>, and <code>/context</code>.</p>
+
+<strong>Why It Matters:</strong>
+<p>Proper context management prevents Claude from becoming “confused” or exceeding token limits.</p>
+
+<strong>When To Use:</strong>
+<p>Before long sessions, after major topic changes, or when performance slows.</p>
+
+
+<h3>Concept 3: Agentic Task Control</h3>
+<strong>Definition:</strong>
+<p>Commands like <code>/tasks</code>, <code>/plan</code>, and <code>/fork</code> enable Claude to act as an autonomous agent managing multiple concurrent operations.</p>
+
+<strong>Why It Matters:</strong>
+<p>You can delegate subtasks, track progress, and branch conversations for experimentation.</p>
+
+<strong>When To Use:</strong>
+<p>When orchestrating multi-step builds, testing scenarios, or refactoring sessions.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Deep Dive</h2>
+
+<h3>Command Categories Overview</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Category</th>
+<th>Prefix</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Shell Mode</strong></td>
+<td><code>!</code></td>
+<td>Execute Bash commands directly</td>
+</tr>
+<tr>
+<td><strong>Claude Code Commands</strong></td>
+<td><code>/</code></td>
+<td>Control Claude’s internal features</td>
+</tr>
+<tr>
+<td><strong>File References</strong></td>
+<td><code>@</code></td>
+<td>Reference files or directories</td>
+</tr>
+<tr>
+<td><strong>Background Tasks</strong></td>
+<td><code>&</code></td>
+<td>Run commands asynchronously</td>
+</tr>
+</tbody></table>
+
+
+<h3>Core CLI Commands</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Command</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>claude</code></td>
+<td>Start interactive mode</td>
+</tr>
+<tr>
+<td><code>claude "task"</code></td>
+<td>Run a one-time task</td>
+</tr>
+<tr>
+<td><code>claude -p "query"</code></td>
+<td>Run a one-off query and exit</td>
+</tr>
+<tr>
+<td><code>claude -c</code></td>
+<td>Continue the most recent conversation</td>
+</tr>
+<tr>
+<td><code>claude -r</code></td>
+<td>Resume a previous conversation</td>
+</tr>
+<tr>
+<td><code>claude commit</code></td>
+<td>Create a Git commit</td>
+</tr>
+<tr>
+<td><code>exit</code> or <code>Ctrl+C</code></td>
+<td>Exit Claude Code</td>
+</tr>
+</tbody></table>
+
+
+<h3>System & Context Management</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Command</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/clear</code></td>
+<td>Clear conversation history</td>
+</tr>
+<tr>
+<td><code>/compact</code></td>
+<td>Summarize and reset context</td>
+</tr>
+<tr>
+<td><code>/context</code></td>
+<td>Visualize context usage grid</td>
+</tr>
+<tr>
+<td><code>/cost</code></td>
+<td>Show total cost and duration</td>
+</tr>
+<tr>
+<td><code>/doctor</code></td>
+<td>Diagnose installation issues</td>
+</tr>
+<tr>
+<td><code>/debug</code></td>
+<td>Read the session debug log</td>
+</tr>
+</tbody></table>
+
+
+<h3>Workflow & Productivity Commands</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Command</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/plan</code></td>
+<td>Enable or view plan mode</td>
+</tr>
+<tr>
+<td><code>/tasks</code></td>
+<td>List and manage background tasks</td>
+</tr>
+<tr>
+<td><code>/fork</code></td>
+<td>Create a branch of current conversation</td>
+</tr>
+<tr>
+<td><code>/resume</code></td>
+<td>Resume previous conversation</td>
+</tr>
+<tr>
+<td><code>/rename</code></td>
+<td>Rename current session</td>
+</tr>
+<tr>
+<td><code>/export</code></td>
+<td>Export conversation to file or clipboard</td>
+</tr>
+<tr>
+<td><code>/stats</code></td>
+<td>Show usage statistics</td>
+</tr>
+<tr>
+<td><code>/insights</code></td>
+<td>Generate analysis reports</td>
+</tr>
+</tbody></table>
+
+
+<h3>Integration & Tooling Commands</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Command</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/mcp</code></td>
+<td>Manage MCP servers</td>
+</tr>
+<tr>
+<td><code>/ide</code></td>
+<td>Manage IDE integrations</td>
+</tr>
+<tr>
+<td><code>/hooks</code></td>
+<td>Configure tool event hooks</td>
+</tr>
+<tr>
+<td><code>/plugin</code></td>
+<td>Manage Claude Code plugins</td>
+</tr>
+<tr>
+<td><code>/permissions</code></td>
+<td>Manage tool permission rules</td>
+</tr>
+<tr>
+<td><code>/security-review</code></td>
+<td>Perform branch security review</td>
+</tr>
+</tbody></table>
+
+
+<h3>UI & Experience Commands</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Command</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/theme</code></td>
+<td>Change theme</td>
+</tr>
+<tr>
+<td><code>/statusline</code></td>
+<td>Configure status line UI</td>
+</tr>
+<tr>
+<td><code>/output-style</code></td>
+<td>Set output style</td>
+</tr>
+<tr>
+<td><code>/desktop</code></td>
+<td>Continue in Claude Desktop</td>
+</tr>
+<tr>
+<td><code>/mobile</code></td>
+<td>Show mobile app QR code</td>
+</tr>
+<tr>
+<td><code>/chrome</code></td>
+<td>Chrome (Beta) settings</td>
+</tr>
+</tbody></table>
+
+
+<h3>Git & Collaboration Commands</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Command</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/review</code></td>
+<td>Review a pull request</td>
+</tr>
+<tr>
+<td><code>/pr-comments</code></td>
+<td>Get PR comments</td>
+</tr>
+<tr>
+<td><code>/commit</code></td>
+<td>Create Git commit</td>
+</tr>
+<tr>
+<td><code>/security-review</code></td>
+<td>Review pending changes</td>
+</tr>
+</tbody></table>
+
+
+<h3>Miscellaneous Commands</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Command</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>/help</code></td>
+<td>Show help menu</td>
+</tr>
+<tr>
+<td><code>/release-notes</code></td>
+<td>View release notes</td>
+</tr>
+<tr>
+<td><code>/stickers</code></td>
+<td>Order Claude Code stickers</td>
+</tr>
+<tr>
+<td><code>/todos</code></td>
+<td>List current todo items</td>
+</tr>
+<tr>
+<td><code>/skills</code></td>
+<td>List available skills</td>
+</tr>
+</tbody></table>
+
+
+<h3>Keyboard Shortcuts</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr></thead><tbody>
+<tr>
+<td><code>Double ESC</code></td>
+<td>Clear input</td>
+</tr>
+<tr>
+<td><code>Ctrl + Shift + -</code></td>
+<td>Undo edits</td>
+</tr>
+<tr>
+<td><code>Ctrl + O</code></td>
+<td>Toggle verbose output</td>
+</tr>
+<tr>
+<td><code>Alt + V</code></td>
+<td>Paste images</td>
+</tr>
+<tr>
+<td><code>Ctrl + T</code></td>
+<td>Toggle tasks</td>
+</tr>
+<tr>
+<td><code>Ctrl + S</code></td>
+<td>Stash prompt</td>
+</tr>
+<tr>
+<td><code>Ctrl + G</code></td>
+<td>Edit in <code>$EDITOR</code></td>
+</tr>
+<tr>
+<td><code>\ + Enter</code></td>
+<td>Insert newline</td>
+</tr>
+<tr>
+<td><code>Ctrl + C</code></td>
+<td>Exit session</td>
+</tr>
+</tbody></table>
+
+
+<h2>💡 Practical Tips & Tricks</h2>
+
+<h3>Pro Tip 1: Use <code>/compact</code> Before Long Sessions</h3>
+<strong>Why:</strong> Keeps Claude’s memory focused and reduces token cost.
+<strong>How:</strong>
+<pre><code class="language-text">/compact Summarize last 3 sessions and retain key code references
+</code></pre>
+
+
+<h3>Pro Tip 2: Combine <code>/plan</code> with <code>/tasks</code></h3>
+<strong>Why:</strong> Enables structured, agentic task execution.
+<strong>Example:</strong>
+<pre><code class="language-text">/plan Build a Flask API
+/tasks
+</code></pre>
+<strong>Result:</strong> Claude runs subtasks in background while you continue coding.
+
+
+<h3>Pro Tip 3: Use <code>/doctor</code> for Debugging</h3>
+<strong>Why:</strong> Quickly identifies misconfigurations or permission issues.
+<strong>Command:</strong>
+<pre><code class="language-text">/doctor
+</code></pre>
+<strong>Result:</strong> Detailed diagnostic report of your current setup.
+
+
+<h2 class="section-icon">🚀 Real-World Example</h2>
+
+<h3>Example: Managing a Multi-Session Project</h3>
+<strong>Context:</strong> You’re building a React app across multiple sessions.
+<strong>Challenge:</strong> Keep context clean, manage tasks, and resume work seamlessly.
+
+<strong>Claude Code Workflow:</strong>
+<pre><code class="language-bash">claude -c
+/compact Keep summary of last session
+/plan Continue component development
+/tasks
+</code></pre>
+
+<strong>Result:</strong>
+<p>Claude resumes your project with minimal context overhead and clear task visibility.</p>
+
+
+<h2>🤔 Common Questions & Troubleshooting</h2>
+
+<strong>Q:</strong> Why does Claude forget my previous context?
+<strong>A:</strong> Use <code>/resume</code> or <code>/compact</code> with summaries to maintain continuity.
+
+<strong>Q:</strong> How do I reset everything?
+<strong>A:</strong> Run <code>/clear</code> to fully reset session context.
+
+<strong>Q:</strong> Can I edit generated code in my local editor?
+<strong>A:</strong> Yes — use <code>Ctrl + G</code> to open the current file in <code>$EDITOR</code>.
+
+
+<h2>📊 Performance & Optimization</h2>
+
+<ul>
+<li><strong>Context Cost:</strong> Commands like <code>/compact</code> reduce memory usage by summarizing.  </li>
+<li><strong>Speed Optimization:</strong> <code>/fast</code> toggles Opus 4.6 fast mode for quicker responses.  </li>
+<li><strong>Cost Considerations:</strong> <code>/cost</code> gives real-time cost tracking during long sessions.  </li>
+</ul>
+
+
+<h2>🔗 Related Topics & Next Steps</h2>
+
+<strong>You Should Also Learn About:</strong>
+<ul>
+<li>[Episode 11: Plan Mode and Task Orchestration]  </li>
+<li>[Episode 12: Integrating MCP Servers]  </li>
+<li>[Episode 13: Advanced Context Management]</li>
+</ul>
+
+
+<h2>📌 Key Takeaways</h2>
+
+<p>1. <strong>Command prefixes define intent</strong> — learn to distinguish <code>/</code>, <code>!</code>, <code>@</code>, and <code>&</code>.</p>
+<p>2. <strong>Context control is critical</strong> — use <code>/compact</code> and <code>/clear</code> strategically.</p>
+<p>3. <strong>Agentic workflows boost efficiency</strong> — leverage <code>/plan</code>, <code>/tasks</code>, and <code>/fork</code>.</p>
+<p>4. <strong>Shortcuts save time</strong> — memorize key bindings for rapid iteration.</p>
+
+
+<h2>🎓 Quick Reference</h2>
+
+<h3>Command Cheat Sheet</h3>
+<table class="data-table">
+<thead><tr>
+<th>Purpose</th>
+<th>Command</th>
+<th>When to Use</th>
+</tr></thead><tbody>
+<tr>
+<td>Start interactive mode</td>
+<td><code>claude</code></td>
+<td>Begin coding session</td>
+</tr>
+<tr>
+<td>Run one-time task</td>
+<td><code>claude "task"</code></td>
+<td>Quick, single operation</td>
+</tr>
+<tr>
+<td>Clear context</td>
+<td><code>/clear</code></td>
+<td>Reset session memory</td>
+</tr>
+<tr>
+<td>Summarize context</td>
+<td><code>/compact</code></td>
+<td>Retain key session info</td>
+</tr>
+<tr>
+<td>Show cost</td>
+<td><code>/cost</code></td>
+<td>Track usage and cost</td>
+</tr>
+<tr>
+<td>Manage tasks</td>
+<td><code>/tasks</code></td>
+<td>View or control background jobs</td>
+</tr>
+<tr>
+<td>Debug setup</td>
+<td><code>/doctor</code></td>
+<td>Diagnose issues</td>
+</tr>
+<tr>
+<td>Toggle fast mode</td>
+<td><code>/fast</code></td>
+<td>Speed up responses</td>
+</tr>
+</tbody></table>
+
+<h3>Keyboard Shortcuts</h3>
+<ul>
+<li><code>Double ESC</code> – Clear input  </li>
+<li><code>Ctrl + Shift + -</code> – Undo edits  </li>
+<li><code>Ctrl + G</code> – Edit in local editor  </li>
+<li><code>Ctrl + T</code> – View tasks  </li>
+<li><code>Ctrl + S</code> – Stash prompt  </li>
+</ul>
+
+<h3>Common Prompts</h3>
+<pre><code class="language-text">/plan Build and test new API endpoints
+/compact Summarize last 2 sessions
+/doctor
+</code></pre>
+
+
+<h2>🔐 Security & Best Practices</h2>
+
+<ul>
+<li><strong>Privacy:</strong> Avoid sending sensitive data to Claude; redact credentials.  </li>
+<li><strong>Quality Assurance:</strong> Always review generated code before committing.  </li>
+<li><strong>Team Collaboration:</strong> Use <code>/init</code> to generate a shared CLAUDE.md for project memory.  </li>
+</ul>
+
+
+<h2>📚 Extra Resources</h2>
+
+<ul>
+<li><a href="https://docs.anthropic.com">Claude Code Official Documentation</a>  </li>
+<li><a href="https://docs.anthropic.com/mcp">MCP Server Integration Guide</a>  </li>
+<li><a href="https://claude.ai/desktop">Claude Desktop Setup Guide</a>  </li>
+</ul>
+
+
+<h2>⭐ Conclusion</h2>
+
+<strong>What You've Mastered:</strong>
+<p>You now understand every Claude Code command, shortcut, and control pattern — the foundation for full agentic development.</p>
+
+<strong>How This Fits Into Real Development:</strong>
+<p>Command fluency transforms Claude from a “chat assistant” into a true coding partner.</p>
+
+<strong>Your Next Challenge:</strong>
+<p>Practice using <code>/plan</code>, <code>/tasks</code>, and <code>/compact</code> together in a real project.</p>
+
+<strong>Pro Tip for Long-Term Mastery:</strong>
+<p>Create a personal cheat sheet of your most-used commands and integrate them into your daily dev workflow.</p>
+    </article>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Design Patterns | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Agentic Design Patterns</h1>
+    <p class="subtitle">Module 1 — Episode 7</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Agentic Design Patterns</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 7</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Identify and describe the four core design patterns in agentic workflows  </li>
+<li><span class="checkmark">✅</span> Implement reflection and tool-use patterns using LLMs  </li>
+<li><span class="checkmark">✅</span> Understand how planning and multi-agent collaboration improve workflow complexity and adaptability  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode introduces the foundational design patterns that underpin agentic workflows.</p>
+<p>It explains how developers can combine modular building blocks—such as reflection, tool use, planning, and multi-agent collaboration—to create adaptive, iterative, and intelligent systems.</p>
+<p>These patterns are used in real-world applications like automated code generation, research assistants, and AI-driven software development pipelines.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Basic concepts of <strong>LLMs (Large Language Models)</strong> and prompt engineering  </li>
+<li>Familiarity with <strong>function calling</strong> or <strong>tool invocation</strong> in AI frameworks  </li>
+<li>General understanding of <strong>workflow orchestration</strong> and <strong>automation systems</strong></li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Reflection Pattern</strong> – A feedback loop where an agent critiques or tests its own output, improving quality through iteration.  </li>
+<li><strong>Tool Use Pattern</strong> – Enables an agent to call external tools or functions (e.g., code execution, web search) to complete tasks it cannot handle internally.  </li>
+<li><strong>Planning Pattern</strong> – Allows an agent to autonomously determine a sequence of actions or API calls to achieve a goal, rather than following a hardcoded script.  </li>
+<li><strong>Multi-Agent Collaboration Pattern</strong> – Involves multiple specialized agents working together, each with defined roles, to solve complex tasks collaboratively.</li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<strong>Four Core Agentic Design Patterns:</strong>
+
+<img src="../../../diagrams/images/agentic-ai/module_1/E7_design_patterns.png" alt="Image" class="content-image">
+
+<strong>Visual Overview:</strong>
+
+<p>The diagram presents four quadrants, each illustrating a foundational design pattern:</p>
+
+<strong>1. Reflection Pattern (Top-Left - Purple)</strong>
+<ul>
+<li>Shows the iterative feedback loop: Agent → Generate Output → Critique/Test → Refine & Improve → Back to Agent</li>
+<li>Key property: <strong>Feedback Loop • Iterative Improvement</strong></li>
+<li>Enables self-correction and quality enhancement through multiple iterations</li>
+</ul>
+
+<strong>2. Tool Use Pattern (Top-Right - Blue)</strong>
+<ul>
+<li>Central agent connected to external tools: Web Search, Code Execution, Database Query, External APIs</li>
+<li>Key property: <strong>External Integration • Extended Capabilities</strong></li>
+<li>Bridges the gap between LLM reasoning and real-world data/computation</li>
+</ul>
+
+<strong>3. Planning Pattern (Bottom-Left - Green)</strong>
+<ul>
+<li>Hierarchical flow: High-Level Goal → Task Decomposition → Step 1, Step 2, Step 3</li>
+<li>Key property: <strong>Dynamic Sequencing • Autonomous Breakdown</strong></li>
+<li>Enables agents to autonomously determine action sequences</li>
+</ul>
+
+<strong>4. Multi-Agent Collaboration (Bottom-Right - Orange)</strong>
+<ul>
+<li>Three specialized agents (Researcher, Writer, Editor) communicating via message passing</li>
+<li>Key property: <strong>Role-Based Coordination • Distributed Problem-Solving</strong></li>
+<li>Mimics human team structures for complex task handling</li>
+</ul>
+
+<strong>Caption:</strong>
+<p>This four-quadrant diagram shows how each design pattern contributes to building intelligent, modular, and adaptive agentic workflows. Each pattern can be used independently or combined to create sophisticated AI systems capable of reflection, tool integration, autonomous planning, and collaborative problem-solving.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Reflection</strong>
+<p>- The agent generates an output (e.g., code snippet).</p>
+<p>- The same or another agent critiques the output for errors or inefficiencies.</p>
+<p>- Feedback is used to refine the result iteratively.</p>
+
+2. <strong>Tool Use</strong>
+<p>- The agent identifies when it needs external data or computation.</p>
+<p>- It invokes appropriate tools (e.g., web search, code execution).</p>
+<p>- Results are integrated back into the reasoning process.</p>
+
+3. <strong>Planning</strong>
+<p>- The agent decomposes a high-level goal into a sequence of actions or API calls.</p>
+<p>- It dynamically determines dependencies and execution order.</p>
+<p>- The plan is executed autonomously.</p>
+
+4. <strong>Multi-Agent Collaboration</strong>
+<p>- Multiple agents with specialized roles (e.g., researcher, writer, editor) communicate.</p>
+<p>- Each agent performs tasks aligned with its persona or expertise.</p>
+<p>- Outputs are passed between agents until the task is complete.</p>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li><strong>Feedback Loops Improve Quality:</strong> Reflection introduces iterative self-correction.  </li>
+<li><strong>External Tools Extend Capability:</strong> Tool use bridges the gap between reasoning and execution.  </li>
+<li><strong>Autonomous Planning Scales Complexity:</strong> Planning enables agents to handle multi-step goals dynamically.  </li>
+<li><strong>Collaboration Enhances Robustness:</strong> Multi-agent setups mimic human team structures, improving diversity of reasoning and creativity.</li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+<ul>
+<li>Iterative content or code generation  </li>
+<li>Research and data synthesis workflows  </li>
+<li>Multi-step reasoning or task decomposition  </li>
+<li>Collaborative creative or analytical tasks  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid When</strong>
+<ul>
+<li>Deterministic, single-step outputs are sufficient  </li>
+<li>Resource constraints prevent multi-agent orchestration  </li>
+<li>Tool APIs are unreliable or latency-sensitive  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Reflection:</strong> May lead to overfitting or redundant iterations if feedback isn’t well-structured.  </li>
+<li><strong>Tool Use:</strong> Increases system complexity and dependency on external APIs.  </li>
+<li><strong>Planning:</strong> Harder to debug due to emergent behavior in dynamic task sequencing.  </li>
+<li><strong>Multi-Agent Collaboration:</strong> Coordination overhead and unpredictability in communication loops.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Latency:</strong> Each iteration or agent interaction adds response time.  </li>
+<li><strong>Resource Usage:</strong> Multi-agent setups consume more compute and memory.  </li>
+<li><strong>Error Propagation:</strong> Faults in one agent or tool can cascade through the workflow.  </li>
+<li><strong>Optimization:</strong> Use caching, selective reflection, and controlled planning depth to balance performance and accuracy.</li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example — Reflection Pattern</h3>
+
+<pre><code class="language-python">from openai import OpenAI
+
+client = OpenAI()
+
+# Step 1: Generate initial code
+initial_code = client.chat.completions.create(
+    model="gpt-4",
+    messages=[{"role": "user", "content": "Write a Python function to compute factorial."}]
+).choices[0].message.content
+
+# Step 2: Critique the generated code
+critique = client.chat.completions.create(
+    model="gpt-4",
+    messages=[
+        {"role": "system", "content": "You are a code reviewer."},
+        {"role": "user", "content": f"Review this code for correctness and efficiency:\n{initial_code}"}
+    ]
+).choices[0].message.content
+
+# Step 3: Refine code using feedback
+refined_code = client.chat.completions.create(
+    model="gpt-4",
+    messages=[
+        {"role": "system", "content": "You are a Python developer improving code based on feedback."},
+        {"role": "user", "content": f"Original code:\n{initial_code}\n\nFeedback:\n{critique}\n\nPlease improve the code."}
+    ]
+).choices[0].message.content
+
+print(refined_code)
+</code></pre>
+
+
+<h3>Example — Multi-Agent Collaboration (Conceptual)</h3>
+
+<pre><code class="language-python">agents = {
+    "researcher": lambda topic: search_web(topic),
+    "writer": lambda info: generate_marketing_copy(info),
+    "editor": lambda text: polish_text(text)
+}
+
+topic = "AI-powered productivity tools"
+research = agents["researcher"](topic)
+draft = agents["writer"](research)
+final_output = agents["editor"](draft)
+
+print(final_output)
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Summary</h2>
+
+<p>Agentic workflows can be constructed using four main design patterns:</p>
+
+<table class="data-table">
+<thead><tr>
+<th>Pattern</th>
+<th>Description</th>
+<th>Example Use Case</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Reflection</strong></td>
+<td>Self-evaluation and iterative improvement</td>
+<td>Code review loops</td>
+</tr>
+<tr>
+<td><strong>Tool Use</strong></td>
+<td>Integrating external APIs or computation</td>
+<td>Web search, code execution</td>
+</tr>
+<tr>
+<td><strong>Planning</strong></td>
+<td>Sequencing actions dynamically</td>
+<td>Multi-step task automation</td>
+</tr>
+<tr>
+<td><strong>Multi-Agent Collaboration</strong></td>
+<td>Distributed problem-solving via specialized agents</td>
+<td>Virtual software teams</td>
+</tr>
+</tbody></table>
+
+<p>These patterns form the foundation for building sophisticated, adaptive AI systems capable of reasoning, acting, and improving over time.</p>
+
+
+<h2 class="section-icon">🚀 Next Steps</h2>
+
+<p>Continue to <strong>Module 2</strong> to explore the <strong>Reflection Design Pattern</strong> in depth — a simple yet powerful mechanism to significantly boost system performance through iterative self-improvement.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

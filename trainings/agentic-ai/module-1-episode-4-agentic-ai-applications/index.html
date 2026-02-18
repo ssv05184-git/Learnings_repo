@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI Applications | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Agentic AI Applications</h1>
+    <p class="subtitle">Module 1 — Episode 4</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Agentic AI Applications</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 4</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Identify common real-world applications of Agentic AI workflows  </li>
+<li><span class="checkmark">✅</span> Understand how structured and unstructured tasks differ in implementation difficulty  </li>
+<li><span class="checkmark">✅</span> Evaluate when an agentic approach is appropriate for automating business processes  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode explores practical examples of Agentic AI workflows across different levels of complexity — from structured invoice extraction to open-ended customer service automation.</p>
+<p>You’ll see how well-defined, step-by-step tasks are easier to automate with agents, while tasks requiring dynamic reasoning or multi-modal input introduce significant challenges.</p>
+<p>These examples illustrate how agentic workflows are already transforming business operations and where the boundaries of current capabilities lie.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>The basic concept of <strong>Agentic AI</strong> and <strong>workflow orchestration</strong>  </li>
+<li>How <strong>LLMs interact with external tools or APIs</strong>  </li>
+<li>Concepts introduced in [Module 1, Episode 3: Agentic Workflow Architecture]  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Agentic Workflow</strong> – A process where an AI agent autonomously executes a sequence of predefined or dynamically planned actions to complete a task.  </li>
+<li><strong>Structured vs. Unstructured Tasks</strong> – Structured tasks follow a predictable sequence (e.g., invoice parsing), while unstructured tasks require adaptive planning (e.g., general customer service).  </li>
+<li><strong>Tool Use</strong> – The ability of an agent to call APIs, databases, or even use a web browser to complete a task.  </li>
+<li><strong>Computer Use Agents</strong> – Advanced agents capable of interacting with GUIs or web pages to perform multi-step actions similar to a human user.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_1/E4_agentic_ai_application_spectrum.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram shows the progression of agentic AI applications from structured workflows to highly autonomous agents, with each level illustrating autonomy, reasoning capability, reliability expectations, and required tools.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+<p>Agentic AI applications typically follow a <strong>perception → reasoning → action</strong> loop:</p>
+
+<p>1. <strong>Input Processing</strong> – Convert raw inputs (e.g., PDFs, emails) into structured text for LLM consumption.</p>
+<p>2. <strong>Classification and Validation</strong> – Determine the type of document or request (invoice, inquiry, etc.).</p>
+<p>3. <strong>Information Extraction</strong> – Identify relevant fields or entities (e.g., biller, due date, order ID).</p>
+<p>4. <strong>Tool Invocation</strong> – Call APIs, databases, or other systems to fetch or update data.</p>
+<p>5. <strong>Response Generation</strong> – Draft or execute actions based on retrieved data.</p>
+<p>6. <strong>Human Review (Optional)</strong> – Queue results for human approval before execution.</p>
+
+
+<h3>Why It Works</h3>
+
+<p>Agentic workflows succeed because they:</p>
+
+<ul>
+<li>Decompose complex business tasks into <strong>deterministic, repeatable steps</strong>  </li>
+<li>Leverage LLMs for <strong>semantic understanding</strong> and <strong>decision-making</strong>  </li>
+<li>Integrate with external systems for <strong>data retrieval and action execution</strong>  </li>
+<li>Maintain a <strong>closed feedback loop</strong>, allowing for iterative refinement and error handling  </li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios:</strong>
+
+<ul>
+<li>Tasks with <strong>clear, repeatable procedures</strong> (e.g., form extraction, order lookup)  </li>
+<li>Workflows that involve <strong>structured text inputs</strong>  </li>
+<li>Systems where <strong>human review</strong> can verify AI outputs  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid or Use with Caution:</strong>
+
+<ul>
+<li>Tasks requiring <strong>open-ended reasoning</strong> without defined steps  </li>
+<li>Workflows involving <strong>multi-modal inputs</strong> (images, audio, video) unless models are specifically trained for them  </li>
+<li>Real-time, mission-critical operations where reliability must be 100%  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Aspect</th>
+<th>Challenge</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>Dynamic task planning increases unpredictability</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Multi-step reasoning can be computationally expensive</td>
+</tr>
+<tr>
+<td><strong>Reliability</strong></td>
+<td>Web-based actions depend on page load timing and DOM stability</td>
+</tr>
+<tr>
+<td><strong>Maintainability</strong></td>
+<td>Each integrated API or tool adds potential points of failure</td>
+</tr>
+</tbody></table>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Latency:</strong> Each API/tool invocation adds round-trip time.  </li>
+<li><strong>Error Handling:</strong> Agents must detect and recover from failed steps (e.g., missing data, API timeouts).  </li>
+<li><strong>Scalability:</strong> Stateless designs scale better but may require external memory for continuity.  </li>
+<li><strong>Resource Usage:</strong> Browser-based agents consume significant compute and memory.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example — Invoice Extraction Workflow</h3>
+
+<pre><code class="language-python">from agentic_ai import Agent, Tool
+
+# Define tools
+pdf_to_text = Tool("pdf_to_text_api")
+update_db = Tool("update_invoice_db")
+
+# Define agent workflow
+agent = Agent(name="InvoiceProcessor")
+
+@agent.workflow
+def process_invoice(pdf_file):
+    text = pdf_to_text(pdf_file)
+    if "invoice" not in text.lower():
+        return "Not an invoice."
+    fields = agent.llm.extract_fields(text, ["biller", "address", "amount_due", "due_date"])
+    update_db(fields)
+    return "Invoice recorded successfully."
+
+# Run
+process_invoice("invoice_august_2025.pdf")
+</code></pre>
+
+
+<h3>Example — Customer Inquiry Agent</h3>
+
+<pre><code class="language-python">@agent.workflow
+def handle_customer_email(email):
+    details = agent.llm.extract_order_details(email)
+    if not details:
+        return "Non-order inquiry."
+    order_info = agent.call("orders_db", "lookup", details["order_id"])
+    draft = agent.llm.compose_reply(order_info)
+    agent.call("review_queue", "submit", draft)
+    return "Reply queued for review."
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Real-World Examples</h2>
+
+<table class="data-table">
+<thead><tr>
+<th>Application</th>
+<th>Description</th>
+<th>Difficulty</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Invoice Processing</strong></td>
+<td>Extract fields and record in DB</td>
+<td>🟢 Easy</td>
+</tr>
+<tr>
+<td><strong>Order Inquiry Agent</strong></td>
+<td>Retrieve order info and draft replies</td>
+<td>🟡 Medium</td>
+</tr>
+<tr>
+<td><strong>General Customer Service Agent</strong></td>
+<td>Handle arbitrary queries with planning</td>
+<td>🔴 Hard</td>
+</tr>
+<tr>
+<td><strong>Computer Use Agent</strong></td>
+<td>Navigate web pages and execute actions</td>
+<td>🔴 Very Hard</td>
+</tr>
+</tbody></table>
+
+
+<h2 class="section-icon">🧠 Key Takeaways</h2>
+
+<ul>
+<li>Agentic AI excels when <strong>task structure is explicit and deterministic</strong>.  </li>
+<li><strong>Tool integration</strong> (e.g., databases, APIs) is a cornerstone of effective workflows.  </li>
+<li><strong>Planning and adaptive reasoning</strong> remain open research challenges.  </li>
+<li><strong>Computer-use agents</strong> represent the frontier of agentic AI research, bridging LLM reasoning and real-world digital interaction.  </li>
+</ul>
+
+
+<h2 class="section-icon">🚀 Next Episode</h2>
+
+<strong>Next:</strong> <em>Task Decomposition</em> — Learn how to break complex objectives into discrete, executable steps for agentic workflows.
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>More Error Analysis | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>More Error Analysis</h1>
+    <p class="subtitle">Module 4 — Episode 3</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>More Error Analysis</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 4 — Episode 3</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Conduct targeted error analysis across multiple components of an Agentic AI workflow  </li>
+<li><span class="checkmark">✅</span> Identify which subsystem (e.g., LLM extraction vs. data preprocessing) is responsible for observed performance issues  </li>
+<li><span class="checkmark">✅</span> Prioritize debugging and improvement efforts based on evidence from structured error review  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode extends the practice of <strong>error analysis</strong> by walking through two detailed case studies:</p>
+<p>1. An <strong>invoice processing workflow</strong>, and</p>
+<p>2. A <strong>customer email response workflow</strong>.</p>
+
+<p>You’ll learn how to systematically identify the root cause of errors across multiple components—such as PDF parsers, databases, and LLMs—so that your optimization efforts focus on the most impactful areas. This structured approach is critical for improving real-world Agentic AI systems efficiently.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>The concept of <strong>Agentic AI workflows</strong> and their multi-step structure  </li>
+<li>The basics of <strong>end-to-end evaluation</strong> (covered in earlier episodes of this module)  </li>
+<li>Familiarity with <strong>LLM-based extraction</strong> and <strong>database querying</strong>  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Error Analysis</strong> – A systematic process of identifying where and why a system fails, focusing on misbehaving examples rather than successful ones.  </li>
+<li><strong>Component Attribution</strong> – Determining which part of a multi-step workflow (e.g., OCR, LLM, database) is responsible for observed errors.  </li>
+<li><strong>Targeted Improvement</strong> – Using data-driven insights from error analysis to decide which component to refine first.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_4/E3_Error_Analysis_Workflow.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram illustrates how errors propagate through a multi-step workflow from PDF parsing to LLM extraction to database recording, enabling isolation of faulty stages.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Collect Error Cases:</strong>
+<p>Gather 10–100 examples where the system produces incorrect or unsatisfactory outputs. Ignore correct cases.</p>
+
+2. <strong>Trace the Workflow:</strong>
+<p>For each error case, follow the data flow through each component:</p>
+<p>- Input (e.g., PDF, email)</p>
+<p>- Intermediate outputs (e.g., parsed text, database query)</p>
+<p>- Final output (e.g., extracted fields, drafted email)</p>
+
+3. <strong>Attribute the Error:</strong>
+<p>Record which component caused or contributed to the error.</p>
+<p>Example spreadsheet columns:</p>
+- <code>Input ID</code>
+- <code>PDF-to-Text Correct?</code>
+- <code>LLM Extraction Correct?</code>
+- <code>Database Query Correct?</code>
+- <code>Final Output Quality</code>
+
+4. <strong>Quantify Component Impact:</strong>
+<p>Tally how often each component fails.</p>
+<p>Note that percentages may exceed 100% since multiple components can fail in the same example.</p>
+
+5. <strong>Prioritize Fixes:</strong>
+<p>Focus optimization efforts on the component responsible for the majority of errors.</p>
+
+
+<h3>Why It Works</h3>
+
+<p>Error analysis isolates the <strong>true source of performance degradation</strong>, preventing wasted effort on components that are already performing adequately.</p>
+<p>By understanding which subsystem contributes most to overall failure, developers can:</p>
+<ul>
+<li>Improve system reliability faster  </li>
+<li>Avoid premature optimization  </li>
+<li>Make data-informed decisions about retraining or re-architecting components  </li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+<ul>
+<li>When end-to-end evaluations show underperformance but lack diagnostic detail  </li>
+<li>During iterative development of multi-component AI pipelines  </li>
+<li>Before investing in retraining or model tuning  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Anti-patterns</strong>
+<ul>
+<li>Applying error analysis on too few examples (leads to misleading conclusions)  </li>
+<li>Ignoring contextual dependencies between components  </li>
+<li>Focusing only on aggregate metrics without qualitative inspection  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Manual Effort:</strong> Requires human inspection and labeling of error samples  </li>
+<li><strong>Non-mutual Errors:</strong> Multiple components may fail simultaneously, complicating attribution  </li>
+<li><strong>Sampling Bias:</strong> If error cases are not representative, conclusions may mislead optimization priorities  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Efficiency:</strong> Analyzing only incorrect samples reduces evaluation time  </li>
+<li><strong>Scalability:</strong> Use structured spreadsheets or lightweight dashboards for large datasets  </li>
+<li><strong>Automation Potential:</strong> Once patterns are known, automated detectors can identify similar errors in production  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example: Error Attribution for Invoice Extraction</h3>
+
+<pre><code class="language-python">import pandas as pd
+
+# Example error log for invoice processing
+data = [
+    {"invoice_id": 1, "pdf_to_text_ok": False, "llm_extraction_ok": True},
+    {"invoice_id": 2, "pdf_to_text_ok": True, "llm_extraction_ok": False},
+    {"invoice_id": 3, "pdf_to_text_ok": True, "llm_extraction_ok": False},
+]
+
+df = pd.DataFrame(data)
+
+# Aggregate error rates
+error_summary = {
+    "pdf_to_text_error_rate": 1 - df["pdf_to_text_ok"].mean(),
+    "llm_extraction_error_rate": 1 - df["llm_extraction_ok"].mean(),
+}
+
+print(error_summary)
+</code></pre>
+
+<strong>Output:</strong>
+<pre><code class="language-text">{'pdf_to_text_error_rate': 0.33, 'llm_extraction_error_rate': 0.67}
+</code></pre>
+
+<p>This simple analysis reveals that the LLM extraction step contributes to most of the observed errors—guiding where to focus improvement efforts.</p>
+
+
+<h2 class="section-icon">🧩 Real-World Example: Customer Email Workflow</h2>
+
+<table class="data-table">
+<thead><tr>
+<th>Email ID</th>
+<th>Query Generation</th>
+<th>Database Integrity</th>
+<th>Email Draft Quality</th>
+<th>Root Cause</th>
+</tr></thead><tbody>
+<tr>
+<td>1</td>
+<td><span class="crossmark">❌</span> Wrong table</td>
+<td><span class="checkmark">✅</span> Correct</td>
+<td><span class="crossmark">❌</span> Poor phrasing</td>
+<td>Query logic</td>
+</tr>
+<tr>
+<td>2</td>
+<td><span class="checkmark">✅</span> Correct</td>
+<td><span class="crossmark">❌</span> Corrupted data</td>
+<td><span class="checkmark">✅</span> Acceptable</td>
+<td>Database</td>
+</tr>
+<tr>
+<td>3</td>
+<td><span class="checkmark">✅</span> Correct</td>
+<td><span class="checkmark">✅</span> Correct</td>
+<td><span class="crossmark">❌</span> Tone mismatch</td>
+<td>LLM output</td>
+</tr>
+</tbody></table>
+
+<strong>Insight:</strong>
+<p>If 75% of total errors trace back to query generation, prioritize refining the <strong>LLM’s query-writing prompt</strong> before addressing smaller issues like email phrasing.</p>
+
+
+<h2 class="section-icon">🚀 Key Takeaways</h2>
+
+<ul>
+<li>Always analyze <strong>incorrect outputs</strong>, not the successful ones.  </li>
+<li>Attribute failures to specific components to avoid wasted optimization.  </li>
+<li>Use structured tracking (e.g., spreadsheets, scripts) to quantify component-level error rates.  </li>
+<li>Let error analysis guide <strong>where to focus next</strong> in improving Agentic AI workflows.  </li>
+</ul>
+
+
+<h2>🔗 Next Episode</h2>
+
+<p>Continue to <strong>Episode 4: Component-Level Evaluations</strong>, where we’ll learn how to formally evaluate and benchmark individual components identified through error analysis.</p>
+
+    </article>
+
+</main>
+
+</body>
+</html>

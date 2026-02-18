@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart Generation Workflow | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Chart Generation Workflow</h1>
+    <p class="subtitle">Module 2 — Episode 3</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Chart Generation Workflow</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 2 — Episode 3</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Implement a chart generation workflow using an AI agent to visualize structured data.  </li>
+<li><span class="checkmark">✅</span> Apply reflection techniques to improve visualization quality using multimodal LLMs.  </li>
+<li><span class="checkmark">✅</span> Evaluate and tune reflection prompts for better performance and clarity in generated charts.</li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode demonstrates how reflection can enhance automated chart generation using AI agents.</p>
+<p>You’ll see how an LLM can produce Python code to visualize sales data, and how reflection—especially via multimodal models—can critique and refine those visualizations.</p>
+<p>This approach is relevant for building intelligent data visualization systems, automated reporting tools, and AI-assisted analytics dashboards.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Basic Python data visualization (e.g., Matplotlib, Seaborn, Plotly)</li>
+<li>How to prompt LLMs for code generation</li>
+<li>The concept of reflection in agentic AI (from previous episodes)</li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Reflection in AI Agents</strong> – The process of having an AI model review and improve its own or another model’s output.  </li>
+<li><strong>Multimodal LLMs</strong> – Models capable of processing both text and images, enabling visual reasoning and critique.  </li>
+<li><strong>Iterative Improvement Loop</strong> – A feedback cycle where generated outputs are evaluated and refined based on structured criteria.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_2/E3_chart_reflection.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This flow diagram shows the iterative chart generation workflow: data processing, initial code generation and chart creation, followed by multimodal review and refinement of both code and visual output.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Data Preparation:</strong>
+<p>The agent receives structured data (e.g., coffee sales across quarters and years).</p>
+
+2. <strong>Initial Code Generation:</strong>
+<p>A prompt instructs an LLM to generate Python code that visualizes the data (e.g., a bar chart comparing Q1 sales for 2024 vs. 2025).</p>
+
+3. <strong>Execution and Output:</strong>
+<p>The generated code is executed to produce a chart. The first version may be suboptimal (e.g., stacked bar chart that is unclear).</p>
+
+4. <strong>Reflection Phase:</strong>
+<p>- The initial code and generated image are passed to a multimodal model.</p>
+<p>- The model critiques the visualization based on clarity, readability, and completeness.</p>
+<p>- The model updates the code to improve the visual output.</p>
+
+5. <strong>Refined Visualization:</strong>
+<p>The improved code produces a clearer, more interpretable chart (e.g., separated bar chart).</p>
+
+
+<h3>Why It Works</h3>
+
+<p>Reflection leverages the LLM’s ability to reason over its own outputs.</p>
+<p>By giving the model both the <em>code</em> and the <em>resulting image</em>, it can visually analyze the shortcomings and apply corrections.</p>
+<p>This mirrors how human developers debug visualization scripts—by inspecting the result and adjusting code accordingly.</p>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios:</strong>
+<ul>
+<li>Automated report generation where visual clarity matters.</li>
+<li>Data exploration tools that require adaptive visualization.</li>
+<li>AI workflows with iterative improvement loops.</li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid When:</strong>
+<ul>
+<li>Working with static, pre-validated visual templates.</li>
+<li>Using models that lack multimodal or reasoning capabilities.</li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Compute Cost:</strong> Running multiple LLM passes increases latency and cost.  </li>
+<li><strong>Model Variability:</strong> Different LLMs may produce inconsistent improvements.  </li>
+<li><strong>Evaluation Challenge:</strong> Quantitatively measuring “better visualization” can be subjective.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Model Selection:</strong> Reasoning-capable models often yield better reflection outcomes.  </li>
+<li><strong>Prompt Engineering:</strong> Providing explicit criteria (readability, clarity, completeness) improves reflection quality.  </li>
+<li><strong>Caching:</strong> Cache intermediate results to avoid redundant LLM calls during iterative refinement.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python"># Initial code generation prompt to LLM
+prompt = """
+Write Python code using matplotlib to plot Q1 coffee sales for 2024 and 2025
+from a CSV file 'coffee_sales.csv'. The chart should be clear and visually appealing.
+"""
+
+# Example reflection prompt
+reflection_prompt = """
+You are an expert data analyst. Review the following Python code and the generated chart.
+Critique the visualization for clarity, readability, and completeness.
+Then, write improved Python code to generate a clearer chart.
+"""
+
+# Example workflow
+initial_code = llm.generate(prompt)
+initial_chart = execute_python_code(initial_code)
+refined_code = multimodal_llm.reflect(reflection_prompt, code=initial_code, image=initial_chart)
+final_chart = execute_python_code(refined_code)
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Key Takeaways</h2>
+
+<ul>
+<li>Reflection transforms a simple LLM code generator into a self-improving visualization agent.  </li>
+<li>Multimodal reasoning enables AI systems to <em>see</em> and <em>evaluate</em> visual outputs.  </li>
+<li>Iterative refinement guided by structured prompts leads to significantly better results.  </li>
+<li>Evaluating reflection’s impact on your specific application helps optimize both quality and cost.</li>
+</ul>
+
+
+<h2 class="section-icon">🚀 Next Steps</h2>
+
+<p>In the next episode, we’ll explore <strong>evaluation (evals) for reflection workflows</strong>—how to measure whether reflection genuinely improves performance and how to quantify those gains in your AI systems.</p>
+
+    </article>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Workflows | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Planning Workflows</h1>
+    <p class="subtitle">Module 5 — Episode 1</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Planning Workflows</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 5 — Episode 1</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Explain the <em>planning design pattern</em> for autonomous AI agents  </li>
+<li><span class="checkmark">✅</span> Implement step-by-step execution workflows where an LLM plans and executes tool calls  </li>
+<li><span class="checkmark">✅</span> Identify when and why to use planning to enable flexible, multi-step agent behavior  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode introduces the <strong>Planning Workflow Pattern</strong>, a design approach that allows large language models (LLMs) to autonomously decide <em>what sequence of actions to take</em> to complete a task.</p>
+<p>Instead of hard-coding every step, developers can empower agents to dynamically plan their workflow using available tools.</p>
+<p>This pattern is foundational for building <strong>highly autonomous agents</strong> that can adapt to diverse user requests in domains like customer service, email management, and code generation.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>The concept of <strong>tool-augmented LLMs</strong> (agents that can call APIs or functions)</li>
+<li>Basic <strong>prompt engineering</strong> for defining tool descriptions and agent instructions</li>
+<li>Familiarity with <strong>function calling</strong> or <strong>tool invocation</strong> mechanisms in LLM frameworks</li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Planning Pattern</strong> – A design pattern where an LLM generates a structured plan (a list of steps) before execution, enabling flexible, dynamic workflows.  </li>
+<li><strong>Step-by-Step Execution</strong> – Each step from the plan is executed sequentially, with intermediate results passed to the next step.  </li>
+<li><strong>Tool Abstraction</strong> – The agent is provided a set of tools (functions, APIs, or capabilities) it can use to accomplish its goal.  </li>
+<li><strong>Autonomous Decision-Making</strong> – The LLM determines which tools to use and in what order, without explicit developer-defined logic.</li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_5/E1_planning_workflow.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram illustrates how an LLM creates a multi-step plan, executes each step using available tools, and aggregates outputs into a final result.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Define Available Tools</strong>
+<p>The developer specifies a set of tools the agent can use, such as:</p>
+- <code>get_item_descriptions</code>
+- <code>check_inventory</code>
+- <code>get_item_price</code>
+- <code>process_item_return</code>
+
+2. <strong>Prompt for Planning</strong>
+<p>The LLM is prompted with:</p>
+<p>- The user’s query</p>
+<p>- Descriptions of available tools</p>
+<p>- An instruction to produce a <em>step-by-step plan</em> to achieve the goal</p>
+
+3. <strong>Generate Plan</strong>
+<p>The LLM outputs a structured list of steps.</p>
+<p>Example:</p>
+<p>1. Use <code>get_item_descriptions</code> to find round sunglasses</p>
+<p>2. Use <code>check_inventory</code> to verify stock</p>
+<p>3. Use <code>get_item_price</code> to filter items under $100</p>
+
+4. <strong>Execute Each Step Sequentially</strong>
+<p>Each step is executed by:</p>
+<p>- Passing the step’s instruction and context to the LLM</p>
+<p>- Executing the appropriate tool call</p>
+<p>- Feeding the output into the next step</p>
+
+5. <strong>Aggregate and Respond</strong>
+<p>After all steps are executed, the final output is synthesized into a user-facing response.</p>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li><strong>Decompositional Thinking:</strong> LLMs perform better when complex tasks are broken into smaller, explicit steps.  </li>
+<li><strong>Contextual Adaptability:</strong> The agent dynamically tailors its plan based on the user’s query and current data.  </li>
+<li><strong>Tool Coordination:</strong> Enables the LLM to orchestrate multiple tools intelligently without hard-coded logic.</li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+<ul>
+<li>When the agent must handle diverse, unpredictable user requests  </li>
+<li>When multiple tools or APIs must be combined dynamically  </li>
+<li>When the task requires reasoning across multiple intermediate states  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid When</strong>
+<ul>
+<li>The workflow is rigid and predefined (no need for dynamic planning)  </li>
+<li>Determinism and strict runtime control are required  </li>
+<li>LLM latency or cost per step is a major constraint  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Aspect</th>
+<th>Trade-off</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Control</strong></td>
+<td>Developers lose precise control over runtime decisions</td>
+</tr>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>Multi-step execution increases orchestration overhead</td>
+</tr>
+<tr>
+<td><strong>Debugging</strong></td>
+<td>Harder to trace errors across dynamically generated plans</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Sequential LLM calls can increase latency and cost</td>
+</tr>
+</tbody></table>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Batching:</strong> Combine related steps when possible to reduce LLM calls.  </li>
+<li><strong>Caching:</strong> Cache tool outputs for repeated queries.  </li>
+<li><strong>Monitoring:</strong> Log each step’s input/output for observability and debugging.  </li>
+<li><strong>Timeouts:</strong> Implement execution limits to prevent runaway plans.</li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example (Pseudocode)</h3>
+
+<pre><code class="language-python"># Step 1: Define available tools
+tools = {
+    "get_item_descriptions": get_item_descriptions,
+    "check_inventory": check_inventory,
+    "get_item_price": get_item_price,
+}
+
+# Step 2: Ask LLM to create a plan
+plan_prompt = f"""
+You have access to the following tools:
+{describe_tools(tools)}
+
+User query: "Do you have any round sunglasses under $100?"
+Return a step-by-step plan.
+"""
+plan = llm.generate(plan_prompt)
+
+# Step 3: Execute plan step-by-step
+context = {}
+for step in plan.steps:
+    step_prompt = build_step_prompt(step, context, tools)
+    action = llm.decide_action(step_prompt)
+    result = execute_tool(action, tools)
+    context[step.name] = result
+
+# Step 4: Generate final answer
+final_answer = llm.generate_summary(context)
+print(final_answer)
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Real-World Example: Email Assistant</h2>
+
+<strong>Scenario:</strong>
+<p>User says:</p>
+<p>> "Please reply to that email invitation from Bob in New York, tell him I’ll attend, and archive his email."</p>
+
+<strong>LLM Plan:</strong>
+<p>1. Use <code>search_email</code> to find the message from Bob mentioning New York.</p>
+<p>2. Use <code>send_email</code> to reply confirming attendance.</p>
+<p>3. Use <code>move_email</code> to archive the message.</p>
+
+<p>Each step is executed in sequence, with outputs from one step feeding into the next — demonstrating the same planning pattern applied to a productivity domain.</p>
+
+
+<h2 class="section-icon">🚀 Key Takeaways</h2>
+
+<ul>
+<li><strong>Planning workflows</strong> enable agents to autonomously decompose and execute complex tasks.  </li>
+<li>The pattern provides flexibility and adaptability at the cost of predictability and control.  </li>
+<li>It’s widely used in <strong>agentic coding systems</strong> and gradually expanding into other domains.  </li>
+<li>Future improvements in LLM reasoning and control will make planning-based agents even more reliable and powerful.</li>
+</ul>
+
+
+<p>> Next Episode: We’ll take a deeper dive into how these plans are structured internally and how to orchestrate LLMs to plan and execute seamlessly.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

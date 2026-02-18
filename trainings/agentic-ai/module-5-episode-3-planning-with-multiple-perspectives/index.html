@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning with Code Execution | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Planning with Code Execution</h1>
+    <p class="subtitle">Module 5 — Episode 3</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Planning with Code Execution</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 5 — Episode 3</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Explain the concept of <strong>planning through code execution</strong> for LLM-based agents  </li>
+<li><span class="checkmark">✅</span> Implement a system that allows an LLM to generate and execute code as part of its reasoning process  </li>
+<li><span class="checkmark">✅</span> Evaluate trade-offs between JSON-based planning and code-based planning in autonomous systems  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode explores how <strong>LLMs can plan by writing executable code</strong> rather than outputting structured plans in JSON or text.</p>
+<p>By allowing the model to generate code — often in Python with libraries like Pandas — the agent can perform multi-step reasoning and execute complex data transformations autonomously.</p>
+<p>This approach is increasingly used in <strong>agentic AI systems</strong>, particularly those involving <strong>data analysis</strong>, <strong>software generation</strong>, and <strong>dynamic tool use</strong>.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Tool-based LLM execution (from Module 5, Episode 2)  </li>
+<li>Safe code execution environments (sandboxing concepts)  </li>
+<li>Basic Python programming and data manipulation with <strong>Pandas</strong></li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Planning with Code Execution</strong> – A pattern where an LLM writes executable code to perform multi-step reasoning or data operations directly.  </li>
+<li><strong>Code-as-Action</strong> – The idea that code generation <em>is itself</em> the LLM’s action mechanism, replacing JSON or text-based plans.  </li>
+<li><strong>Tool Explosion Problem</strong> – The inefficiency of defining countless specialized tools for every possible user query.  </li>
+<li><strong>Sandboxed Execution</strong> – Running generated code in a controlled environment to prevent unsafe or unintended operations.</li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<p>This section compares three planning strategies: text-based natural language reasoning, JSON-structured step-by-step plans, and code-based Python implementations.</p>
+
+<strong>Key Insight:</strong>
+<p>Code-based planning allows LLMs to use existing library functions and express multi-step logic in a single executable artifact, providing greater flexibility and expressiveness than text or JSON alone.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+<p>1. <strong>User Query:</strong> The system receives a complex question (e.g., “Which month had the highest hot chocolate sales?”).</p>
+<p>2. <strong>Prompting for Code:</strong> The LLM is prompted to generate code wrapped in execution tags (e.g., <code><execute_python></code>).</p>
+<p>3. <strong>Code Generation:</strong> The LLM writes Python code using libraries like Pandas to load, filter, and compute results.</p>
+<p>4. <strong>Execution:</strong> The generated code is executed in a sandbox or trusted environment.</p>
+<p>5. <strong>Result Return:</strong> The output is parsed and presented to the user.</p>
+
+<p>Example flow:</p>
+
+<pre><code class="language-plaintext">User Query → LLM Generates Python Code → Execute → Return Result
+</code></pre>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li><strong>Expressiveness:</strong> Code provides a universal way to represent complex multi-step logic.  </li>
+<li><strong>Leverage of Known APIs:</strong> LLMs have been trained on large code corpora and understand common libraries.  </li>
+<li><strong>Reduced Tool Maintenance:</strong> Instead of building hundreds of narrow tools, the model uses existing language/library capabilities.  </li>
+<li><strong>Composability:</strong> Code naturally allows chaining of operations (e.g., filtering, aggregation, sorting).</li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+<ul>
+<li>Data analysis or transformation tasks  </li>
+<li>Software development assistants  </li>
+<li>Analytical queries over structured data (CSV, SQL-like)  </li>
+<li>Tasks that benefit from multi-step, composable logic  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid When</strong>
+<ul>
+<li>The environment cannot safely execute arbitrary code  </li>
+<li>The task requires deterministic, fully controlled execution  </li>
+<li>The agent’s domain doesn’t map well to programmable operations  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Aspect</th>
+<th>Advantage</th>
+<th>Limitation</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Flexibility</strong></td>
+<td>LLM can use any function it knows</td>
+<td>Harder to predict runtime behavior</td>
+</tr>
+<tr>
+<td><strong>Maintenance</strong></td>
+<td>Fewer custom tools needed</td>
+<td>Requires sandbox or safety layer</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Efficient for complex queries</td>
+<td>Overhead of code execution</td>
+</tr>
+<tr>
+<td><strong>Control</strong></td>
+<td>Dynamic, adaptive planning</td>
+<td>Reduced determinism and traceability</td>
+</tr>
+</tbody></table>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Execution Overhead:</strong> Running external interpreters (Python, Node, etc.) adds latency.  </li>
+<li><strong>Caching:</strong> Cache previously executed code snippets for repeated queries.  </li>
+<li><strong>Error Handling:</strong> Implement robust exception handling to capture and explain runtime errors.  </li>
+<li><strong>Security:</strong> Always prefer sandboxed or containerized execution to prevent untrusted operations.</li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python"># Example: LLM-generated code for analyzing sales data
+import pandas as pd
+
+# Step 1: Load dataset
+df = pd.read_csv("coffee_sales.csv")
+
+# Step 2: Parse and sort by date
+df['date'] = pd.to_datetime(df['date'])
+df = df.sort_values('date')
+
+# Step 3: Filter for hot chocolate transactions
+hot_chocolate = df[df['product'] == 'hot chocolate']
+
+# Step 4: Compute monthly totals
+monthly_sales = hot_chocolate.groupby(df['date'].dt.month)['amount'].sum()
+
+# Step 5: Find the month with the highest sales
+result = monthly_sales.idxmax()
+print("Month with highest hot chocolate sales:", result)
+</code></pre>
+
+<strong>Explanation:</strong>
+<p>This code illustrates how an LLM might express a multi-step reasoning process directly in Python, eliminating the need for multiple custom tools.</p>
+
+
+<h2 class="section-icon">🧩 Related Insights</h2>
+
+<ul>
+<li><strong>Code vs JSON Planning:</strong>  </li>
+</ul>
+<p>Research (e.g., <em>Xinyao Wang et al.</em>) shows that code-as-action consistently outperforms JSON or text-based plans across multiple LLMs.</p>
+
+<ul>
+<li><strong>Agentic Coding Assistants:</strong>  </li>
+</ul>
+<p>Highly autonomous coding agents use this pattern to plan, implement, and test software components iteratively.</p>
+
+
+<h2>⚠️ Safety Reminder</h2>
+
+<p>Always execute model-generated code in a <strong>sandboxed environment</strong>.</p>
+<p>While many developers skip this step in prototypes, it is essential for production-grade systems to ensure <strong>security and stability</strong>.</p>
+
+
+<h2 class="section-icon">🧠 Summary</h2>
+
+<p>Planning with code execution allows LLMs to express and run complex plans directly as executable programs.</p>
+<p>It overcomes the limitations of rigid tool-based systems and leverages the model’s familiarity with programming languages to reason more effectively.</p>
+<p>Though powerful, it introduces new challenges in <strong>control</strong>, <strong>safety</strong>, and <strong>observability</strong>, making sandboxing and execution monitoring vital components of any real-world deployment.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

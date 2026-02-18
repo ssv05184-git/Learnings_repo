@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication Patterns for Multi-Agentic Systems | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Communication Patterns for Multi-Agentic Systems</h1>
+    <p class="subtitle">Module 5 — Episode 6</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Communication Patterns for Multi-Agentic Systems</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 5 — Episode 6</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Identify and describe common communication patterns used in multi-agent systems  </li>
+<li><span class="checkmark">✅</span> Implement hierarchical and linear communication flows among agents  </li>
+<li><span class="checkmark">✅</span> Evaluate trade-offs between structured and unstructured communication models in autonomous systems  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode explores how communication patterns shape the behavior and effectiveness of multi-agentic systems. Just as human teams rely on structured communication to coordinate tasks, agent systems require well-defined messaging architectures to collaborate effectively. Understanding these patterns helps developers design systems that balance coordination, autonomy, and predictability.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Fundamentals of multi-agent systems and agent roles  </li>
+<li>Task delegation and coordination mechanisms in agentic architectures  </li>
+<li>Prior episode: <em>Planning and Coordination in Multi-Agent Systems</em>  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Linear Communication Pattern</strong> – A sequential flow where each agent passes its output to the next. Simple, predictable, but limited in parallelism.  </li>
+<li><strong>Hierarchical Communication Pattern</strong> – A manager or coordinator agent delegates tasks to sub-agents and aggregates results. Enables control and oversight.  </li>
+<li><strong>Deep Hierarchical Pattern</strong> – A nested structure where sub-agents can themselves manage other agents, enabling scalability but increasing complexity.  </li>
+<li><strong>All-to-All Communication Pattern</strong> – Every agent can communicate with every other agent. Maximizes flexibility and emergent behavior but reduces predictability.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_5/E5_communicaation.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram compares four communication patterns: linear (A → B → C), hierarchical (Manager → specialists), deep hierarchical (nested delegation), and all-to-all (full connectivity). Each pattern offers different trade-offs in control, complexity, and adaptability.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Linear Pattern:</strong>
+<p>- Each agent performs a task and passes results to the next agent.</p>
+<p>- Example: Researcher → Designer → Writer.</p>
+<p>- Simple to implement; minimal coordination overhead.</p>
+
+2. <strong>Hierarchical Pattern:</strong>
+<p>- A manager agent assigns tasks and collects results.</p>
+<p>- Example: Marketing Manager → {Researcher, Designer, Writer}.</p>
+<p>- Promotes centralized control and synchronization.</p>
+
+3. <strong>Deep Hierarchy:</strong>
+<p>- Sub-agents can manage their own subordinate agents.</p>
+<p>- Example: Researcher → {Web Researcher, Fact Checker}.</p>
+<p>- Enables modular task decomposition but adds communication latency.</p>
+
+4. <strong>All-to-All Pattern:</strong>
+<p>- Each agent can message any other agent at any time.</p>
+<p>- Requires message routing and conflict resolution mechanisms.</p>
+<p>- Encourages emergent collaboration but can lead to chaotic outcomes.</p>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li><strong>Linear:</strong> Works best when tasks are strictly sequential and dependencies are clear.  </li>
+<li><strong>Hierarchical:</strong> Central coordination reduces conflict and ensures consistency.  </li>
+<li><strong>Deep Hierarchy:</strong> Mirrors real-world organizations, allowing scalable task delegation.  </li>
+<li><strong>All-to-All:</strong> Enables creativity and emergent problem-solving through unrestricted communication.  </li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<p><span class="checkmark">✅</span> <strong>Use Linear Patterns</strong> when:</p>
+<ul>
+<li>The workflow is sequential and deterministic.  </li>
+<li>You need predictable, reproducible outputs.  </li>
+</ul>
+
+<p><span class="checkmark">✅</span> <strong>Use Hierarchical Patterns</strong> when:</p>
+<ul>
+<li>Tasks can be parallelized but need coordination.  </li>
+<li>You need a single point of control or aggregation.  </li>
+</ul>
+
+<p><span class="checkmark">✅</span> <strong>Use Deep Hierarchies</strong> when:</p>
+<ul>
+<li>Tasks are complex and require sub-specialization.  </li>
+<li>You need modular, layered control structures.  </li>
+</ul>
+
+<p><span class="checkmark">✅</span> <strong>Use All-to-All Patterns</strong> when:</p>
+<ul>
+<li>You’re exploring emergent behaviors or creative generation.  </li>
+<li>Predictability is less critical than diversity of outcomes.  </li>
+</ul>
+
+<p><span class="crossmark">❌</span> <strong>Avoid All-to-All</strong> in high-stakes or mission-critical systems due to unpredictability.</p>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Pattern</th>
+<th>Advantages</th>
+<th>Limitations</th>
+</tr></thead><tbody>
+<tr>
+<td>Linear</td>
+<td>Simple, predictable</td>
+<td>Low flexibility, limited parallelism</td>
+</tr>
+<tr>
+<td>Hierarchical</td>
+<td>Central control, scalable</td>
+<td>Single point of failure, coordination overhead</td>
+</tr>
+<tr>
+<td>Deep Hierarchical</td>
+<td>Modular, scalable</td>
+<td>Complex debugging, latency</td>
+</tr>
+<tr>
+<td>All-to-All</td>
+<td>Emergent collaboration</td>
+<td>Chaotic, hard to reproduce results</td>
+</tr>
+</tbody></table>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Linear:</strong> Minimal overhead; bottlenecked by slowest agent.  </li>
+<li><strong>Hierarchical:</strong> Scales with number of sub-agents; coordination latency possible.  </li>
+<li><strong>Deep Hierarchy:</strong> May require message queueing and async processing.  </li>
+<li><strong>All-to-All:</strong> Communication complexity grows quadratically (O(n²)); may require throttling or message filtering.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example – Hierarchical Coordination</h3>
+
+<pre><code class="language-python">class Agent:
+    def __init__(self, name):
+        self.name = name
+
+    def perform_task(self, data):
+        return f"{self.name} processed {data}"
+
+class Manager(Agent):
+    def __init__(self, name, team):
+        super().__init__(name)
+        self.team = team
+
+    def coordinate(self, task):
+        results = []
+        for agent in self.team:
+            result = agent.perform_task(task)
+            results.append(result)
+        return f"{self.name} aggregated results: {results}"
+
+# Example usage
+researcher = Agent("Researcher")
+designer = Agent("Designer")
+writer = Agent("Writer")
+
+manager = Manager("Marketing Manager", [researcher, designer, writer])
+print(manager.coordinate("Marketing Plan"))
+</code></pre>
+
+<strong>Output:</strong>
+<pre><code class="language-text">Marketing Manager aggregated results: ['Researcher processed Marketing Plan', 'Designer processed Marketing Plan', 'Writer processed Marketing Plan']
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Key Takeaways</h2>
+
+<ul>
+<li>Communication patterns define how agents coordinate and share information.  </li>
+<li>Hierarchical patterns offer control and scalability, while all-to-all patterns provide flexibility and emergent behavior.  </li>
+<li>The right pattern depends on your system’s goals — predictability vs. creativity, control vs. autonomy.  </li>
+</ul>
+
+
+<h2>📚 Further Exploration</h2>
+
+<ul>
+<li>Explore frameworks like <strong>LangGraph</strong>, <strong>CrewAI</strong>, or <strong>AutoGen</strong> for implementing multi-agent communication.  </li>
+<li>Experiment with hybrid patterns — e.g., hierarchical control with peer-to-peer sub-communication.  </li>
+<li>Study emergent behaviors in decentralized systems to inform adaptive agent design.  </li>
+</ul>
+
+    </article>
+
+</main>
+
+</body>
+</html>

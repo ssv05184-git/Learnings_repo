@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is Agentic AI? | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>What is Agentic AI?</h1>
+    <p class="subtitle">Module 1 — Episode 1</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>What is Agentic AI?</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 1</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Explain what <em>Agentic AI</em> means and how it differs from traditional prompt-based LLM usage  </li>
+<li><span class="checkmark">✅</span> Describe the structure and benefits of agentic workflows  </li>
+<li><span class="checkmark">✅</span> Decompose complex tasks into smaller, iterative steps suitable for agentic execution  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode introduces the concept of <strong>Agentic AI</strong> — AI systems that operate through structured, multi-step workflows rather than single, monolithic prompts.</p>
+<p>You’ll learn why this iterative, feedback-driven approach produces more accurate and thoughtful outputs, and how it can be applied to build intelligent systems such as research agents.</p>
+<p>Agentic workflows are foundational to building autonomous AI applications that can plan, reason, and refine their work over multiple steps.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Basic usage of <strong>Large Language Models (LLMs)</strong>  </li>
+<li>The concept of <strong>prompt engineering</strong>  </li>
+<li>Familiarity with <strong>API-based AI applications</strong>  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Agentic AI</strong> – An AI system that performs a sequence of steps or actions to achieve a goal, often involving planning, reasoning, execution, and self-reflection.  </li>
+<li><strong>Agentic Workflow</strong> – A structured process where an AI system breaks down a complex task into smaller sub-tasks, executes them iteratively, and integrates results for a final output.  </li>
+<li><strong>Human-in-the-Loop (HITL)</strong> – A design pattern where human feedback or validation is optionally integrated into the AI’s workflow to ensure accuracy and accountability.  </li>
+<li><strong>Task Decomposition</strong> – The process of breaking down a large, complex goal (e.g., writing a research paper) into smaller, manageable actions that an agent can execute sequentially.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<p>A flow diagram showing the difference between:</p>
+<p>1. <strong>Single-pass LLM prompt</strong> — “Write an essay on topic X.”</p>
+<img src="../../../diagrams/images/agentic-ai/module_1/E1_traditional.png" alt="Image" class="content-image">
+<p>2. <strong>Agentic Workflow</strong> — “Plan → Research → Draft → Review → Revise → Finalize.”</p>
+<img src="../../../diagrams/images/agentic-ai/module_1/E1_agentic.png" alt="Image" class="content-image">
+<strong>Caption:</strong>
+<p>This diagram illustrates how agentic workflows introduce iteration, planning, and reflection, resulting in higher-quality outputs compared to single-pass LLM generations.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+<p>1. <strong>Task Initiation:</strong> The user provides a high-level objective (e.g., “Write an essay about renewable energy”).</p>
+<p>2. <strong>Planning:</strong> The AI agent creates an outline or plan of action.</p>
+<p>3. <strong>Research:</strong> The agent determines what information is needed and may call APIs or perform web searches.</p>
+<p>4. <strong>Drafting:</strong> The agent synthesizes findings into an initial draft.</p>
+<p>5. <strong>Reflection:</strong> The agent evaluates the draft, identifies weak areas, and plans revisions.</p>
+<p>6. <strong>Revision:</strong> It iteratively improves the output, optionally requesting human feedback.</p>
+<p>7. <strong>Finalization:</strong> The agent consolidates all improvements into a final, coherent result.</p>
+
+
+<h3>Why It Works</h3>
+
+<p>Agentic workflows leverage <strong>iteration and reflection</strong> — two principles that mirror human problem-solving.</p>
+<p>Instead of generating output in a single pass, the agent:</p>
+<ul>
+<li>Thinks before acting (planning)</li>
+<li>Gathers evidence (research)</li>
+<li>Evaluates and refines its own work (reflection)</li>
+</ul>
+
+<p>This leads to more accurate, contextually rich, and coherent results.</p>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+<ul>
+<li>Research and report generation  </li>
+<li>Data synthesis from multiple sources  </li>
+<li>Multi-step reasoning tasks  </li>
+<li>Applications requiring structured decision-making  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid When</strong>
+<ul>
+<li>The task is simple and deterministic (e.g., “Summarize this paragraph”)  </li>
+<li>Low-latency responses are required  </li>
+<li>The cost of multiple LLM calls outweighs the quality benefits  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<table class="data-table">
+<thead><tr>
+<th>Aspect</th>
+<th>Trade-off</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>Requires orchestration logic and multiple LLM calls</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Slower execution due to iterative steps</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Increased API usage and compute time</td>
+</tr>
+<tr>
+<td><strong>Reliability</strong></td>
+<td>More moving parts can introduce failure points</td>
+</tr>
+<tr>
+<td><strong>Transparency</strong></td>
+<td>Complex workflows can be harder to debug</td>
+</tr>
+</tbody></table>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Caching intermediate results</strong> reduces redundant LLM calls.  </li>
+<li><strong>Parallelizing subtasks</strong> (e.g., multiple research queries) can offset latency.  </li>
+<li><strong>Prompt optimization</strong> minimizes token usage across steps.  </li>
+<li><strong>Monitoring and logging</strong> are essential for debugging multi-step workflows.</li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python"># Pseudocode: Simple agentic workflow for writing a short report
+
+from my_agentic_framework import Agent
+
+agent = Agent()
+
+# Step 1: Plan
+outline = agent.llm("Create an outline for an essay on renewable energy.")
+
+# Step 2: Research
+search_terms = agent.llm(f"Suggest web search queries for: {outline}")
+web_results = agent.web_search(search_terms)
+
+# Step 3: Draft
+draft = agent.llm(f"Write the first draft using these findings: {web_results}")
+
+# Step 4: Reflect and Revise
+feedback = agent.llm(f"Review this draft for missing points: {draft}")
+final_report = agent.llm(f"Revise the draft based on feedback: {feedback}")
+
+print(final_report)
+</code></pre>
+
+<p>This example demonstrates a basic <strong>agentic loop</strong> — planning, researching, drafting, reflecting, and revising — each step improving upon the last.</p>
+
+
+<h2 class="section-icon">🧩 Real-World Example: The Research Agent</h2>
+
+<p>A <strong>Research Agent</strong> can:</p>
+<ul>
+<li>Accept a topic (e.g., “How to start a rocket company to compete with SpaceX”)  </li>
+<li>Plan its research steps  </li>
+<li>Perform web searches via APIs  </li>
+<li>Synthesize and rank findings  </li>
+<li>Generate and refine a markdown report  </li>
+</ul>
+
+<p>Such an agent produces a more thoughtful, evidence-based output than a single LLM prompt could achieve.</p>
+
+
+<h2 class="section-icon">🚀 Key Takeaways</h2>
+
+<ul>
+<li>Agentic AI transforms LLMs from passive responders into <strong>active, iterative problem solvers</strong>.  </li>
+<li>The power of Agentic AI lies in <strong>workflow design</strong>, not just model prompting.  </li>
+<li>Mastering <strong>task decomposition</strong> and <strong>workflow orchestration</strong> is essential to building robust, multi-step AI systems.  </li>
+</ul>
+
+
+<p>> Next Episode: Explore how <strong>autonomy levels</strong> vary across agentic workflows and how to choose the right degree of autonomy for your application.</p>
+    </article>
+
+</main>
+
+</body>
+</html>

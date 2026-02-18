@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code - MCP Servers Setup & Usage Guide | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Claude Code - MCP Servers Setup & Usage Guide</h1>
+    <p class="subtitle">Complete guide to integrating Model Context Protocol servers with Claude Code</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../index.html">Home</a>
+        <span>›</span>
+        <a href="./index.html">Training</a>
+        <span>›</span>
+        <span>Claude Code - MCP Servers Setup & Usage Guide</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+> <strong>Complete guide to integrating Model Context Protocol servers with Claude Code</strong>
+
+
+<h2>What is an MCP Server?</h2>
+
+<strong>MCP</strong> = Model Context Protocol
+<strong>Definition:</strong> External tools that extend Claude Code's capabilities beyond file reading/writing.
+
+<strong>Examples:</strong>
+<ul>
+<li><strong>Playwright</strong> - Control browsers, take screenshots, test UIs</li>
+<li><strong>GitHub</strong> - Read PRs, manage repos, integrate with Git workflows</li>
+<li><strong>Figma</strong> - Import design mockups into Claude's context</li>
+<li><strong>FRED</strong> - Access economic data via API</li>
+<li><strong>Node.js</strong> - Execute scripts, run tests</li>
+</ul>
+
+<strong>Why Use Them?</strong>
+<ul>
+<li>Automate UI testing</li>
+<li>Integrate with external APIs</li>
+<li>Get real-time data</li>
+<li>Validate designs</li>
+<li>Manage GitHub workflows</li>
+</ul>
+
+
+<h2>Installation Prerequisites</h2>
+
+<h3>For All MCP Servers</h3>
+
+<p>1. <strong>Node.js 18+</strong> (most MCP servers are Node-based)</p>
+<pre><code class="language-bash">   node --version  # Should be v18.0.0+
+   </code></pre>
+
+<p>2. <strong>Valid API Keys</strong> (if the server requires authentication)</p>
+<p>- GitHub: GitHub CLI or Personal Access Token</p>
+<p>- Figma: Figma API Key</p>
+<p>- FRED: FRED API Key</p>
+
+3. <strong>Claude Code installed</strong>
+<pre><code class="language-bash">   claude --version
+   </code></pre>
+
+
+<h2>Common MCP Servers</h2>
+
+<h3>1. Playwright (Browser Automation)</h3>
+
+<strong>Purpose:</strong> Automate UI testing, take screenshots, interact with web pages.
+
+<strong>Installation:</strong>
+
+<pre><code class="language-bash"># Exit Claude Code first
+exit
+
+# Add Playwright MCP server
+claude mcp add playwright npx @playwright/mcp@latest
+
+# Re-launch Claude Code
+claude
+
+# Verify
+/mcp
+</code></pre>
+
+<strong>Verify Connection:</strong>
+<pre><code class="language-bash">/mcp
+# Should show: playwright (connected)
+</code></pre>
+
+<strong>What You Can Do:</strong>
+<ul>
+<li>Launch browser: <code>browser.launch()</code></li>
+<li>Navigate to URL: <code>browser.navigate("http://localhost:3000")</code></li>
+<li>Take screenshot: <code>browser.take_screenshot()</code></li>
+<li>Fill form fields: <code>browser.fill_field(selector, text)</code></li>
+<li>Click elements: <code>browser.click_element(selector)</code></li>
+<li>Get page content: <code>browser.get_page_content()</code></li>
+</ul>
+
+<strong>Example Prompts:</strong>
+
+<pre><code class="language-bash">claude
+
+# Example 1: Visual verification
+"Using Playwright, visit http://localhost:3000, take a screenshot, 
+and verify the login button is centered and blue"
+
+# Example 2: Screenshot analysis
+"[paste screenshot from Win+Shift+S]
+These fonts are hard to read. Make them bigger and bolder."
+
+# Example 3: Automated testing
+"Using Playwright, test the login flow:
+1. Navigate to http://localhost:3000/login
+2. Fill email field with test@example.com
+3. Fill password field with testpass123
+4. Click Login button
+5. Verify redirect to dashboard
+6. Take screenshot for verification"
+</code></pre>
+
+<strong>Permission Management:</strong>
+
+<p>First time Claude uses a Playwright tool:</p>
+<pre><code class="language-bash">Allow mcp__playwright__browser_take_screenshot? (Y/n): Y
+</code></pre>
+
+<p>To auto-approve future screenshot requests:</p>
+<pre><code class="language-bash">/permissions
+# Add new rule → Allow → 
+# Search for: mcp__playwright__browser_take_screenshot
+</code></pre>
+
+
+<h3>2. GitHub Integration</h3>
+
+<strong>Purpose:</strong> Read PRs, create/review pull requests, manage repositories.
+
+<strong>Installation (Option A - Via GitHub App):</strong>
+
+<pre><code class="language-bash">claude
+
+# Easiest method
+/install-github-app
+
+# Follow prompts to authorize
+</code></pre>
+
+<strong>Installation (Option B - Via GitHub CLI):</strong>
+
+<pre><code class="language-bash"># Install GitHub CLI first
+brew install gh  # macOS
+# or: choco install gh  # Windows
+# or: sudo apt install gh  # Linux
+
+# Authenticate
+gh auth login
+
+# Add GitHub MCP to Claude Code
+claude mcp add github gh api
+</code></pre>
+
+<strong>Verify Connection:</strong>
+<pre><code class="language-bash">claude
+/mcp
+# Should show: github (connected)
+</code></pre>
+
+<strong>What You Can Do:</strong>
+<ul>
+<li>List repositories</li>
+<li>Read PR content and comments</li>
+<li>Create pull requests</li>
+<li>Review code</li>
+<li>Get file contents</li>
+<li>Manage issues</li>
+</ul>
+
+<strong>Example Prompts:</strong>
+
+<pre><code class="language-bash">claude
+
+# Example 1: Create a PR
+"Create a pull request on main branch with the new authentication feature.
+Title: 'feat: add JWT-based authentication'
+Description: 'Implements JWT tokens for API authentication'"
+
+# Example 2: Review a PR
+"Review the pull request #123 and provide feedback on code quality"
+
+# Example 3: Analyze repository
+"Show me the structure of this repository and suggest what we should work on next"
+</code></pre>
+
+
+<h3>3. Figma (Design Import)</h3>
+
+<strong>Purpose:</strong> Import Figma mockups and build code from designs.
+
+<strong>Prerequisites:</strong>
+<ul>
+<li>Figma Desktop App installed</li>
+<li>Figma account with design access</li>
+<li>Dev Mode seat (paid) OR use free alternative (Framelink)</li>
+</ul>
+
+<p>#### Option A: Official Figma MCP Server (Paid)</p>
+
+<strong>Requirements:</strong>
+<ul>
+<li>Dev or Full seat on Figma Pro+</li>
+<li>Figma file in Dev Mode</li>
+</ul>
+
+<strong>Setup:</strong>
+
+<p>1. Open design in Figma Desktop</p>
+<p>2. Menu → Preferences → Enable Dev Mode MCP Server</p>
+<p>3. Confirmation message: "Running locally at http://127.0.0.1:3845/mcp"</p>
+
+<p>4. Add to Claude Code:</p>
+<pre><code class="language-bash">exit  # Exit Claude Code
+
+claude mcp add --transport http figma-dev-mode http://127.0.0.1:3845/mcp
+
+claude  # Re-launch
+</code></pre>
+
+<strong>Example Prompt:</strong>
+
+<pre><code class="language-bash">claude
+
+"Using the Figma design I've shared, analyze the layout and build a React component that matches it.
+Use Tailwind CSS for styling and ensure it's responsive."
+</code></pre>
+
+
+<p>#### Option B: Framelink MCP Server (Free)</p>
+
+<strong>Installation:</strong>
+
+1. Get Figma API key from <a href="https://figma.com/developers">figma.com/developers</a>
+
+<p>2. Add Framelink to Claude Code:</p>
+<pre><code class="language-bash">exit
+
+claude mcp add "Framelink Figma MCP" \
+  npx -y figma-developer-mcp \
+  --figma-api-key=YOUR_API_KEY \
+  --stdio
+
+claude
+</code></pre>
+
+<p>3. Verify:</p>
+<pre><code class="language-bash">/mcp
+</code></pre>
+
+<strong>Documentation:</strong>
+<ul>
+<li><a href="https://www.framelink.ai/docs/quickstart">Framelink Quickstart</a></li>
+<li><a href="https://www.framelink.ai/docs/best-practices">Best Practices</a></li>
+</ul>
+
+
+<h3>4. FRED - Economic Data API</h3>
+
+<strong>Purpose:</strong> Access Federal Reserve Economic Data for financial dashboards.
+
+<strong>Installation:</strong>
+
+1. Get API key from <a href="https://fred.stlouisfed.org/docs/api/api_key.html">fred.stlouisfed.org/docs/api</a>
+
+<p>2. Set environment variable:</p>
+<pre><code class="language-bash">export FRED_API_KEY=your_api_key_here
+</code></pre>
+
+<p>3. Add FRED MCP:</p>
+<pre><code class="language-bash">exit
+claude mcp add fred npx fred-mcp
+claude
+</code></pre>
+
+<strong>Example Use Case:</strong>
+
+<pre><code class="language-bash">claude
+
+"Create a financial dashboard showing:
+- Unemployment rate (UNRATE)
+- GDP growth (A191RL1Q225SBEA)
+- Interest rates (FEDFUNDS)
+- Use data from the last 10 years
+- Create interactive charts with Plotly/Chart.js"
+</code></pre>
+
+
+<h2>Managing MCP Servers</h2>
+
+<h3>View Connected Servers</h3>
+
+<pre><code class="language-bash">claude
+/mcp
+</code></pre>
+
+<strong>Output:</strong>
+<pre><code class="language-text">Connected MCP Servers (3):
+========================
+1. playwright (v1.45.1) [Connected ✓]
+   - 12 tools available
+   
+2. github (CLI) [Connected ✓]
+   - 8 tools available
+   
+3. figma-dev-mode (http) [Connected ✓]
+   - 15 tools available
+
+Available to Install:
+- fred-mcp (economic data)
+- node-mcp (execute JavaScript)
+</code></pre>
+
+
+<h3>Add a New MCP Server</h3>
+
+<strong>Generic syntax:</strong>
+<pre><code class="language-bash">exit  # Exit Claude Code first
+
+claude mcp add &lt;name&gt; &lt;command&gt;
+
+claude  # Re-launch
+</code></pre>
+
+<strong>Examples:</strong>
+
+<pre><code class="language-bash"># Playwright
+claude mcp add playwright npx @playwright/mcp@latest
+
+# Via HTTP (Figma)
+claude mcp add --transport http figma http://127.0.0.1:3845/mcp
+
+# Custom command
+claude mcp add "my-tool" "node /path/to/mcp-server.js"
+</code></pre>
+
+
+<h3>Remove an MCP Server</h3>
+
+<pre><code class="language-bash">exit
+
+claude mcp remove playwright
+
+claude
+</code></pre>
+
+
+<h2>Permission Management</h2>
+
+<h3>Why Permissions Matter</h3>
+
+<p>Claude Code asks for permission before using certain critical tools:</p>
+<ul>
+<li>Taking screenshots</li>
+<li>Writing to files outside your project</li>
+<li>Running external commands</li>
+<li>Accessing sensitive data</li>
+</ul>
+
+<h3>Managing Permissions</h3>
+
+<pre><code class="language-bash">claude
+/permissions
+</code></pre>
+
+<strong>Interactive menu:</strong>
+<pre><code class="language-text">Permission Manager
+==================
+
+Current Rules (2):
+1. Allow | mcp__playwright__browser_take_screenshot
+   Applies to: All conversations
+   
+2. Deny | mcp__github__delete_repo
+   Applies to: All conversations
+
+Add New Rule? (Y/n): Y
+
+Tool Name: mcp__playwright__browser_fill_field
+Action: Allow | Deny: Allow
+Applies to: All conversations | This session only: All conversations
+
+✓ Rule added
+</code></pre>
+
+
+<h3>Auto-Approve Screenshot Tool</h3>
+
+<p>Most common need:</p>
+
+<pre><code class="language-bash">/permissions
+
+# Add new rule
+# Tool: mcp__playwright__browser_take_screenshot
+# Action: Allow
+# Once approved, Claude can take unlimited screenshots
+</code></pre>
+
+
+<h2>Real-World Examples</h2>
+
+<h3>Example 1: Build from Figma Design</h3>
+
+<strong>Scenario:</strong> Designer gives you a Figma mockup, you need to build it quickly.
+
+<pre><code class="language-bash"># Setup
+mkdir my-dashboard &amp;&amp; cd my-dashboard
+npx create-react-app .
+claude
+
+# Prompt
+Shift+Tab Shift+Tab  # Plan mode
+
+"Analyze the Figma design I shared. Build a Next.js app matching this design exactly.
+Use Tailwind CSS and create reusable components.
+Include responsive mobile design.
+Use placeholder data for now."
+
+# Review plan, press Y
+# Claude will:
+# 1. Import Figma design
+# 2. Create React components
+# 3. Apply Tailwind styling
+# 4. Build responsive layout
+</code></pre>
+
+
+<h3>Example 2: Automated UI Testing</h3>
+
+<strong>Scenario:</strong> You need to verify the login flow works correctly.
+
+<pre><code class="language-bash">claude
+
+# Start your app in another terminal first
+# npm start  # Your dev server runs on localhost:3000
+
+# In Claude Code:
+"Using Playwright:
+1. Navigate to http://localhost:3000/login
+2. Enter user@example.com in email field
+3. Enter password123 in password field
+4. Click 'Login' button
+5. Wait for dashboard to load
+6. Take a screenshot
+7. Verify you see 'Welcome, User' message"
+</code></pre>
+
+<strong>Claude will:</strong>
+<p>1. Launch browser</p>
+<p>2. Fill in login form</p>
+<p>3. Submit form</p>
+<p>4. Take screenshot</p>
+<p>5. Verify successful login</p>
+<p>6. Report results</p>
+
+
+<h3>Example 3: GitHub PR Review</h3>
+
+<strong>Scenario:</strong> A PR is submitted, you want Claude to review it.
+
+<pre><code class="language-bash">claude
+
+"Review pull request #123 on the main repo. Provide feedback on:
+- Code quality
+- Test coverage
+- Performance implications
+- Security concerns
+Create a detailed review comment"
+</code></pre>
+
+<strong>Claude will:</strong>
+<p>1. Read PR changes</p>
+<p>2. Analyze code</p>
+<p>3. Check test coverage</p>
+<p>4. Post review to GitHub</p>
+<p>5. Suggest improvements</p>
+
+
+<h3>Example 4: Economic Data Dashboard</h3>
+
+<strong>Scenario:</strong> Build a real-time economic indicators dashboard.
+
+<pre><code class="language-bash"># Setup FRED API key first
+export FRED_API_KEY=your_key
+
+cd my-dashboard
+claude
+
+"Using the FRED API, create an interactive dashboard showing:
+- Unemployment rate (UNRATE)
+- GDP (A191RL1Q225SBEA)
+- Consumer Price Index (CPIAUCSL)
+- S&amp;P 500 (SP500)
+
+Use Streamlit for the UI. Include:
+- Line charts showing 10-year trends
+- Current values with trend indicators
+- Date range selector
+- Comparison view (year-over-year)"
+</code></pre>
+
+
+<h2>Troubleshooting MCP Servers</h2>
+
+<h3>Server Not Connecting</h3>
+
+<pre><code class="language-bash">claude
+/mcp
+
+# Should show [Connected ✓]
+# If [Disconnected ✗]:
+
+# 1. Check installation
+exit
+npm list -g @playwright/mcp
+
+# 2. Reinstall
+npm uninstall -g @playwright/mcp
+npm install -g @playwright/mcp
+
+# 3. Re-add to Claude Code
+claude mcp remove playwright
+claude mcp add playwright npx @playwright/mcp@latest
+
+# 4. Verify
+claude
+/mcp
+</code></pre>
+
+
+<h3>Permission Errors</h3>
+
+<p>If Claude can't use a tool:</p>
+
+<pre><code class="language-bash"># Error message: "Permission denied for mcp__playwright__browser_take_screenshot"
+
+# Solution:
+/permissions
+# Add Allow rule for that tool
+</code></pre>
+
+
+<h3>MCP Server Crashes</h3>
+
+<pre><code class="language-bash"># If server keeps crashing:
+
+# 1. Check logs
+/debug
+
+# 2. Reinstall
+exit
+claude mcp remove playwright
+claude mcp add playwright npx @playwright/mcp@latest
+
+# 3. Check for Node.js version issues
+node --version  # Ensure 18+
+</code></pre>
+
+
+<h2>Best Practices</h2>
+
+<h3>Do <span class="checkmark">✅</span></h3>
+
+<ul>
+<li><strong>Use specific MCP tools</strong> for their intended purpose (Playwright for UI, GitHub for PRs)</li>
+<li><strong>Set permissions</strong> for tools you use frequently to avoid repeated prompts</li>
+<li><strong>Keep API keys secure</strong> - never commit them to git</li>
+<li><strong>Test with screenshots</strong> - take screenshots before and after changes</li>
+</ul>
+
+<h3>Don't <span class="crossmark">❌</span></h3>
+
+<ul>
+<li><strong>Share API keys</strong> - keep FRED, GitHub, Figma keys private</li>
+<li><strong>Run unvetted commands</strong> - always review what Claude Code will execute</li>
+<li><strong>Leave MCP servers running</strong> if you don't need them (exit Claude Code)</li>
+<li><strong>Change permissions globally</strong> unless you trust all code</li>
+</ul>
+
+
+<h2>MCP Server Comparison Table</h2>
+
+<table class="data-table">
+<thead><tr>
+<th>Server</th>
+<th>Purpose</th>
+<th>Setup Complexity</th>
+<th>Cost</th>
+<th>Use When</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Playwright</strong></td>
+<td>Browser automation</td>
+<td>Easy</td>
+<td>Free</td>
+<td>Testing UIs, screenshots</td>
+</tr>
+<tr>
+<td><strong>GitHub</strong></td>
+<td>Repository management</td>
+<td>Medium</td>
+<td>Free</td>
+<td>PR reviews, repo integration</td>
+</tr>
+<tr>
+<td><strong>Figma</strong></td>
+<td>Design import</td>
+<td>Hard</td>
+<td>Paid</td>
+<td>Building from mockups</td>
+</tr>
+<tr>
+<td><strong>Framelink</strong></td>
+<td>Figma alternative</td>
+<td>Medium</td>
+<td>Free</td>
+<td>Design import (no Figma seat)</td>
+</tr>
+<tr>
+<td><strong>FRED</strong></td>
+<td>Economic data</td>
+<td>Easy</td>
+<td>Free</td>
+<td>Financial dashboards</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>Script execution</td>
+<td>Easy</td>
+<td>Free</td>
+<td>Running custom code</td>
+</tr>
+</tbody></table>
+
+
+<h2>Quick Setup Checklist</h2>
+
+<ul>
+<li>[ ] Node.js 18+ installed</li>
+<li>[ ] Claude Code installed</li>
+<li>[ ] Decide which MCP servers you need</li>
+<li>[ ] Set up API keys for each server</li>
+<li>[ ] Add servers: <code>claude mcp add</code></li>
+<li>[ ] Verify with <code>/mcp</code></li>
+<li>[ ] Test with example prompts</li>
+<li>[ ] Configure permissions as needed</li>
+<li>[ ] Save this guide for reference</li>
+</ul>
+
+
+<h2>Next Steps</h2>
+
+<p>1. <strong>Start with Playwright</strong> - easiest MCP server to learn</p>
+<p>2. <strong>Use screenshots</strong> to validate UI changes</p>
+<p>3. <strong>Add GitHub</strong> integration for PR workflows</p>
+<p>4. <strong>Explore Figma</strong> when you have design mockups</p>
+<p>5. <strong>Integrate FRED</strong> for data-driven projects</p>
+
+
+<strong>Pro Tip:</strong> Start with one MCP server, master it, then add others! 🚀
+
+    </article>
+
+</main>
+
+</body>
+</html>

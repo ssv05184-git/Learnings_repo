@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Agentic Workflows | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Multi-Agentic Workflows</h1>
+    <p class="subtitle">Module 5 — Episode 5</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Multi-Agentic Workflows</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 5 — Episode 5</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Explain the concept of multi-agentic workflows and how they differ from single-agent systems  </li>
+<li><span class="checkmark">✅</span> Design and implement a simple multi-agent workflow using specialized agents  </li>
+<li><span class="checkmark">✅</span> Evaluate and choose between linear and manager-coordinated communication patterns  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode introduces <strong>multi-agentic workflows</strong>—systems where multiple AI agents collaborate to complete complex tasks.</p>
+<p>Instead of relying on a single agent to perform all subtasks, these workflows distribute responsibilities across specialized agents, such as researchers, designers, and writers.</p>
+<p>This decomposition mirrors how human teams operate, improving modularity, scalability, and reuse in AI-driven systems.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Fundamentals of <strong>single-agent design</strong> (Module 5, Episode 4)  </li>
+<li>Concepts of <strong>LLM prompting and tool use</strong>  </li>
+<li>Basics of <strong>task decomposition and orchestration</strong>  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Multi-Agent System</strong> – A collection of autonomous agents collaborating to achieve a shared goal.  </li>
+<li><strong>Agent Role Specialization</strong> – Assigning distinct responsibilities to each agent (e.g., researcher, designer, writer) to simplify complexity.  </li>
+<li><strong>Workflow Pattern</strong> – The structure defining how agents communicate and pass outputs (linear, hierarchical, or parallel).  </li>
+<li><strong>Delegation</strong> – The process by which one agent (often a “manager”) assigns subtasks to other agents.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_5/E4_muti-agentic%20.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram illustrates two communication patterns: a linear workflow where agents process data sequentially, and a manager-coordinated workflow where a central agent delegates tasks to specialized agents.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+<p>1. <strong>Task Decomposition</strong> – Break a complex goal (e.g., creating a marketing brochure) into smaller, role-specific tasks.</p>
+<p>2. <strong>Agent Definition</strong> – Each agent is instantiated by prompting an LLM to act in a specific role (e.g., “You are a research agent specializing in market trend analysis”).</p>
+<p>3. <strong>Tool Assignment</strong> – Equip agents with tools relevant to their role:</p>
+<p>- Researcher → Web search APIs</p>
+<p>- Graphic Designer → Image generation or charting tools</p>
+<p>- Writer → LLM text generation</p>
+<p>4. <strong>Workflow Execution</strong> –</p>
+<p>- In a <strong>linear workflow</strong>, agents act in sequence, passing results downstream.</p>
+<p>- In a <strong>manager workflow</strong>, a coordinating agent delegates and aggregates results dynamically.</p>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li><strong>Decomposition reduces complexity:</strong> Smaller, focused agents are easier to design, test, and improve.  </li>
+<li><strong>Parallelism and modularity:</strong> Different agents can evolve independently or be reused in other systems.  </li>
+<li><strong>Human-analogous coordination:</strong> Mimics how teams of specialists collaborate, improving interpretability and control.  </li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<p><span class="checkmark">✅</span> Use multi-agent workflows when:</p>
+<ul>
+<li>The task naturally decomposes into distinct roles or responsibilities.  </li>
+<li>You need modularity or agent reuse across projects.  </li>
+<li>Coordination logic (e.g., planning, reflection) can be managed by a higher-level “manager” agent.</li>
+</ul>
+
+<p><span class="crossmark">❌</span> Avoid when:</p>
+<ul>
+<li>The task is simple enough for a single agent to handle efficiently.  </li>
+<li>Communication overhead outweighs the benefit of specialization.  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Increased coordination complexity</strong> — Managing inter-agent communication adds orchestration overhead.  </li>
+<li><strong>Latency accumulation</strong> — Sequential workflows can slow down end-to-end execution.  </li>
+<li><strong>Error propagation</strong> — Mistakes by one agent can cascade downstream.  </li>
+<li><strong>Debugging difficulty</strong> — Multi-agent interactions can be harder to trace and diagnose.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Caching intermediate results</strong> can reduce redundant agent calls.  </li>
+<li><strong>Parallel execution</strong> (when possible) improves throughput.  </li>
+<li><strong>Monitoring and logging</strong> each agent’s input/output helps in debugging and optimization.  </li>
+<li><strong>Timeouts and retries</strong> should be managed to prevent deadlocks or runaway processes.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python"># Example: Multi-agent workflow for a marketing campaign
+
+from my_agents import ResearchAgent, GraphicDesignerAgent, WriterAgent
+
+# Step 1: Initialize agents
+researcher = ResearchAgent(tools=['web_search'])
+designer = GraphicDesignerAgent(tools=['image_gen'])
+writer = WriterAgent()
+
+# Step 2: Execute linear workflow
+research_report = researcher.run("Analyze current sunglasses market trends.")
+visual_assets = designer.run(f"Create visuals based on: {research_report}")
+final_brochure = writer.run(f"Write marketing copy using: {research_report} and {visual_assets}")
+
+print(final_brochure)
+</code></pre>
+
+<h3>Manager-Coordinated Example</h3>
+
+<pre><code class="language-python"># Example: Manager agent orchestrating specialized agents
+
+from my_agents import ManagerAgent, ResearchAgent, GraphicDesignerAgent, WriterAgent
+
+manager = ManagerAgent(team={
+    "researcher": ResearchAgent(tools=['web_search']),
+    "designer": GraphicDesignerAgent(tools=['image_gen']),
+    "writer": WriterAgent()
+})
+
+final_output = manager.run("Create a summer marketing campaign for sunglasses.")
+print(final_output)
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Key Takeaways</h2>
+
+<ul>
+<li>Multi-agentic workflows enable <strong>modular, specialized, and reusable</strong> AI systems.  </li>
+<li>Two common communication patterns:</li>
+<li><strong>Linear workflows</strong> — Sequential execution of agents.  </li>
+<li><strong>Manager-coordinated workflows</strong> — A central agent delegates and aggregates work.  </li>
+<li>The right pattern depends on <strong>task complexity</strong>, <strong>interdependence</strong>, and <strong>performance needs</strong>.  </li>
+</ul>
+
+
+<h2 class="section-icon">🚀 Next Steps</h2>
+
+<p>In the next episode, you’ll explore <strong>communication patterns</strong> in multi-agent systems—how agents coordinate, share state, and synchronize activities effectively.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

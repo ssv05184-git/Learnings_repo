@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creating a Website Based on a Figma Mockup | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Creating a Website Based on a Figma Mockup</h1>
+    <p class="subtitle">Module 1 — Episode 9</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Creating a Website Based on a Figma Mockup</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 9</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Claude Code - A Highly Agentic Coding Assistant</p>
+<blockquote><strong>Course Level:</strong> Intermediate → Advanced</blockquote>
+
+
+<h2 class="section-icon">🎯 What You'll Learn</h2>
+
+<p>By the end of this episode, you will:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Connect Claude Code to the <strong>Figma MCP server</strong> to import and interpret design mockups  </li>
+<li><span class="checkmark">✅</span> Use <strong>Next.js</strong> to scaffold and build a responsive web application from a Figma design  </li>
+<li><span class="checkmark">✅</span> Automate <strong>UI validation</strong> using the <strong>Playwright MCP server</strong>  </li>
+<li><span class="checkmark">✅</span> Integrate <strong>real-world data</strong> into your generated UI using external APIs  </li>
+</ul>
+
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+
+
+<h2 class="section-icon">🧭 Quick Overview</h2>
+
+<strong>The Big Picture:</strong>
+<p>This episode demonstrates how Claude Code can take a Figma design mockup and transform it into a fully functional web application using MCP servers — bridging the gap between design and production code.</p>
+
+<strong>What Problem Does This Solve?</strong>
+<ul>
+<li>Manual recreation of UI designs from Figma is slow and error-prone  </li>
+<li>Designers and developers often struggle to sync mockups with live code  </li>
+<li>Testing front-end builds visually across iterations is time-consuming  </li>
+</ul>
+
+<strong>Claude Code’s Solution:</strong>
+<p>Claude Code, through <strong>MCP server integration</strong>, automates design-to-code translation and visual testing — enabling developers to move from mockup to working prototype in minutes.</p>
+
+<strong>Where You'll Use This:</strong>
+<ul>
+<li>Rapid prototyping from design assets  </li>
+<li>Building internal dashboards and analytics tools  </li>
+<li>Testing and iterating on UI components with real data  </li>
+</ul>
+
+
+<h2 class="section-icon">🧱 Prerequisites & Background</h2>
+
+<strong>You should already know:</strong>
+<ul>
+<li>Basics of <strong>Next.js</strong> or React component architecture  </li>
+<li>Fundamentals of <strong>Claude Code tool use</strong> and <strong>MCP server setup</strong>  </li>
+<li>How to run local development servers and install npm packages  </li>
+</ul>
+
+<strong>If you're new to Claude Code:</strong>
+→ Review <strong>Episode 3: Working with MCP Servers</strong> and <strong>Episode 7: Automating Front-End Workflows</strong>
+
+
+<h2 class="section-icon">🔑 Core Concepts Explained</h2>
+
+<h3>Concept 1: MCP Server Integration</h3>
+<strong>Definition:</strong>
+<p>MCP (Model Context Protocol) servers extend Claude Code’s capabilities by exposing external tools (like Figma or Playwright) directly within Claude’s environment.</p>
+
+<strong>Why It Matters:</strong>
+<p>They enable Claude to fetch, analyze, and act on data from external systems — turning it into an <em>agentic</em> developer that can design, test, and iterate autonomously.</p>
+
+<strong>When To Use:</strong>
+<p>Whenever you need Claude to interact with external APIs, design tools, or testing frameworks.</p>
+
+
+<h3>Concept 2: Figma MCP Server</h3>
+<strong>Definition:</strong>
+<p>A specialized MCP server that allows Claude to access Figma mockups, extract assets, and generate underlying HTML/CSS/React code.</p>
+
+<strong>Why It Matters:</strong>
+<p>It eliminates manual translation of design specs into code, ensuring pixel-accurate implementation and faster iteration.</p>
+
+<strong>When To Use:</strong>
+<p>When starting front-end projects from design prototypes or collaborating with design teams.</p>
+
+
+<h3>Concept 3: Playwright MCP Server</h3>
+<strong>Definition:</strong>
+<p>A testing automation MCP server that enables Claude to open browsers, capture screenshots, and validate UI layouts programmatically.</p>
+
+<strong>Why It Matters:</strong>
+<p>It provides visual regression testing and ensures generated UIs match the intended design.</p>
+
+<strong>When To Use:</strong>
+<p>After each design-to-code generation step to validate correctness and visual fidelity.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Deep Dive</h2>
+
+<h3>How It Works: Step-by-Step</h3>
+
+<strong>Phase 1: Setup & Initialization</strong>
+<p>1. Create a new Next.js app:</p>
+<pre><code class="language-bash">   npx create-next-app@latest figma-dashboard
+   cd figma-dashboard
+   </code></pre>
+<p>2. Connect MCP servers:</p>
+<pre><code class="language-bash">   /mcp add figma
+   /mcp add playwright
+   </code></pre>
+<p>3. Verify connections:</p>
+<pre><code class="language-bash">   /mcp list
+   </code></pre>
+<p>You should see both <code>figma-dev</code> and <code>playwright</code> active.</p>
+
+
+<strong>Phase 2: Execution & Processing</strong>
+<p>1. Use the Figma MCP server to:</p>
+<p>- Retrieve the selected layer (<code>get_image</code>)</p>
+<p>- Extract underlying component code (<code>get_code</code>)</p>
+<p>2. Claude generates:</p>
+- React components in <code>/app</code>
+<p>- Global CSS and layout structure</p>
+- Metadata and chart placeholders using <strong>Recharts</strong>
+<p>3. Claude installs missing dependencies automatically:</p>
+<pre><code class="language-bash">   npm install recharts
+   </code></pre>
+
+
+<strong>Phase 3: Output & Integration</strong>
+<p>1. Launch the local server:</p>
+<pre><code class="language-bash">   npm run dev
+   </code></pre>
+<p>2. Use Playwright MCP to test and capture:</p>
+<pre><code class="language-bash">   /mcp playwright screenshot localhost:3000
+   </code></pre>
+<p>3. Claude compares screenshots with the original Figma mockup and suggests refinements.</p>
+
+
+<h3>Why This Design Works</h3>
+
+<strong>Underlying Principles:</strong>
+<ul>
+<li><strong>Agentic Orchestration:</strong> Claude coordinates multiple tools to achieve a single goal autonomously.  </li>
+<li><strong>Iterative Refinement:</strong> Each MCP feedback loop improves fidelity and correctness.  </li>
+<li><strong>Composable Architecture:</strong> Next.js components map directly to Figma layers, enabling modular updates.</li>
+</ul>
+
+<strong>Guarantees & Invariants:</strong>
+<ul>
+<li>Every design element maps to a code component.  </li>
+<li>Visual tests ensure consistent rendering.  </li>
+<li>Real data integration follows validated API schemas.</li>
+</ul>
+
+
+<h2><span class="checkmark">✅</span> When To Use This Feature</h2>
+
+<h3>Ideal Use Cases</h3>
+
+<span class="checkmark">✅</span> <strong>Perfect For:</strong>
+<ul>
+<li>Rapid prototyping from design mocks  </li>
+<li>Building internal dashboards and analytics UIs  </li>
+<li>Automating design-to-code workflows  </li>
+</ul>
+
+<span class="checkmark">✅</span> <strong>Productivity Gains:</strong>
+<ul>
+<li>Reduce design translation time by 80–90%  </li>
+<li>Immediate visual validation with Playwright  </li>
+<li>Seamless integration with live data sources  </li>
+</ul>
+
+
+<h3>Anti-Patterns: When NOT To Use</h3>
+
+<span class="crossmark">❌</span> <strong>Avoid When:</strong>
+<ul>
+<li>The Figma mock lacks proper layer structure  </li>
+<li>You need highly custom animations or interactions  </li>
+<li>The design requires manual artistic interpretation  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Common Mistakes:</strong>
+<ul>
+<li>Forgetting to enable <strong>Dev Mode</strong> in Figma  </li>
+<li>Not verifying MCP connections before starting  </li>
+<li>Overwriting generated files without version control  </li>
+</ul>
+
+
+<h2>🔧 Practical Implementation Guide</h2>
+
+<h3>Step 1: Setup & Configuration</h3>
+<pre><code class="language-bash">npx create-next-app@latest figma-dashboard
+cd figma-dashboard
+/mcp add figma
+/mcp add playwright
+</code></pre>
+
+<strong>What This Does:</strong>
+<p>Initializes a Next.js project and connects Claude to Figma and Playwright MCP servers.</p>
+
+
+<h3>Step 2: Basic Usage</h3>
+<pre><code class="language-bash">claude "Use the Figma mockup layer 'Dashboard' to generate the base layout using Next.js and Recharts."
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">✔ Connected to Figma MCP server
+✔ Retrieved design layer: Dashboard
+✔ Generated components: Sidebar, Header, ChartSection
+✔ Installed dependencies: recharts
+</code></pre>
+
+
+<h3>Step 3: Advanced Options</h3>
+
+<strong>Option A: Switch Model for Complex Tasks</strong>
+<pre><code class="language-bash">/model set opus
+</code></pre>
+
+<strong>Option B: Visual Testing</strong>
+<pre><code class="language-bash">claude "Run Playwright visual test on localhost:3000 and compare with Figma mockup."
+</code></pre>
+
+
+<h2>💡 Practical Tips & Tricks</h2>
+
+<h3>Pro Tip 1: Validate MCP Connections Early</h3>
+<strong>The Technique:</strong>
+<p>Always run <code>/mcp list</code> before executing any design-to-code prompt.</p>
+
+<strong>When to Use It:</strong>
+<p>Before starting any session involving multiple MCP servers.</p>
+
+
+<h3>Pro Tip 2: Use Recharts for Data Visualization</h3>
+<strong>The Technique:</strong>
+<p>When Claude generates placeholder charts, specify <code>Recharts</code> for cleaner, interactive visualizations.</p>
+
+<strong>Code Example:</strong>
+<pre><code class="language-jsx">&lt;ResponsiveContainer width="100%" height={300}&gt;
+  &lt;LineChart data={data}&gt;
+    &lt;Line type="monotone" dataKey="value" stroke="#8884d8" /&gt;
+  &lt;/LineChart&gt;
+&lt;/ResponsiveContainer&gt;
+</code></pre>
+
+
+<h3>Pro Tip 3: Automate API Integration</h3>
+<strong>The Technique:</strong>
+<p>Ask Claude to fetch and visualize real data from APIs like the Federal Reserve Economic Data (FRED).</p>
+
+<strong>Prompt Example:</strong>
+<pre><code class="language-text">"Fetch real CPI and unemployment data from the FRED API and update the dashboard charts."
+</code></pre>
+
+
+<h2 class="section-icon">🚀 Real-World Example</h2>
+
+<h3>Example: Building a Federal Reserve Dashboard</h3>
+
+<strong>Context:</strong>
+<p>A Figma mockup shows a simple dashboard with charts for CPI, unemployment, and yields.</p>
+
+<strong>The Challenge:</strong>
+<p>Convert this static design into a live dashboard with real data.</p>
+
+<strong>Claude Code Approach:</strong>
+<pre><code class="language-bash">claude "Generate a Next.js dashboard from the Figma mockup using Recharts, and populate it with FRED API data."
+</code></pre>
+
+<strong>Code Generated:</strong>
+<pre><code class="language-tsx">// app/components/ChartSection.tsx
+export default function ChartSection({ data }) {
+  return (
+    &lt;ResponsiveContainer width="100%" height={300}&gt;
+      &lt;LineChart data={data}&gt;
+        &lt;Line type="monotone" dataKey="value" stroke="#0070f3" /&gt;
+      &lt;/LineChart&gt;
+    &lt;/ResponsiveContainer&gt;
+  );
+}
+</code></pre>
+
+<strong>Result:</strong>
+<p>A live, data-driven dashboard visually matching the original Figma design — built and tested in under 20 minutes.</p>
+
+
+<h2>🤔 Common Questions & Troubleshooting</h2>
+
+<h3>Q: Why isn’t Claude detecting my Figma mockup?</h3>
+<strong>A:</strong> Ensure <strong>Dev Mode</strong> is enabled in Figma and the correct layer is copied before invoking the MCP server.
+
+<h3>Q: Playwright screenshots are blank — what’s wrong?</h3>
+<strong>A:</strong> Verify your local server (<code>localhost:3000</code>) is running and accessible before triggering the screenshot.
+
+<h3>Q: How can I handle missing dependencies?</h3>
+<strong>A:</strong> Let Claude install them automatically or run <code>npm install</code> manually after generation.
+
+
+<h2>📊 Performance & Optimization</h2>
+
+<h3>Context Window Management</h3>
+<ul>
+<li><strong>Context Cost:</strong> Moderate (design + code + test)</li>
+<li><strong>Optimization Strategy:</strong> Use focused layers, not entire Figma files</li>
+<li><strong>When To Compact:</strong> After major layout generation</li>
+</ul>
+
+<h3>Speed Optimization</h3>
+<ul>
+<li><strong>Typical Duration:</strong> 2–5 minutes for full workflow</li>
+<li><strong>Acceleration Techniques:</strong> Use cached MCP connections</li>
+</ul>
+
+<h3>Cost Considerations</h3>
+<ul>
+<li><strong>Token Usage:</strong> ~3K–6K tokens per iteration</li>
+<li><strong>Ways to Reduce Costs:</strong> Limit Figma layers and test snapshots</li>
+</ul>
+
+
+<h2>🔗 Related Topics & Next Steps</h2>
+
+<strong>You Should Also Learn About:</strong>
+<ul>
+<li>Episode 7: <em>Automating Front-End Workflows</em>  </li>
+<li>Episode 8: <em>Integrating MCP Servers for Visual Testing</em>  </li>
+</ul>
+
+<strong>Next Episodes to Master:</strong>
+<ul>
+<li>Episode 10: <em>Multi-Agent Collaboration Across MCP Servers</em></li>
+</ul>
+
+
+<h2>📌 Key Takeaways</h2>
+
+1. <strong>Claude Code + Figma MCP = Instant UI Generation</strong>
+<p>Automate design-to-code workflows in minutes.</p>
+
+2. <strong>Playwright MCP Ensures Visual Fidelity</strong>
+<p>Programmatically verify that generated UIs match mockups.</p>
+
+3. <strong>Next.js Provides a Scalable Foundation</strong>
+<p>Generated components are production-ready and easily extensible.</p>
+
+4. <strong>API Integration Turns Mockups Into Live Apps</strong>
+<p>Combine design automation with real-world data for full-stack prototypes.</p>
+
+
+<h2>🎓 Quick Reference</h2>
+
+<h3>Command Cheat Sheet</h3>
+<table class="data-table">
+<thead><tr>
+<th>Purpose</th>
+<th>Command</th>
+<th>When to Use</th>
+</tr></thead><tbody>
+<tr>
+<td>Add Figma MCP Server</td>
+<td><code>/mcp add figma</code></td>
+<td>Before importing mockups</td>
+</tr>
+<tr>
+<td>Add Playwright MCP Server</td>
+<td><code>/mcp add playwright</code></td>
+<td>Before visual testing</td>
+</tr>
+<tr>
+<td>Verify MCP Connections</td>
+<td><code>/mcp list</code></td>
+<td>Before running workflows</td>
+</tr>
+<tr>
+<td>Generate Layout from Figma</td>
+<td><code>claude "Generate layout from Figma mockup"</code></td>
+<td>Start design-to-code</td>
+</tr>
+<tr>
+<td>Run Visual Test</td>
+<td><code>claude "Run Playwright visual test"</code></td>
+<td>Validate output</td>
+</tr>
+</tbody></table>
+
+<h3>Keyboard Shortcuts</h3>
+<ul>
+<li><code>Shift+Tab</code> – Toggle Plan Mode  </li>
+<li><code>Ctrl+C</code> – Cancel current task  </li>
+<li><code>Escape</code> – Exit Claude Code execution  </li>
+</ul>
+
+<h3>Common Prompts</h3>
+<pre><code class="language-text">"Use the Figma mockup 'Dashboard' to generate a Next.js layout with Recharts."
+"Fetch real CPI data from FRED API and update the chart."
+"Run Playwright visual test and compare with Figma mockup."
+</code></pre>
+
+
+<h2>🔐 Security & Best Practices</h2>
+
+<strong>Privacy Considerations:</strong>
+<ul>
+<li>Figma assets remain local unless explicitly shared  </li>
+<li>API keys (like FRED API) should be stored in <code>.env.local</code>  </li>
+<li>Avoid sharing sensitive data in prompts  </li>
+</ul>
+
+<strong>Quality Assurance:</strong>
+<ul>
+<li>Always validate generated code with visual tests  </li>
+<li>Use version control for each iteration  </li>
+<li>Review API responses before rendering  </li>
+</ul>
+
+<strong>Team Collaboration:</strong>
+<ul>
+<li>Store project context in <code>CLAUDE.md</code>  </li>
+<li>Standardize MCP configurations across team members  </li>
+</ul>
+
+
+<h2>📚 Extra Resources</h2>
+
+<strong>Official Documentation:</strong>
+<ul>
+<li><a href="https://docs.anthropic.com/">Claude Code MCP Server Docs</a></li>
+<li><a href="https://nextjs.org/docs">Next.js Documentation</a></li>
+<li><a href="https://playwright.dev/">Playwright Documentation</a></li>
+<li><a href="https://help.figma.com/">Figma Dev Mode Guide</a></li>
+</ul>
+
+<strong>Additional Learning:</strong>
+<ul>
+<li>Blog: <em>Design-to-Code Automation with Claude Code</em></li>
+<li>Video: <em>Building Dashboards from Figma in Minutes</em></li>
+</ul>
+
+
+<h2>⭐ Conclusion</h2>
+
+<strong>What You've Mastered:</strong>
+<p>You’ve learned how to connect Claude Code with Figma and Playwright MCP servers to generate, test, and refine a real-world web application from a design mockup.</p>
+
+<strong>How This Fits Into Real Development:</strong>
+<p>This workflow turns static design assets into production-ready React applications — dramatically accelerating UI development cycles.</p>
+
+<strong>Your Next Challenge:</strong>
+<p>Try using Claude Code to build a second dashboard from a different Figma mockup — this time integrating multiple APIs.</p>
+
+<strong>Pro Tip for Long-Term Mastery:</strong>
+<p>Document your Claude workflows in <code>CLAUDE.md</code> and refine your prompts — mastery comes from iteration.</p>
+    </article>
+
+</main>
+
+</body>
+</html>

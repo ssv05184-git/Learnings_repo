@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latency, Cost Optimization | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Latency, Cost Optimization</h1>
+    <p class="subtitle">Module 4 — Episode 6</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Latency, Cost Optimization</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 4 — Episode 6</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Benchmark and measure latency across multi-step agentic workflows  </li>
+<li><span class="checkmark">✅</span> Identify cost hotspots by analyzing per-component resource consumption  </li>
+<li><span class="checkmark">✅</span> Apply practical strategies to reduce latency and cost without degrading output quality  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode explores how to measure and optimize <strong>latency</strong> and <strong>cost</strong> in agentic AI workflows.</p>
+<p>While output quality should take priority during early development, performance tuning becomes critical as systems scale and user demand grows.</p>
+<p>You’ll learn how to benchmark workflow components, analyze timing and cost breakdowns, and choose targeted optimizations that deliver meaningful improvements.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Agentic workflow design and orchestration  </li>
+<li>Basic LLM API usage and token-based pricing models  </li>
+<li>Concepts from previous episodes on workflow evaluation and debugging  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Latency Profiling</strong> – Measuring time taken by each workflow step to identify slow components.  </li>
+<li><strong>Cost Benchmarking</strong> – Quantifying per-step and per-token cost to locate expensive operations.  </li>
+<li><strong>Parallelism</strong> – Executing independent steps concurrently to reduce total runtime.  </li>
+<li><strong>Model Substitution</strong> – Using smaller or faster LLMs for non-critical tasks to save time and cost.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_4/E6_Latency_Cost.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This timeline visualization shows step durations and costs across a workflow, highlighting parallelizable steps and identifying optimization targets for latency and cost reduction.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Measure Step Timing:</strong>
+<p>- Record start and end times for each workflow component (e.g., LLM query, web search, data parsing).</p>
+<p>- Aggregate results over multiple runs to get average durations.</p>
+
+2. <strong>Analyze Latency Distribution:</strong>
+<p>- Identify high-latency steps that dominate total runtime.</p>
+<p>- Determine whether steps can be parallelized or replaced with faster alternatives.</p>
+
+3. <strong>Measure Cost per Step:</strong>
+<p>- Calculate cost based on tokens used (input + output) and API call fees.</p>
+<p>- Sum costs across steps to determine total workflow expense.</p>
+
+4. <strong>Prioritize Optimization:</strong>
+<p>- Focus on the most time- or cost-intensive steps first.</p>
+<p>- Experiment with smaller LLMs or alternative providers to compare trade-offs.</p>
+
+
+<h3>Why It Works</h3>
+
+<p>Benchmarking provides <strong>quantitative visibility</strong> into workflow performance.</p>
+<p>By measuring latency and cost per component, teams can make <strong>data-driven decisions</strong> rather than guessing which optimizations matter.</p>
+<p>This prevents wasted effort on micro-optimizations that don’t meaningfully improve user experience or operating costs.</p>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+
+<ul>
+<li>When workflows are stable and producing high-quality results  </li>
+<li>When scaling to large user bases where cost or latency becomes noticeable  </li>
+<li>When comparing LLM providers or infrastructure configurations  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid Premature Optimization</strong>
+
+<ul>
+<li>During early prototyping when correctness and quality are still evolving  </li>
+<li>When optimization effort outweighs expected performance gains  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Measurement Overhead:</strong> Profiling introduces minor runtime costs.  </li>
+<li><strong>Complexity:</strong> Adding timing and cost instrumentation increases code complexity.  </li>
+<li><strong>Model Trade-offs:</strong> Smaller or faster models may reduce quality; validation is required.  </li>
+<li><strong>Parallelization Limits:</strong> Some steps may be inherently sequential or dependent.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Bottlenecks:</strong> Identify serial steps that dominate runtime; apply concurrency where safe.  </li>
+<li><strong>Optimization Strategies:</strong>  </li>
+<li>Use asynchronous I/O for network-bound tasks (e.g., web fetches).  </li>
+<li>Cache repeated API calls or intermediate results.  </li>
+<li>Use cost-effective LLMs for simple subtasks.  </li>
+<li><strong>Resource Efficiency:</strong> Monitor token usage and API call frequency to prevent cost spikes.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example (Python Pseudocode)</h3>
+
+<pre><code class="language-python">import time
+from my_agentic_workflow import run_step
+
+steps = ["generate_search_terms", "web_search", "summarize", "write_essay"]
+timings = {}
+costs = {}
+
+for step in steps:
+    start = time.time()
+    result, step_cost = run_step(step)
+    end = time.time()
+    
+    timings[step] = end - start
+    costs[step] = step_cost
+
+# Identify bottlenecks
+sorted_by_time = sorted(timings.items(), key=lambda x: x[1], reverse=True)
+sorted_by_cost = sorted(costs.items(), key=lambda x: x[1], reverse=True)
+
+print("Latency Breakdown:", sorted_by_time)
+print("Cost Breakdown:", sorted_by_cost)
+</code></pre>
+
+<p>This example measures execution time and cost per step, helping identify which components to optimize.</p>
+
+
+<h2 class="section-icon">🧩 Key Takeaways</h2>
+
+<ul>
+<li>Prioritize <strong>output quality</strong> before optimizing latency or cost.  </li>
+<li>Use <strong>benchmarking</strong> to find bottlenecks rather than guessing.  </li>
+<li>Apply <strong>parallelism</strong>, <strong>model substitution</strong>, and <strong>provider switching</strong> strategically.  </li>
+<li>Focus optimization on steps that materially affect user experience or operational cost.  </li>
+</ul>
+
+
+<p>> Next: Proceed to the final episode of this module to wrap up and consolidate your learnings.</p>
+
+    </article>
+
+</main>
+
+</body>
+</html>

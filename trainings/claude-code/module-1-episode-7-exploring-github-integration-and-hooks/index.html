@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploring GitHub Integration and Hooks | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Exploring GitHub Integration and Hooks</h1>
+    <p class="subtitle">Module 1 — Episode 7</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Exploring GitHub Integration and Hooks</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Exploring GitHub Integration and Hooks  </h1>
+
+<blockquote><strong>Module 1 — Episode 7</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Claude Code - A Highly Agentic Coding Assistant</p>
+<blockquote><strong>Course Level:</strong> Intermediate → Advanced</blockquote>
+
+
+<h2 class="section-icon">🎯 What You'll Learn</h2>
+
+<p>By the end of this episode, you will:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Set up and configure the <strong>Claude Code GitHub integration</strong>  </li>
+<li><span class="checkmark">✅</span> Automate <strong>pull request reviews and issue resolution</strong> using Claude  </li>
+<li><span class="checkmark">✅</span> Implement and manage <strong>Claude Code hooks</strong> for pre- and post-tool execution  </li>
+<li><span class="checkmark">✅</span> Extend Claude Code’s functionality beyond the terminal into CI/CD workflows  </li>
+</ul>
+
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+
+
+<h2 class="section-icon">🧭 Quick Overview  </h2>
+
+<strong>The Big Picture:</strong>
+<p>This episode teaches how to connect Claude Code with GitHub for intelligent code reviews and automated issue resolution. You’ll also learn to use <strong>hooks</strong>—custom scripts that run before or after Claude Code tools—to extend automation and integrate with your development workflow.</p>
+
+<strong>What Problem Does This Solve?</strong>
+<ul>
+<li>Manual code reviews can miss subtle issues or style inconsistencies  </li>
+<li>Developers often repeat tasks after tool execution (tests, linters, notifications)  </li>
+<li>Integrating AI into existing GitHub workflows can be cumbersome  </li>
+</ul>
+
+<strong>Where You'll Use This:</strong>
+<ul>
+<li>Automated PR reviews and issue resolution in GitHub  </li>
+<li>Continuous integration pipelines  </li>
+<li>Custom automation for Claude Code operations (e.g., testing, linting, notifications)  </li>
+</ul>
+
+
+<h2 class="section-icon">🧱 Prerequisites & Background  </h2>
+
+<strong>You should already know:</strong>
+<ul>
+<li>Git and GitHub fundamentals (branches, pull requests, issues)  </li>
+<li>Basic Claude Code command-line usage  </li>
+<li>How to configure Claude Code project settings (<code>settings.local.json</code>)  </li>
+</ul>
+
+<strong>If you're new to Claude Code:</strong>
+<p>→ Start with [Episode 3: Working with Files and Tools in Claude Code]</p>
+
+
+<h2 class="section-icon">🔑 Core Concepts Explained  </h2>
+
+<h3>Concept 1: GitHub Integration  </h3>
+<strong>Definition:</strong>
+<p>A native link between Claude Code and GitHub that enables AI-assisted pull request reviews, issue resolution, and automated code analysis directly in GitHub.</p>
+
+<strong>Why It Matters:</strong>
+<p>This turns Claude into a fully integrated teammate—reviewing code, fixing issues, and proposing pull requests automatically.</p>
+
+<strong>When To Use:</strong>
+<ul>
+<li>During PR reviews to get AI feedback  </li>
+<li>To auto-generate fixes from GitHub issues  </li>
+<li>When you want to extend Claude Code into your CI/CD pipeline  </li>
+</ul>
+
+
+<h3>Concept 2: Claude Code SDK  </h3>
+<strong>Definition:</strong>
+<p>A software development kit enabling Claude Code to operate outside the terminal—used by the GitHub integration to handle pull requests and issues.</p>
+
+<strong>Why It Matters:</strong>
+<p>It decouples Claude’s capabilities from the CLI, allowing integration with external systems like GitHub Actions or custom services.</p>
+
+<strong>When To Use:</strong>
+<ul>
+<li>When building custom workflows or integrations  </li>
+<li>For enterprise automation across repositories  </li>
+</ul>
+
+
+<h3>Concept 3: Hooks  </h3>
+<strong>Definition:</strong>
+<p>Event-driven scripts that trigger before or after Claude Code executes a tool. Hooks can modify behavior, run additional commands, or block execution.</p>
+
+<strong>Why It Matters:</strong>
+<p>Hooks allow developers to embed Claude Code into broader workflows—running tests, sending notifications, or enforcing policies automatically.</p>
+
+<strong>When To Use:</strong>
+<ul>
+<li>To automate post-tool actions (e.g., run tests after file edits)  </li>
+<li>To prevent tool execution under certain conditions  </li>
+<li>To integrate Claude Code with external systems or pipelines  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Architecture & Flow Diagrams  </h2>
+
+<h3>System Diagram</h3>
+<img src="../../../diagrams/images/claude-code/E7_system_diagram.png" alt="Image" class="content-image">
+
+<strong>What This Shows:</strong>
+<p>Claude Code acts as a bridge between your local development environment and GitHub. The GitHub App communicates with Claude’s SDK, which handles tool execution, runs hooks, and posts results back into GitHub.</p>
+
+
+<h3>Workflow Sequence</h3>
+<img src="../../../diagrams/images/claude-code/E7_workfloe.png" alt="Image" class="content-image">
+<strong>Key Takeaway:</strong>
+<p>Hooks can wrap around any Claude Code tool execution, adding automation or validation before and after tool runs.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Deep Dive  </h2>
+
+<h3>How It Works: Step-by-Step  </h3>
+
+<strong>Phase 1: Setup & Initialization</strong>
+<p>1. Install the GitHub integration:</p>
+<pre><code class="language-bash">   /install-GitHub-app
+   </code></pre>
+<p>2. Authenticate via browser when prompted.</p>
+<p>3. Select the repository to install the Claude GitHub App.</p>
+<p>4. Configure workflows for PR reviews and issue handling.</p>
+
+<strong>Phase 2: Execution & Processing</strong>
+<p>1. Tag Claude in a PR or issue (<code>@Claude</code>).</p>
+<p>2. Claude fetches the relevant code or issue context.</p>
+<p>3. Executes analysis or code modification.</p>
+<p>4. Uses hooks (if defined) to run pre/post actions.</p>
+
+<strong>Phase 3: Output & Integration</strong>
+<p>1. Claude posts review comments or opens a new PR.</p>
+<p>2. Optional PostToolUse hooks trigger (e.g., run <code>say "All done!"</code>).</p>
+<p>3. Developer merges PR and syncs local repository.</p>
+
+
+<h3>Why This Design Works  </h3>
+
+<strong>Underlying Principles:</strong>
+<ul>
+<li><strong>Agentic Autonomy:</strong> Claude acts as a self-sufficient collaborator.  </li>
+<li><strong>Event-Driven Extensibility:</strong> Hooks enable dynamic behavior without modifying core code.  </li>
+<li><strong>Seamless Integration:</strong> GitHub workflows mirror local Claude Code operations.  </li>
+</ul>
+
+<strong>Guarantees & Invariants:</strong>
+<ul>
+<li>Hooks only execute when explicitly configured.  </li>
+<li>GitHub integration respects repository permissions.  </li>
+<li>All Claude actions are logged via GitHub Actions for transparency.  </li>
+</ul>
+
+
+<h2><span class="checkmark">✅</span> When To Use This Feature  </h2>
+
+<h3>Ideal Use Cases  </h3>
+
+<span class="checkmark">✅</span> <strong>Perfect For:</strong>
+<ul>
+<li>Teams using GitHub for collaboration and CI/CD  </li>
+<li>Automating repetitive code reviews  </li>
+<li>Enforcing code quality and style consistency  </li>
+</ul>
+
+<span class="checkmark">✅</span> <strong>Productivity Gains:</strong>
+<ul>
+<li>50–70% faster PR turnaround time  </li>
+<li>Reduced human review overhead  </li>
+<li>Continuous AI oversight on code quality  </li>
+</ul>
+
+<h3>Anti-Patterns: When NOT To Use  </h3>
+
+<span class="crossmark">❌</span> <strong>Avoid When:</strong>
+<ul>
+<li>Working on sensitive or proprietary code without clear permission settings  </li>
+<li>You need deterministic, human-only reviews  </li>
+<li>Hooks execute unverified shell commands (security risk)  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Common Mistakes:</strong>
+<ul>
+<li>Running arbitrary shell commands in hooks without sanitization  </li>
+<li>Forgetting to authenticate the GitHub App  </li>
+<li>Overlapping hook matchers causing redundant executions  </li>
+</ul>
+
+
+<h2>🔧 Practical Implementation Guide  </h2>
+
+<h3>Step 1: Install GitHub Integration  </h3>
+<pre><code class="language-bash">/install-GitHub-app
+</code></pre>
+<p>Follow the browser prompt to authenticate and select your repository.</p>
+
+<strong>What This Does:</strong>
+<p>Installs the Claude GitHub App and sets up workflows for PR and issue automation.</p>
+
+
+<h3>Step 2: Configure Workflows  </h3>
+<p>Claude automatically creates YAML files in <code>.github/workflows/</code>, e.g.:</p>
+<pre><code class="language-yaml">name: Claude Code Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: anthropic/claude-code-review@v1
+</code></pre>
+
+<strong>What This Does:</strong>
+<p>Defines when and how Claude reviews code changes.</p>
+
+
+<h3>Step 3: Add Hooks  </h3>
+<p>In your <code>settings.local.json</code>:</p>
+<pre><code class="language-json">{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": ["Read", "Grep"],
+        "command": "say 'All done!'"
+      }
+    ]
+  }
+}
+</code></pre>
+
+<strong>What This Does:</strong>
+<p>Executes the <code>say</code> command whenever the <code>Read</code> or <code>Grep</code> tool completes.</p>
+
+
+<h2>💡 Practical Tips & Tricks  </h2>
+
+<h3>Pro Tip 1: Automate Tests with Hooks  </h3>
+<strong>Technique:</strong>
+<p>Add a PostToolUse hook to run your test suite automatically after edits.</p>
+<pre><code class="language-json">"command": "npm test"
+</code></pre>
+<strong>When to Use:</strong>
+<p>After Claude modifies or generates code.</p>
+
+
+<h3>Pro Tip 2: Prevent Risky Commands  </h3>
+<strong>Technique:</strong>
+<p>Use PreToolUse hooks to block sensitive operations.</p>
+<pre><code class="language-json">"command": "exit 1",
+"matcher": ["Delete"]
+</code></pre>
+<strong>When to Use:</strong>
+<p>In production repositories or shared environments.</p>
+
+
+<h3>Pro Tip 3: Enhance PR Reviews  </h3>
+<strong>Technique:</strong>
+<p>Customize the review prompt in <code>.github/workflows/claude-review.yml</code>.</p>
+<strong>Expected Result:</strong>
+<p>More context-aware and organization-specific feedback.</p>
+
+
+<h2>� GitHub Actions Setup</h2>
+
+<h3>Quickest Way to Enable GitHub Integration</h3>
+
+<pre><code class="language-bash"># In Claude Code terminal, run:
+/install-github-app
+
+# Follow the prompts to authorize Claude Code
+# Once installed, you can mention @claude in GitHub PRs and issues
+</code></pre>
+
+<strong>What You Can Do:</strong>
+<ul>
+<li><code>@claude implement the feature described above</code> → Claude creates a PR</li>
+<li><code>@claude review this code</code> → Claude reviews your changes</li>
+<li><code>@claude create a test file for this</code> → Claude generates tests</li>
+<li><code>@claude fix this bug</code> → Claude diagnoses and fixes issues</li>
+</ul>
+
+<strong>Permissions:</strong>
+<ul>
+<li>All Claude Code operations happen within PRs and conversation threads</li>
+<li>Requires the repo to be connected to your GitHub account</li>
+<li>Check full documentation: <a href="https://docs.anthropic.com/en/docs/claude-code/github-actions">Claude Code GitHub Actions</a></li>
+</ul>
+
+
+<h2>🪝 Hooks - Automate Your Workflow</h2>
+
+<strong>Definition:</strong> Shell commands executed at specific lifecycle events in Claude Code.
+
+<strong>Lifecycle Events:</strong>
+<ul>
+<li><code>before_tool_use</code> - Before Claude executes any tool</li>
+<li><code>after_tool_use</code> - After Claude executes a tool</li>
+<li><code>before_response</code> - Before Claude sends a response</li>
+<li><code>after_subagent_task</code> - When a subagent completes a task</li>
+</ul>
+
+<h3>Setup Hooks</h3>
+
+<p>1. Create <code>.claude/hooks.yaml</code> in your project:</p>
+
+<pre><code class="language-yaml">hooks:
+  after_tool_use:
+    - name: "Run tests after edits"
+      command: "npm test"
+      condition: "modified_files" # Only run if files were modified
+      
+  after_response:
+    - name: "Auto-commit changes"
+      command: "git add -A &amp;&amp; git commit -m 'Claude Code changes'"
+      condition: "has_changes"
+</code></pre>
+
+<p>2. Alternatively, define hooks as markdown in <code>.claude/hooks.md</code>:</p>
+
+<pre><code class="language-markdown"># After Tool Use Hook
+Run linting and tests after Claude modifies files:
+</code></pre>bash
+<p>npm run lint</p>
+<p>npm test</p>
+<pre><code class="language-text">
+3. Verify hooks are active:
+</code></pre>bash
+<p>/hooks  # In Claude Code terminal</p>
+<pre><code class="language-text">
+### Example: Auto-format and Test After Edits
+</code></pre>yaml
+<p>after_tool_use:</p>
+<ul>
+<li>name: "Format and validate"</li>
+</ul>
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+<p>black . --quiet  # Python formatting</p>
+<p>npm run format   # JS formatting</p>
+<p>npm test         # Run tests</p>
+<pre><code class="language-text">
+**Additional Resources:**
+- Full hooks guide: [Hooks Documentation](https://docs.anthropic.com/en/docs/claude-code/hooks-guide)
+- Command reference: [Hooks Reference](https://docs.anthropic.com/en/docs/claude-code/hooks)
+- Video tutorial: [Claude Code In Action - Hooks](https://anthropic.skilljar.com/claude-code-in-action/312000)
+
+
+## �🚀 Real-World Examples  
+
+### Example 1: Automated PR Review  
+
+**Context:**  
+A developer submits a PR for a new feature.  
+
+**Claude Code Approach:**  
+</code></pre>bash
+<p>@Claude please review this PR for security and performance.</p>
+<pre><code class="language-text">
+**Result:**  
+Claude analyzes the code, posts detailed comments, and suggests improvements.  
+
+
+### Example 2: Auto-Fix GitHub Issue  
+
+**Context:**  
+An issue requests reverting a header change.  
+
+**Claude Code Approach:**  
+Tag Claude in the issue:  
+</code></pre>bash
+<p>@Claude fix this issue</p>
+<pre><code class="language-text">
+**Result:**  
+Claude modifies the code, opens a PR with the fix, and reviews its own changes.  
+
+
+## 🤔 Common Questions &amp; Troubleshooting  
+
+### Q: Why doesn’t the GitHub app respond to my PR?  
+**A:** Ensure it’s installed on the correct repository and that Claude is tagged in the PR.  
+
+### Q: My hook isn’t running. Why?  
+**A:** Verify the hook is defined in `settings.local.json` and that the matcher matches the tool name exactly.  
+
+### Q: Can hooks run multiple commands?  
+**A:** Yes, chain them using shell syntax or define multiple hook entries.  
+
+
+## 📊 Performance &amp; Optimization  
+
+### Context Window Management  
+- Hooks don’t consume Claude context.  
+- GitHub reviews use efficient summaries to minimize token usage.  
+
+### Speed Optimization  
+- Limit hook matchers to specific tools.  
+- Avoid long-running shell commands in PostToolUse hooks.  
+
+### Cost Considerations  
+- GitHub reviews consume API tokens proportional to PR size.  
+- Optimize by batching smaller commits.  
+
+
+## 🔗 Related Topics &amp; Next Steps  
+
+**You Should Also Learn About:**  
+- [Episode 8: Using Claude Code in Jupyter Notebooks]  
+- [Episode 5: Multi-Agent Collaboration in Claude Code]  
+
+**Previous Episodes to Review:**  
+- [Episode 6: Managing Worktrees and Git Operations]  
+
+
+## 📌 Key Takeaways  
+
+1. **Claude GitHub Integration** turns Claude into an active code reviewer.  
+2. **Hooks** extend Claude Code’s automation before and after tool execution.  
+3. **Customization** through YAML and JSON enables fine-grained control.  
+4. **Security awareness** is critical when running shell commands via hooks.  
+
+
+## 🎓 Quick Reference  
+
+### Command Cheat Sheet
+| Purpose | Command | When to Use |
+|----------|----------|-------------|
+| Install GitHub integration | `/install-GitHub-app` | To connect Claude Code with GitHub |
+| Manage hooks | `/hooks` | To configure pre/post tool actions |
+| Resume previous session | `claude --resume` | To continue prior conversation |
+| Trigger PR review | Tag `@Claude` | In GitHub PR comments |
+
+### Keyboard Shortcuts
+- `Shift+Tab` twice – View Claude’s plan before execution  
+- `Ctrl+C` – Cancel running command  
+- `Escape` – Exit current Claude Code prompt  
+
+### Common Prompts
+</code></pre>
+<p>@Claude please review this PR for code quality and security.</p>
+<p>@Claude fix this issue by reverting the header to its previous state.</p>
+<code>`</code>
+
+
+<h2>🔐 Security & Best Practices  </h2>
+
+<strong>Privacy Considerations:</strong>
+<ul>
+<li>Hooks execute locally; review commands before enabling.  </li>
+<li>GitHub integration uses OAuth and respects repository permissions.  </li>
+</ul>
+
+<strong>Quality Assurance:</strong>
+<ul>
+<li>Always review Claude’s PRs before merging.  </li>
+<li>Use hooks for validation, not for destructive actions.  </li>
+</ul>
+
+<strong>Team Collaboration:</strong>
+<ul>
+<li>Store hook definitions in version control.  </li>
+<li>Document integration steps in your team’s <code>CLAUDE.md</code>.  </li>
+</ul>
+
+
+<h2>📚 Extra Resources  </h2>
+
+<strong>Official Documentation:</strong>
+<ul>
+<li><a href="https://docs.anthropic.com/claude-code/github">Claude Code GitHub Integration Guide</a>  </li>
+<li><a href="https://docs.anthropic.com/claude-code/sdk">Claude Code SDK Reference</a>  </li>
+</ul>
+
+<strong>Additional Learning:</strong>
+<ul>
+<li>Anthropic Blog: <em>Automating Code Reviews with Claude Code</em>  </li>
+<li>GitHub Actions Docs: <em>Custom Workflow Automation</em>  </li>
+</ul>
+
+
+<h2>⭐ Conclusion  </h2>
+
+<strong>What You've Mastered:</strong>
+<ul>
+<li>Installing and authenticating the Claude GitHub App  </li>
+<li>Automating PR reviews and issue resolution  </li>
+<li>Creating and managing Claude Code hooks  </li>
+</ul>
+
+<strong>How This Fits Into Real Development:</strong>
+<p>You now have Claude working both locally and in GitHub—reviewing, fixing, and automating your development pipeline.</p>
+
+<strong>Your Next Challenge:</strong>
+<p>Build a custom hook that runs tests automatically after Claude edits code, and integrate it into your CI/CD pipeline.</p>
+
+<strong>Pro Tip for Long-Term Mastery:</strong>
+<p>Treat Claude as a full-time collaborator—extend it with hooks, review its work, and continuously evolve your automation workflows.</p>
+    </article>
+
+</main>
+
+</body>
+</html>

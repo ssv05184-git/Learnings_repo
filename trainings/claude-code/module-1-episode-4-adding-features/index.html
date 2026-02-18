@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adding Features | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Adding Features</h1>
+    <p class="subtitle">Module 1 — Episode 4</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Adding Features</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 4</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Claude Code - A Highly Agentic Coding Assistant</p>
+<blockquote><strong>Course Level:</strong> Intermediate → Advanced</blockquote>
+
+
+<h2 class="section-icon">🎯 What You'll Learn</h2>
+
+<p>By the end of this episode, you will:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Use <strong>plan mode</strong> to safely design and implement new features  </li>
+<li><span class="checkmark">✅</span> Reference and modify <strong>specific files</strong> efficiently  </li>
+<li><span class="checkmark">✅</span> Integrate <strong>MCP servers</strong> (e.g., Playwright) for automated UI testing and visual feedback  </li>
+<li><span class="checkmark">✅</span> Add both <strong>frontend and backend</strong> features with Claude Code’s agentic workflow  </li>
+<li><span class="checkmark">✅</span> Manage <strong>project memory</strong> (<code>CLAUDE.md</code> and local memory) for consistent behavior  </li>
+</ul>
+
+<table class="data-table">
+<thead><tr>
+</tr></thead><tbody>
+</tbody></table>
+
+
+<h2 class="section-icon">🧭 Quick Overview</h2>
+
+<strong>The Big Picture:</strong>
+<p>This episode demonstrates how to extend an existing Claude Code-powered chatbot application by adding new UI features, backend tools, and automated testing workflows using agentic planning.</p>
+
+<strong>What Problem Does This Solve?</strong>
+<ul>
+<li>Difficulty managing large, multi-file changes safely  </li>
+<li>Manual screenshot and visual testing overhead  </li>
+<li>Inefficient context management during iterative development  </li>
+</ul>
+
+<strong>Where You'll Use This:</strong>
+<ul>
+<li>Building new UI components in web apps  </li>
+<li>Extending backend APIs or tools  </li>
+<li>Automating visual regression and interface testing  </li>
+</ul>
+
+
+<h2 class="section-icon">🧱 Prerequisites & Background</h2>
+
+<strong>You should already know:</strong>
+<ul>
+<li>How to navigate and explore codebases with Claude Code  </li>
+<li>How to use <code>plan mode</code> basics (from Episode 3)  </li>
+<li>Fundamentals of Claude Code’s tool invocation and file editing  </li>
+</ul>
+
+<strong>If you're new to Claude Code:</strong>
+<p>→ Start with [Episode 1: Getting Started with Claude Code] for foundational setup and context management.</p>
+
+
+<h2 class="section-icon">🔑 Core Concepts Explained</h2>
+
+<h3>Concept 1: File Referencing</h3>
+<strong>Definition:</strong>
+<p>Explicitly tagging files or folders in prompts so Claude Code knows exactly where to read or write.</p>
+
+<strong>Why It Matters:</strong>
+<p>Claude Code’s accuracy depends on precise context. Referencing files ensures edits occur in the right place.</p>
+
+<strong>When To Use:</strong>
+<p>Whenever you know which files need modification — e.g., updating a frontend component or backend route.</p>
+
+
+<h3>Concept 2: Plan Mode</h3>
+<strong>Definition:</strong>
+<p>A safe, preview-first mode where Claude Code generates a detailed plan before making any code changes.</p>
+
+<strong>Why It Matters:</strong>
+<p>Prevents unintended edits and gives you full control over multi-file modifications.</p>
+
+<strong>When To Use:</strong>
+<p>Before implementing new features, refactors, or large-scale updates.</p>
+
+
+<h3>Concept 3: MCP Server Integration</h3>
+<strong>Definition:</strong>
+<p>MCP (Model Context Protocol) servers extend Claude Code’s capabilities by connecting it to external tools like Playwright, GitHub, or Figma.</p>
+
+<strong>Why It Matters:</strong>
+<p>They enable Claude Code to perform actions like automated browser testing, screenshot analysis, and data retrieval.</p>
+
+<strong>When To Use:</strong>
+<p>When automating testing, UI validation, or integrating external data sources.</p>
+
+
+<h3>Concept 4: Project Memory (<code>CLAUDE.md</code> and Local Memory)</h3>
+<strong>Definition:</strong>
+<p>Persistent configuration files that store project-level or developer-specific preferences.</p>
+
+<strong>Why It Matters:</strong>
+<p>Ensures consistent Claude Code behavior across sessions and team members.</p>
+
+<strong>When To Use:</strong>
+<p>When defining persistent instructions (e.g., “Never run the server automatically”).</p>
+
+
+<h2 class="section-icon">⚙️ Technical Deep Dive</h2>
+
+<h3>How It Works: Step-by-Step</h3>
+
+<strong>Phase 1: Setup & Initialization</strong>
+<p>1. Reference target files using <code>@filename</code> syntax.</p>
+<p>2. Activate plan mode:</p>
+<p>→ Press <code>Shift+Tab</code> twice.</p>
+<p>3. Provide a structured prompt describing the desired feature.</p>
+
+<pre><code class="language-bash">claude "Add clickable source links to course outlines"
+</code></pre>
+
+
+<strong>Phase 2: Execution & Processing</strong>
+<p>1. Claude Code analyzes referenced files and builds a to-do plan.</p>
+<p>2. Developer reviews and approves the plan.</p>
+<p>3. Auto-accept edits can be toggled via <code>Shift+Tab</code> once.</p>
+<p>4. Claude modifies multiple files sequentially.</p>
+<p>5. MCP Playwright server automates screenshots for UI validation.</p>
+
+
+<strong>Phase 3: Output & Integration</strong>
+<p>1. Claude reports modified files and summary of changes.</p>
+<p>2. Developer tests via browser or CLI.</p>
+<p>3. Optional post-run updates stored in <code>CLAUDE.md</code> or local memory.</p>
+
+
+<h3>Why This Design Works</h3>
+
+<strong>Underlying Principles:</strong>
+<ul>
+<li><strong>Human-in-the-loop safety:</strong> Plan mode ensures review before execution.  </li>
+<li><strong>Context precision:</strong> File referencing minimizes hallucination risk.  </li>
+<li><strong>Agentic autonomy:</strong> MCP servers extend Claude’s reach to real-world tools.  </li>
+</ul>
+
+<strong>Guarantees & Invariants:</strong>
+<ul>
+<li>No file changes occur until a plan is approved.  </li>
+<li>All MCP actions require explicit permission.  </li>
+<li>Local memory overrides global instructions safely.</li>
+</ul>
+
+
+<h2><span class="checkmark">✅</span> When To Use This Feature</h2>
+
+<h3>Ideal Use Cases</h3>
+
+<span class="checkmark">✅</span> <strong>Perfect For:</strong>
+<ul>
+<li>Adding new UI components or backend endpoints  </li>
+<li>Iterating on visual design with screenshot feedback  </li>
+<li>Automating browser-based testing</li>
+</ul>
+
+<span class="checkmark">✅</span> <strong>Productivity Gains:</strong>
+<ul>
+<li>Up to <strong>3× faster</strong> feature delivery  </li>
+<li>Significantly fewer context errors  </li>
+<li>Immediate visual validation loops  </li>
+</ul>
+
+
+<h3>Anti-Patterns: When NOT To Use</h3>
+
+<span class="crossmark">❌</span> <strong>Avoid When:</strong>
+<ul>
+<li>Making trivial one-line edits (manual edit is faster)  </li>
+<li>Context window is already full (clear history first)  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Common Mistakes:</strong>
+<ul>
+<li>Forgetting to reference specific files → leads to misplaced edits  </li>
+<li>Skipping plan review → potential unintended changes  </li>
+<li>Leaving auto-accept on for unfamiliar projects → risk of unwanted edits  </li>
+</ul>
+
+
+<h2>🔧 Practical Implementation Guide</h2>
+
+<h3>Step 1: Setup & Configuration</h3>
+<pre><code class="language-bash"># Add Playwright MCP server
+claude mcp add playwright npx @playwright/mcp@latest
+
+# Verify connection in Claude Code
+/mcp
+</code></pre>
+
+<strong>What This Does:</strong>
+<p>Connects the Playwright MCP server, enabling Claude to open browsers, take screenshots, and analyze UI elements.</p>
+
+
+<h3>Step 2: Reference Files with @ Syntax</h3>
+<p>Use <code>@filename</code> to explicitly include files in your prompt:</p>
+
+<strong>Syntax:</strong>
+<pre><code class="language-bash">@path/to/file.tsx          # Include entire file
+@path/to/folder/           # Include all files in folder
+@backend/document_processor.py
+@frontend/script.js
+</code></pre>
+
+<strong>Why:</strong> Prevents hallucination and ensures Claude focuses on correct components.
+
+
+<h3>Step 3: Basic Usage with Plan Mode</h3>
+<pre><code class="language-bash"># Activate plan mode (toggle safety mode ON)
+Shift+Tab Shift+Tab
+
+# Reference files and describe feature
+claude "The chat interface displays query responses with source citations. I need to modify it so each source becomes a clickable link that opens the corresponding lesson video in a new tab:
+- When courses are processed into chunks in @backend/document_processor.py, the link of each lesson is stored in the course_catalog collection
+- Modify _format_results in @backend/search_tools.py so that the lesson links are also returned
+- The links should be embedded invisibly (no visible URL text)"
+</code></pre>
+
+<strong>Expected Output:</strong>
+<pre><code class="language-text">Plan generated:
+1. Update search_tools.py to include lesson links
+2. Modify UI component to render clickable sources
+3. Add CSS for link styling
+4. Test functionality
+Approve plan? (Y/n)
+</code></pre>
+
+<strong>What happens next:</strong>
+<ul>
+<li>Review the plan</li>
+<li>Press 'Y' to approve and execute</li>
+<li>Claude makes changes file by file</li>
+<li>You can review each change</li>
+</ul>
+
+
+<h3>Step 4: Follow-up with Visual Verification</h3>
+<p>Once initial feature is built, verify visually:</p>
+<pre><code class="language-bash"># Take a screenshot of the UI (after Claude has built it)
+# Windows: Win + Shift + S
+# Mac: Cmd + Shift + 4
+# Then paste it: Ctrl + V
+
+claude "[paste screenshot] These links are hard to read. Make them more visually appealing and left-aligned."
+</code></pre>
+
+
+<h3>Step 5: Advanced Options</h3>
+
+<strong>Option A: Toggle Auto-Accept Mode</strong>
+<pre><code class="language-text">Shift+Tab once
+</code></pre>
+<p>→ Toggles automatic approval of file edits (useful after reviewing one plan).</p>
+
+<strong>Option B: Local Memory for Project Conventions</strong>
+<p>In your project's <code>CLAUDE.md</code> or <code>.claude/claude.md</code>:</p>
+<pre><code class="language-text"># Project Preferences
+Do not run the server automatically. I will start it manually.
+Use TypeScript for all frontend code.
+Always write tests alongside features.
+</code></pre>
+
+
+<h3>Step 6: Monitor Costs</h3>
+<pre><code class="language-bash"># Check API usage and costs for current session
+/cost
+</code></pre>
+
+
+<h2>💡 Practical Tips & Tricks</h2>
+
+<h3>Pro Tip 1: Use Screenshots for Visual Debugging</h3>
+<strong>The Technique:</strong>
+<p>Paste screenshots directly into Claude Code for visual analysis.</p>
+
+<strong>When to Use It:</strong>
+<p>When UI issues are hard to describe textually.</p>
+
+<strong>How to get screenshots:</strong>
+<ul>
+<li>Windows: <code>Win + Shift + S</code></li>
+<li>Mac: <code>Cmd + Shift + 4</code></li>
+</ul>
+
+<strong>Paste into Claude Code:</strong> <code>Ctrl + V</code> (might have limitations on Windows, try screenshots folder instead)
+
+<strong>Expected Result:</strong>
+<p>Claude automatically identifies problematic elements and suggests design fixes.</p>
+
+
+<h3>Pro Tip 2: Clear Context for New Features</h3>
+<strong>The Technique:</strong>
+<p>Before large new features, use <code>/clear</code> to reset conversation history.</p>
+
+<strong>Why:</strong>
+<p>Prevents Claude from being influenced by outdated context.</p>
+
+<strong>Implementation:</strong>
+<pre><code class="language-bash">/clear
+# Then describe your new feature
+</code></pre>
+
+
+<h3>Pro Tip 3: Use MCP Playwright for Automated Testing</h3>
+<strong>The Technique:</strong>
+<p>Let Claude use Playwright MCP to open pages, inspect elements, and validate visuals.</p>
+
+<strong>Setup:</strong>
+<pre><code class="language-bash"># Exit Claude Code first
+exit
+# In terminal, add Playwright MCP server
+claude mcp add playwright npx @playwright/mcp@latest
+# Verify connection
+claude /mcp
+</code></pre>
+
+<strong>Example:</strong>
+<pre><code class="language-bash">claude "Using the playwright MCP server, visit 127.0.0.1:8000 and verify the button alignment"
+</code></pre>
+
+<strong>Permission Management:</strong>
+<ul>
+<li>First time Claude tries to take screenshot, approve the action</li>
+<li>To auto-approve future screenshot tools: <code>/permissions</code> → Add new rule → search for <code>mcp__playwright__browser_take_screenshot</code></li>
+</ul>
+
+<strong>Expected Result:</strong>
+<p>Automated screenshot verification and UI consistency checks.</p>
+
+
+<h2 class="section-icon">🚀 Real-World Examples</h2>
+
+<h3>Example 1: Adding Clickable Source Links</h3>
+
+<strong>Context:</strong>
+<p>Course outlines displayed plain text citations.</p>
+
+<strong>Claude Code Approach:</strong>
+<pre><code class="language-bash">claude "Render course source links as clickable URLs @frontend/components/Outline.tsx"
+</code></pre>
+
+<strong>Result:</strong>
+<p>Hyperlinked sources rendered dynamically with improved UI readability.</p>
+
+
+<h3>Example 2: Adding “New Chat” Button</h3>
+
+<strong>Context:</strong>
+<p>User had to refresh the page to start new conversations.</p>
+
+<strong>Claude Code Approach:</strong>
+<pre><code class="language-bash">claude "Add '+ New Chat' button that clears conversation and starts a new session"
+</code></pre>
+
+<strong>Result:</strong>
+<p>New chat button added with proper event handling, clearing chat history and resetting state.</p>
+
+
+<h3>Example 3: Backend Lesson Details Tool</h3>
+
+<strong>Context:</strong>
+<p>Needed detailed lesson-level data for each course.</p>
+
+<strong>Claude Code Approach:</strong>
+<pre><code class="language-bash">claude "Add tool to fetch lesson details in search_tools.py"
+</code></pre>
+
+<strong>Result:</strong>
+<p>New backend tool registered and integrated into RAG system, returning structured lesson data.</p>
+
+
+<h2>🤔 Common Questions & Troubleshooting</h2>
+
+<h3>Q: Why is Claude modifying the wrong file?</h3>
+<strong>A:</strong> Always reference files explicitly using <code>@filename</code>. Avoid vague prompts.
+
+<h3>Q: How can I stop Claude from running my dev server?</h3>
+<strong>A:</strong> Add a local instruction in <code>CLAUDE.local.md</code>:
+<p>> “Do not run the server automatically.”</p>
+
+<h3>Q: MCP server not connecting?</h3>
+<strong>A:</strong> Check the MCP command syntax and ensure the server is running locally.
+
+
+<h2>📊 Performance & Optimization</h2>
+
+<h3>Context Window Management</h3>
+<ul>
+<li><strong>Context Cost:</strong> Medium (multi-file operations)  </li>
+<li><strong>Optimization Strategy:</strong> Clear history before large builds  </li>
+<li><strong>When To Compact:</strong> After completing a feature branch  </li>
+</ul>
+
+<h3>Speed Optimization</h3>
+<ul>
+<li>Use <strong>auto-accept edits</strong> for trusted projects  </li>
+<li>Keep <strong>file references minimal</strong>  </li>
+<li>Disable unnecessary MCP tools  </li>
+</ul>
+
+<h3>Cost Considerations</h3>
+<ul>
+<li><strong>Token Usage:</strong> ~3–5k per large feature  </li>
+<li><strong>Ways to Reduce Costs:</strong> Reference only necessary files and avoid redundant screenshots  </li>
+</ul>
+
+
+<h2>🔗 Related Topics & Next Steps</h2>
+
+<strong>You Should Also Learn About:</strong>
+<ul>
+<li>[Episode 5: Debugging and Testing with Claude Code]  </li>
+<li>[Episode 3: Planning and Safe Code Editing]  </li>
+</ul>
+
+<strong>Previous Episodes to Review:</strong>
+<ul>
+<li>[Episode 2: Understanding Codebases with Claude Code]  </li>
+</ul>
+
+
+<h2>📌 Key Takeaways</h2>
+
+<p>1. <strong>Always plan before you build</strong> — plan mode is your safety net.</p>
+<p>2. <strong>Reference files explicitly</strong> — precision equals reliability.</p>
+<p>3. <strong>Use MCP tools for automation</strong> — let Claude handle visual validation.</p>
+<p>4. <strong>Leverage project memory</strong> — persist preferences and prevent repetition.</p>
+
+
+<h2>🎓 Quick Reference</h2>
+
+<h3>Command Cheat Sheet</h3>
+<table class="data-table">
+<thead><tr>
+<th>Purpose</th>
+<th>Command</th>
+<th>When to Use</th>
+</tr></thead><tbody>
+<tr>
+<td>Add MCP server</td>
+<td><code>claude mcp add playwright "npx @playwright/mcp@latest"</code></td>
+<td>For automated UI testing</td>
+</tr>
+<tr>
+<td>Activate plan mode</td>
+<td><code>Shift+Tab twice</code></td>
+<td>Before multi-file edits</td>
+</tr>
+<tr>
+<td>Auto-accept edits</td>
+<td><code>Shift+Tab once</code></td>
+<td>For trusted changes</td>
+</tr>
+<tr>
+<td>Clear context</td>
+<td><code>/clear</code></td>
+<td>Before new feature development</td>
+</tr>
+</tbody></table>
+
+<h3>Keyboard Shortcuts</h3>
+<ul>
+<li><code>Shift+Tab twice</code> – Enable plan mode  </li>
+<li><code>Shift+Tab once</code> – Toggle auto-accept edits  </li>
+<li><code>Escape</code> – Cancel current operation  </li>
+<li><code>Ctrl+C</code> – Stop Claude Code execution  </li>
+</ul>
+
+<h3>Common Prompts</h3>
+<pre><code class="language-text">"Add a '+ New Chat' button that resets conversation history"
+"Render course sources as clickable links @frontend/Outline.tsx"
+"Use Playwright to validate button alignment and colors"
+</code></pre>
+
+
+<h2>🔐 Security & Best Practices</h2>
+
+<strong>Privacy Considerations:</strong>
+<ul>
+<li>Keep screenshots free of sensitive data.  </li>
+<li>Use local MCP servers for internal projects.  </li>
+</ul>
+
+<strong>Quality Assurance:</strong>
+<ul>
+<li>Always review plans before execution.  </li>
+<li>Test changes locally before committing.  </li>
+</ul>
+
+<strong>Team Collaboration:</strong>
+<ul>
+<li>Share global instructions in <code>CLAUDE.md</code>.  </li>
+<li>Keep personal preferences in <code>CLAUDE.local.md</code>.  </li>
+</ul>
+
+
+<h2>📚 Extra Resources</h2>
+
+<strong>Official Documentation:</strong>
+<ul>
+<li><a href="https://docs.anthropic.com/">Claude Code Docs</a>  </li>
+<li><a href="https://playwright.dev/">Playwright MCP Documentation</a>  </li>
+</ul>
+
+<strong>Additional Learning:</strong>
+<ul>
+<li>[Building Agentic Workflows with Claude Code (Blog)]  </li>
+<li>[Automated UI Testing with MCP Servers (Video)]  </li>
+</ul>
+
+
+<h2>⭐ Conclusion</h2>
+
+<strong>What You've Mastered:</strong>
+<ul>
+<li>Agentic feature development with plan mode  </li>
+<li>UI and backend integration workflows  </li>
+<li>MCP server setup for automated testing  </li>
+</ul>
+
+<strong>How This Fits Into Real Development:</strong>
+<p>You now have the tools to safely extend applications end-to-end — from frontend UI enhancements to backend feature expansion — all within Claude Code’s agentic environment.</p>
+
+<strong>Your Next Challenge:</strong>
+<p>Implement a new feature that integrates both frontend and backend logic, using plan mode and MCP automation.</p>
+
+<strong>Pro Tip for Long-Term Mastery:</strong>
+<p>Document every Claude workflow in your project’s <code>CLAUDE.md</code> — your future self (and your teammates) will thank you.</p>
+
+    </article>
+
+</main>
+
+</body>
+</html>

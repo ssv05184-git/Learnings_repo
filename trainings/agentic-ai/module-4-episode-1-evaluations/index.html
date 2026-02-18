@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluations (eval) | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Evaluations (eval)</h1>
+    <p class="subtitle">Module 4 — Episode 1</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Evaluations (eval)</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 4 — Episode 1</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Design and implement evaluation (eval) sets for agentic AI workflows  </li>
+<li><span class="checkmark">✅</span> Differentiate between objective and subjective evals, and when to use each  </li>
+<li><span class="checkmark">✅</span> Use evals to iteratively improve system performance and guide development focus  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode introduces the concept of <strong>evaluations (evals)</strong> — systematic methods for measuring and improving the performance of agentic AI workflows.</p>
+<p>You’ll learn how to identify failure modes in prototype systems, design simple yet effective evals, and use them to prioritize improvements.</p>
+<p>These practices are essential for scaling and maintaining AI workflows that behave reliably in production environments.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Basic prompt engineering and LLM-based workflow design  </li>
+<li>How agentic AI systems process tasks end-to-end  </li>
+<li>Familiarity with Python scripting for data handling and evaluation  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Eval (Evaluation):</strong> A structured test or metric that measures how well an AI system performs on a specific task or criterion.  </li>
+<li><strong>Per-example Ground Truth:</strong> A reference or “correct” output for each test input, used for objective comparisons.  </li>
+<li><strong>LLM-as-a-Judge:</strong> A method where a large language model evaluates outputs based on subjective criteria or rubrics.  </li>
+<li><strong>Objective vs. Subjective Evals:</strong> Objective evals rely on deterministic matching (e.g., string equality), while subjective evals use reasoning or judgment (e.g., quality of writing).  </li>
+<li><strong>End-to-End Eval:</strong> A holistic test covering the entire workflow — from input prompt to final output.</li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_4/E1-two_axes_evaluation.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This grid illustrates the four major categories of evaluations used in agentic AI workflows, helping developers choose appropriate evaluation strategies for their use cases.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Prototype your system quickly.</strong>
+<p>Build a minimal version of your workflow to observe real outputs and identify common errors.</p>
+
+2. <strong>Manually inspect outputs.</strong>
+<p>Review a small set (10–20 examples) to detect failure patterns — e.g., wrong date extraction or excessive text length.</p>
+
+3. <strong>Design an eval.</strong>
+<p>Create a small evaluation dataset and define what “correct” means for each case.</p>
+
+4. <strong>Automate evaluation.</strong>
+<p>Write scripts or prompts to compute metrics (accuracy, word count, rubric score, etc.).</p>
+
+5. <strong>Iterate and refine.</strong>
+<p>Use eval results to guide prompt tuning, algorithm changes, or data improvements.</p>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li><strong>Empirical grounding:</strong> Real data reveals actual failure modes instead of theoretical ones.  </li>
+<li><strong>Focused improvement:</strong> Evals help you concentrate effort where it matters most.  </li>
+<li><strong>Quantitative progress tracking:</strong> Metrics provide objective evidence of improvement.  </li>
+<li><strong>Iterative refinement:</strong> Evals evolve alongside your system, improving accuracy and alignment over time.</li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+
+<ul>
+<li>After building an initial prototype to identify weak points  </li>
+<li>When tracking progress on specific sub-tasks (e.g., accuracy, length, relevance)  </li>
+<li>To compare multiple versions of a workflow or prompt  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid / Misuse</strong>
+
+<ul>
+<li>Running evals before having a working baseline  </li>
+<li>Using overly complex evals too early  </li>
+<li>Ignoring qualitative human review in early iterations  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Setup Cost:</strong> Even small evals require some manual annotation.  </li>
+<li><strong>Coverage:</strong> Small datasets may not represent all edge cases.  </li>
+<li><strong>Subjectivity:</strong> LLM-as-a-judge evals can vary with model behavior.  </li>
+<li><strong>Maintenance:</strong> Eval sets must evolve with the product and user expectations.</li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Automation:</strong> Automate eval runs as part of CI/CD to track regressions.  </li>
+<li><strong>Sampling:</strong> Use stratified sampling to ensure representative test coverage.  </li>
+<li><strong>Scaling:</strong> As datasets grow, parallelize eval execution or use batch API calls.  </li>
+<li><strong>Caching:</strong> Cache model responses to avoid unnecessary recomputation.</li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example — Objective Eval for Invoice Due Date</h3>
+
+<pre><code class="language-python">import re
+from datetime import datetime
+
+def extract_due_date(llm_output: str) -&gt; str:
+    """Extract YYYY-MM-DD formatted date from LLM output."""
+    match = re.search(r"\d{4}-\d{2}-\d{2}", llm_output)
+    return match.group(0) if match else None
+
+def evaluate_due_dates(predictions, ground_truths):
+    correct = 0
+    for pred, truth in zip(predictions, ground_truths):
+        if extract_due_date(pred) == truth:
+            correct += 1
+    return correct / len(ground_truths)
+
+# Example usage
+preds = ["Due date: 2025-08-20", "Due date: 2025-09-01"]
+truths = ["2025-08-20", "2025-08-30"]
+accuracy = evaluate_due_dates(preds, truths)
+print(f"Due Date Accuracy: {accuracy:.2%}")
+</code></pre>
+
+
+<h3>Minimal Example — Objective Eval for Caption Length</h3>
+
+<pre><code class="language-python">def evaluate_caption_length(captions, max_words=10):
+    within_limit = sum(len(caption.split()) &lt;= max_words for caption in captions)
+    return within_limit / len(captions)
+
+captions = [
+    "Stylish sunglasses for every sunny day.",
+    "A perfect blend of comfort and design for your lifestyle."
+]
+
+score = evaluate_caption_length(captions)
+print(f"Length Compliance: {score:.2%}")
+</code></pre>
+
+
+<h3>Example — Subjective Eval Using LLM-as-a-Judge</h3>
+
+<pre><code class="language-python">judge_prompt = """
+You are an evaluator. Given an essay and a list of key points,
+return how many of those points are covered (0–5) and explain your reasoning.
+
+Essay: {essay}
+Key Points: {points}
+"""
+
+# Pseudocode for LLM-as-a-Judge
+response = llm.evaluate(prompt=judge_prompt.format(essay=essay_text, points=gold_points))
+score = response.json()["score"]
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Summary</h2>
+
+<p>Evals are the backbone of iterative improvement in agentic AI systems.</p>
+<p>They help you <strong>measure</strong>, <strong>compare</strong>, and <strong>prioritize</strong> — ensuring development time is spent where it yields the most impact.</p>
+<p>Start small, automate early, and evolve your evals alongside your workflows.</p>
+
+
+<h2 class="section-icon">🚀 Next Steps</h2>
+
+<p>In the next episode, we’ll explore how to use evals not only to measure performance but also to <strong>pinpoint which components of an agentic system deserve the most optimization effort</strong>.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

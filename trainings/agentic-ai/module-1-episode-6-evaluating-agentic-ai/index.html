@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluating Agentic AI (Evals) | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Evaluating Agentic AI (Evals)</h1>
+    <p class="subtitle">Module 1 — Episode 6</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Evaluating Agentic AI (Evals)</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 1 — Episode 6</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Identify the purpose and importance of evaluation (evals) in agentic AI workflows  </li>
+<li><span class="checkmark">✅</span> Implement both objective and subjective evaluation metrics for LLM-based systems  </li>
+<li><span class="checkmark">✅</span> Apply error analysis techniques to improve agentic workflow performance  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode introduces the concept of <strong>evaluations (evals)</strong> in the context of <strong>agentic AI workflows</strong>.</p>
+<p>You’ll learn why systematic evaluation is critical for improving agent performance and reliability.</p>
+<p>The episode covers practical examples of how to measure system quality using both <strong>automated metrics</strong> and <strong>LLM-as-a-judge</strong> techniques, setting the foundation for more advanced evaluation frameworks later in the training.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>The basics of <strong>agentic workflows</strong> and <strong>LLM-driven automation</strong>  </li>
+<li>Familiarity with <strong>Python scripting</strong> for text processing and analysis  </li>
+<li>Concepts introduced in earlier episodes on <strong>workflow construction</strong>  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Eval (Evaluation):</strong> A structured process for measuring how well an agentic system performs relative to desired behaviors.  </li>
+<li><strong>Objective Metric:</strong> A measurable, binary or numeric criterion (e.g., “Did the output mention a competitor?”).  </li>
+<li><strong>Subjective Metric:</strong> A qualitative judgment often requiring human or LLM interpretation (e.g., “How good is this essay?”).  </li>
+<li><strong>LLM-as-a-Judge:</strong> A method where another large language model evaluates output quality based on a scoring prompt.  </li>
+<li><strong>Error Analysis:</strong> Systematically reviewing intermediate outputs or traces to identify where the workflow falls short.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<strong>Evaluation Loop Flowchart:</strong>
+
+<img src="../../../diagrams/images/agentic-ai/module_1/E6_Evaluation_Loop.png" alt="Image" class="content-image">
+
+<strong>Flowchart Overview:</strong>
+
+<p>1. <strong>Agentic Workflow Output</strong> → Initial agent response/result</p>
+<p>2. <strong>Evaluation Type</strong> → Route to objective and/or subjective evaluation</p>
+<p>3. <strong>Objective Eval</strong> → Regex/code checks for rule-based validation (blue)</p>
+<p>4. <strong>Subjective Eval</strong> → LLM-as-judge for quality assessment (yellow)</p>
+<p>5. <strong>Error Analysis</strong> → Trace review and pattern identification (pink)</p>
+<p>6. <strong>Issues Found?</strong> → Decision point for next steps</p>
+<p>7. <strong>System Improvement Cycle</strong> → Refine prompts, adjust logic, update tools (green)</p>
+<p>8. <strong>Deploy/Monitor</strong> → Production deployment if no issues</p>
+<p>9. <strong>Continuous Monitoring</strong> → Periodic re-evaluation loop</p>
+
+<strong>Caption:</strong>
+<p>This flowchart illustrates the continuous evaluation loop for agentic workflows. The system routes outputs to either objective evaluation (rule-based checks), subjective evaluation (LLM-as-judge quality assessment), or both. Both evaluation types feed into error analysis and trace review. Based on findings, the system either enters an improvement cycle or deploys with continuous monitoring. This iterative feedback loop ensures measurable improvements in agent performance over time.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Build the Agentic Workflow:</strong>
+<p>For example, a customer service agent responding to order inquiries.</p>
+
+2. <strong>Observe Real Outputs:</strong>
+<p>Review responses manually to identify undesired patterns (e.g., competitor mentions).</p>
+
+3. <strong>Define Objective Evals:</strong>
+<p>Write code to detect and quantify specific issues.</p>
+<p>Example: Count how often competitor names appear in generated responses.</p>
+
+4. <strong>Define Subjective Evals:</strong>
+<p>Use an LLM as a judge to rate qualitative aspects like tone, helpfulness, or accuracy.</p>
+<img src="../../../diagrams/images/agentic-ai/module_1/E6_llm_as_judge.png" alt="Image" class="content-image">
+
+5. <strong>Track Progress:</strong>
+<p>As you refine your workflow, monitor eval metrics to ensure measurable improvement.</p>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li>Evaluation transforms subjective intuition into <strong>quantifiable feedback loops</strong>.  </li>
+<li>Objective metrics help catch <strong>systematic, rule-based errors</strong>.  </li>
+<li>Subjective evals allow you to assess <strong>creative or nuanced qualities</strong> that static rules can’t measure.  </li>
+<li>Continuous evals enable <strong>data-driven iteration</strong>, improving both accuracy and user trust.  </li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios:</strong>
+<ul>
+<li>When deploying LLMs in production workflows  </li>
+<li>When you need to measure improvements across versions  </li>
+<li>When debugging unexpected or inconsistent agent behavior  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid / Misuse:</strong>
+<ul>
+<li>Over-relying on subjective evals without calibration  </li>
+<li>Ignoring intermediate traces (missing key insights)  </li>
+<li>Treating evals as one-time checks instead of continuous processes  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Complexity:</strong> Building robust eval pipelines requires engineering effort.  </li>
+<li><strong>Subjectivity:</strong> LLM-as-judge evaluations can vary depending on prompts or model bias.  </li>
+<li><strong>Performance Cost:</strong> Running additional evals increases compute usage.  </li>
+<li><strong>Maintenance:</strong> Eval definitions must evolve alongside workflow updates.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li>Optimize eval code to run asynchronously or in batches.  </li>
+<li>Cache intermediate outputs to avoid redundant LLM calls.  </li>
+<li>Use lightweight regex or string-matching for objective checks before invoking LLMs.  </li>
+<li>Regularly calibrate LLM-as-judge prompts to maintain consistency in scoring.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example — Objective Eval</h3>
+
+<pre><code class="language-python">competitors = ["ComproCo", "RivalCo", "OtherCo"]
+
+def competitor_mention_rate(responses):
+    total = len(responses)
+    mentions = sum(
+        any(comp.lower() in response.lower() for comp in competitors)
+        for response in responses
+    )
+    return mentions / total
+
+responses = [
+    "We’re better than RivalCo!",
+    "Thanks for shopping with us.",
+    "Our returns are easier than ComproCo’s."
+]
+
+print("Competitor mention rate:", competitor_mention_rate(responses))
+</code></pre>
+
+<h3>Minimal Example — LLM-as-Judge Eval (Pseudocode)</h3>
+
+<pre><code class="language-python">prompt = f"""
+Rate the quality of the following essay on a scale of 1–5:
+{generated_essay}
+"""
+
+score = llm_api(prompt)
+print("LLM-assigned quality score:", score)
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Key Takeaways</h2>
+
+<ul>
+<li>Always <strong>build first, then evaluate</strong> — real outputs reveal real issues.  </li>
+<li>Use <strong>objective evals</strong> for rule-based checks and <strong>subjective evals</strong> for quality assessment.  </li>
+<li><strong>Error analysis</strong> of intermediate traces is as valuable as final output evaluation.  </li>
+<li>Evals are not one-time tasks — they are <strong>continuous quality assurance mechanisms</strong> for agentic AI.  </li>
+</ul>
+
+
+<h2 class="section-icon">🚀 Next Steps</h2>
+
+<p>In the next episode, we’ll explore <strong>design patterns</strong> for constructing efficient and maintainable agentic workflows — the foundation for scalable, evaluable AI systems.</p>
+
+    </article>
+
+</main>
+
+</body>
+</html>

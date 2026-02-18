@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI - Quick Start Guide for Beginners | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Agentic AI - Quick Start Guide for Beginners</h1>
+    <p class="subtitle">A practical introduction to Agentic AI concepts in 30 minutes</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../index.html">Home</a>
+        <span>›</span>
+        <a href="./index.html">Training</a>
+        <span>›</span>
+        <span>Agentic AI - Quick Start Guide for Beginners</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+> <strong>A practical introduction to Agentic AI concepts in 30 minutes</strong>
+
+
+<h2>What is Agentic AI? (5 minutes)</h2>
+
+<h3>Simple Definition</h3>
+<p>An <strong>agentic AI system</strong> is an AI that can:</p>
+<p>1. <strong>Understand</strong> what goal you want to achieve</p>
+<p>2. <strong>Plan</strong> how to break that goal into steps</p>
+<p>3. <strong>Take actions</strong> (using tools, calling APIs, running code)</p>
+<p>4. <strong>Evaluate</strong> if it achieved the goal</p>
+<p>5. <strong>Adjust</strong> its approach if needed</p>
+
+<h3>Traditional vs Agentic</h3>
+<pre><code class="language-text">Traditional AI:
+Input → Process → Output (DONE)
+
+Agentic AI:
+Goal → Plan → Act → Evaluate → Adjust → Re-evaluate → Achieved Goal ✓
+</code></pre>
+
+<h3>Real-World Example</h3>
+<strong>Traditional</strong>: "Summarize this article"
+<p>→ AI reads it, returns summary (one shot)</p>
+
+<strong>Agentic</strong>: "Analyze our product's competitors and create a report"
+<p>→ AI searches for competitors</p>
+<p>→ Gathers data from multiple sources</p>
+<p>→ Organizes findings</p>
+<p>→ Evaluates if analysis is complete</p>
+<p>→ Adds missing competitors if needed</p>
+<p>→ Delivers comprehensive report</p>
+
+
+<h2>Why Agentic AI Matters (5 minutes)</h2>
+
+<h3>Key Benefits</h3>
+
+<strong>1. Handles Complex Problems</strong>
+<ul>
+<li>Can break down multi-step problems</li>
+<li>Doesn't need perfect instructions</li>
+<li>Adapts to new situations</li>
+</ul>
+
+<strong>2. More Capable with Tools</strong>
+<ul>
+<li>Access to APIs, databases, code execution</li>
+<li>Can perform real actions (not just generate text)</li>
+<li>Combines multiple capabilities</li>
+</ul>
+
+<strong>3. Self-Improving Through Feedback</strong>
+<ul>
+<li>Evaluates its own work</li>
+<li>Adjusts approach based on results</li>
+<li>Gets better with reflection</li>
+</ul>
+
+<strong>4. Scalable Automation</strong>
+<ul>
+<li>Handles routine complex tasks without human intervention</li>
+<li>Reduces need for detailed instruction sets</li>
+</ul>
+
+<h3>Example Use Cases</h3>
+<ul>
+<li>🔍 <strong>Research</strong>: Gather info from multiple sources, synthesize findings</li>
+<li>🛠️ <strong>Development</strong>: Debug code, run tests, suggest fixes</li>
+<li>📊 <strong>Data Analysis</strong>: Explore datasets, create visualizations, generate insights</li>
+<li>📝 <strong>Content</strong>: Research topic, outline, write, review, improve</li>
+<li>🎯 <strong>Problem Solving</strong>: Analyze issue, brainstorm solutions, evaluate approaches</li>
+</ul>
+
+
+<h2>Core Concepts Explained Simply</h2>
+
+<h3>1. <strong>Autonomy Levels</strong></h3>
+<pre><code class="language-text">Level 1: AI makes suggestions only
+Level 2: AI takes actions with human approval each time
+Level 3: AI takes actions independently but reports them
+Level 4: AI takes actions independently without reporting
+</code></pre>
+
+<p>Choose based on:</p>
+<ul>
+<li>How safe are the actions?</li>
+<li>How urgent is the task?</li>
+<li>How much can you trust the results?</li>
+</ul>
+
+<h3>2. <strong>Task Decomposition</strong></h3>
+<p>Breaking complex goals into steps that an AI can handle:</p>
+
+<p><span class="crossmark">❌</span> Bad: "Build me a marketing strategy"</p>
+<p>→ Too vague, too big</p>
+
+<p><span class="checkmark">✅</span> Good:</p>
+<p>1. Analyze target audience demographics</p>
+<p>2. Research competitor messaging</p>
+<p>3. Identify 5 key value propositions</p>
+<p>4. Draft messaging for each segment</p>
+<p>5. Create 3 campaign concepts</p>
+<p>6. Compile into strategy document</p>
+
+<h3>3. <strong>The Reflection Loop</strong></h3>
+<pre><code class="language-text">Initial Output
+     ↓
+Evaluate Quality
+     ↓
+Issues Found?
+     ↓ Yes
+Identify Root Cause
+     ↓
+Try Different Approach
+     ↓ Loop back
+     
+     ↓ No Issues
+Check Complete ✓
+Return Final Output
+</code></pre>
+
+<h3>4. <strong>Tools and Capabilities</strong></h3>
+<p>Things agents can use:</p>
+<ul>
+<li><strong>Search</strong> - Find information online</li>
+<li><strong>Code Execution</strong> - Run code and see results</li>
+<li><strong>APIs</strong> - Call external services</li>
+<li><strong>File Operations</strong> - Read/write files</li>
+<li><strong>Custom Tools</strong> - Your own integrations</li>
+</ul>
+
+<h3>5. <strong>Evaluation Methods</strong></h3>
+<p>How to measure if agent succeeded:</p>
+
+<table class="data-table">
+<thead><tr>
+<th>Method</th>
+<th>Example</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Rule-Based</strong></td>
+<td>"Check if email is under 50 words"</td>
+</tr>
+<tr>
+<td><strong>LLM-As-Judge</strong></td>
+<td>"Have an LLM rate quality 1-10"</td>
+</tr>
+<tr>
+<td><strong>Automated Testing</strong></td>
+<td>"Run unit tests on generated code"</td>
+</tr>
+<tr>
+<td><strong>Human Review</strong></td>
+<td>"Manual review for critical tasks"</td>
+</tr>
+</tbody></table>
+
+
+<h2>Your First Agentic System (10 minutes)</h2>
+
+<h3>Conceptual Example: Customer Service Workflow</h3>
+
+<strong>Goal:</strong> "Answer customer support tickets with accurate, detailed responses"
+
+<strong>Step 1: Understand the Request</strong>
+<ul>
+<li>Input: Customer support ticket</li>
+<li>Agent: Reads and identifies the issue type</li>
+</ul>
+
+<strong>Step 2: Decompose Into Actions</strong>
+<pre><code class="language-text">Is it a technical issue?
+  → Search knowledge base
+  → If not found, search documentation
+  → Try reproducing issue
+
+Is it a billing question?
+  → Access customer account info
+  → Look up order history
+  → Check current status
+
+Is it a feature request?
+  → Note feedback
+  → Route to product team
+</code></pre>
+
+<strong>Step 3: Gather Information</strong>
+<ul>
+<li>Agent uses tools to get relevant data</li>
+<li>Searches documentation</li>
+<li>Checks order status</li>
+<li>Tests solutions</li>
+</ul>
+
+<strong>Step 4: Generate Response</strong>
+<ul>
+<li>Agent composes detailed answer</li>
+<li>Includes relevant steps or information</li>
+<li>Personalizes based on customer history</li>
+</ul>
+
+<strong>Step 5: Evaluate Quality</strong>
+<ul>
+<li><span class="checkmark">✅</span> Is response relevant?</li>
+<li><span class="checkmark">✅</span> Is tone professional?</li>
+<li><span class="checkmark">✅</span> Are all questions answered?</li>
+<li><span class="checkmark">✅</span> Is it complete?</li>
+</ul>
+
+<strong>Step 6: If Issues Found</strong>
+<ul>
+<li>Revise response</li>
+<li>Add missing information</li>
+<li>Improve clarity</li>
+<li>Return to Step 5</li>
+</ul>
+
+
+<h2>Common Misconceptions Cleared</h2>
+
+<h3><span class="crossmark">❌</span> "Agentic = Fully Autonomous"</h3>
+<p><span class="checkmark">✅</span> <strong>Truth</strong>: Agents can have different autonomy levels. You control the balance between independence and safety.</p>
+
+<h3><span class="crossmark">❌</span> "Agentic AI Always Gets It Right"</h3>
+<p><span class="checkmark">✅</span> <strong>Truth</strong>: Agents need evaluation and feedback loops. That's precisely why reflection is crucial.</p>
+
+<h3><span class="crossmark">❌</span> "Agentic = Requires Complex Setup"</h3>
+<p><span class="checkmark">✅</span> <strong>Truth</strong>: You can start with simple patterns and gradually add sophistication.</p>
+
+<h3><span class="crossmark">❌</span> "Agentic AI is Dangerous"</h3>
+<p><span class="checkmark">✅</span> <strong>Truth</strong>: Proper evaluation, tool restrictions, and human oversight make it safe.</p>
+
+<h3><span class="crossmark">❌</span> "I Need Special Hardware"</h3>
+<p><span class="checkmark">✅</span> <strong>Truth</strong>: Start with any LLM API (Claude, GPT, etc.). Hardware depends on scale later.</p>
+
+
+<h2>First Steps to Take</h2>
+
+<h3>Step 1: Read Module 1 (30 min total)</h3>
+<ul>
+<li>Episode 1: What is Agentic AI (15 min)</li>
+<li>Episode 2: Autonomy Levels (15 min)</li>
+</ul>
+
+<h3>Step 2: Choose Your First Use Case (15 min)</h3>
+<p>Think of a task in your domain that:</p>
+<ul>
+<li>Requires multiple steps</li>
+<li>Could benefit from tools</li>
+<li>Has clear success criteria</li>
+<li>You could evaluate results</li>
+</ul>
+
+<strong>Examples:</strong>
+<ul>
+<li>Data analysis workflow</li>
+<li>Content research process</li>
+<li>Code review mechanism</li>
+<li>Customer support response</li>
+<li>Report generation</li>
+</ul>
+
+<h3>Step 3: Map Out the Workflow (20 min)</h3>
+<p>For your use case:</p>
+<p>1. What's the main goal?</p>
+<p>2. What sub-tasks are needed?</p>
+<p>3. What information does it need?</p>
+<p>4. What tools would help?</p>
+<p>5. How will you evaluate success?</p>
+
+<h3>Step 4: Continue Learning (30 min)</h3>
+<p>Read:</p>
+<ul>
+<li>Episode 3: Benefits & Applications</li>
+<li>Episode 5: Task Decomposition</li>
+</ul>
+
+
+<h2>Key Takeaways</h2>
+
+<p><span class="checkmark">✅</span> Agentic AI uses loops of: Plan → Act → Evaluate → Adjust</p>
+<p><span class="checkmark">✅</span> Autonomy is a spectrum you can control</p>
+<p><span class="checkmark">✅</span> Task decomposition is the key to complexity</p>
+<p><span class="checkmark">✅</span> Evaluation isn't optional—it's essential</p>
+<p><span class="checkmark">✅</span> Tools dramatically expand agent capabilities</p>
+<p><span class="checkmark">✅</span> Reflection improves outputs significantly</p>
+
+
+<h2>Next Steps</h2>
+
+<p>1. <strong>Complete Module 1</strong> - Understand the foundations (1 hour)</p>
+<p>2. <strong>Study Task Decomposition</strong> - Episode 5 (30 min)</p>
+<p>3. <strong>Explore Reflection</strong> - Module 2 Episodes 1-3 (1 hour)</p>
+<p>4. <strong>Learn Tools</strong> - Module 3 Episodes 1-3 (1 hour)</p>
+<p>5. <strong>Deep Dive Evaluation</strong> - Module 4 (2+ hours)</p>
+
+
+<h2>Pro Tips for Beginners</h2>
+
+<p>💡 <strong>Start Simple</strong>: Your first agent system doesn't need all features. Build incrementally.</p>
+
+<p>💡 <strong>Evaluate Everything</strong>: The difference between good and great agents is evaluation.</p>
+
+<p>💡 <strong>Task Decomposition is Key</strong>: If your agent struggles, it's usually a decomposition problem.</p>
+
+<p>💡 <strong>Use Reflection</strong>: Just adding a reflection loop often significantly improves results.</p>
+
+<p>💡 <strong>Monitor Costs</strong>: Tool use and long task decomposition can increase costs. Monitor and optimize.</p>
+
+<p>💡 <strong>Test Edge Cases</strong>: Don't just test happy paths. Test what happens when things go wrong.</p>
+
+
+<h2>Resources</h2>
+
+<ul>
+<li<blockquote><strong>Module 1-5</strong></blockquote>: Full comprehensive training content</li>
+<li><strong>Practical Examples</strong>: Check individual episodes for detailed examples</li>
+<li><strong>Advanced Topics</strong>: Module 4 covers evaluation in depth, Module 5 covers planning</li>
+</ul>
+
+    </article>
+
+</main>
+
+</body>
+</html>

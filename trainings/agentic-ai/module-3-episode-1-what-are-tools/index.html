@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What are Tools? | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>What are Tools?</h1>
+    <p class="subtitle">Module 3 — Episode 1</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>What are Tools?</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 3 — Episode 1</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Explain what “tools” mean in the context of LLM-based applications  </li>
+<li><span class="checkmark">✅</span> Describe how LLMs decide when to call tools (functions)  </li>
+<li><span class="checkmark">✅</span> Identify scenarios where tool use enhances LLM performance and accuracy  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode introduces the concept of <strong>tool use by Large Language Models (LLMs)</strong> — allowing models to call external functions to perform actions, retrieve data, or compute results.</p>
+<p>Just as humans can do more with tools than with bare hands, LLMs become far more capable when given access to developer-defined tools.</p>
+<p>This concept underpins many real-world AI systems such as assistants, research agents, and data query bots.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Prompt/response flow in LLMs  </li>
+<li>How conversational context is managed in LLM applications  </li>
+<li>Basic function definition and invocation in a programming language  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Tool</strong> – A function or capability exposed to an LLM that it can request to call to obtain information or perform an action.  </li>
+<li><strong>Tool Use</strong> – The process of allowing an LLM to decide <em>when</em> and <em>which</em> tools to invoke based on the user’s input and its reasoning.  </li>
+<li><strong>Autonomous Invocation</strong> – The LLM independently determines whether to use a tool or generate a direct response.  </li>
+<li><strong>Tool Set</strong> – The collection of available functions provided to an LLM at runtime (e.g., <code>getCurrentTime</code>, <code>queryDatabase</code>, <code>makeAppointment</code>).  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+<img src="../../../diagrams/images/agentic-ai/module_3/E1_tools.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram shows how an LLM evaluates available tools, decides to invoke a function dynamically, integrates returned data, and produces contextually complete answers.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+<p>1. <strong>Input Prompt:</strong> The user sends a query (e.g., “What time is it?”).</p>
+<p>2. <strong>Tool Inspection:</strong> The LLM reviews the set of tools available to it.</p>
+<p>3. <strong>Decision:</strong> The LLM determines whether a tool is needed.</p>
+<p>4. <strong>Function Call:</strong> If required, the LLM requests to invoke a tool (e.g., <code>getCurrentTime()</code>).</p>
+<p>5. <strong>Result Feedback:</strong> The tool executes and returns data (e.g., the current time).</p>
+<p>6. <strong>Response Generation:</strong> The returned data is added to the conversation, and the LLM composes the final answer.</p>
+
+
+<h3>Why It Works</h3>
+
+<p>Tool use extends the LLM’s capabilities beyond its static training data.</p>
+<p>By integrating real-time or external computation via tools, the model can:</p>
+
+<ul>
+<li>Access up-to-date information  </li>
+<li>Perform deterministic calculations  </li>
+<li>Interact with external systems (databases, APIs, calendars)  </li>
+</ul>
+
+<p>This hybrid approach combines <strong>language reasoning</strong> (LLM) with <strong>symbolic or procedural execution</strong> (tools).</p>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+
+<ul>
+<li>Fetching real-time or external data (e.g., current time, weather, search results)  </li>
+<li>Performing structured queries (e.g., database lookups, financial calculations)  </li>
+<li>Automating multi-step workflows (e.g., scheduling meetings, sending notifications)  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid When</strong>
+
+<ul>
+<li>The LLM can confidently answer from its internal knowledge  </li>
+<li>The tool performs unsafe or irreversible actions without human review  </li>
+<li>Tool invocation introduces unnecessary latency or complexity  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Complexity:</strong> Requires defining and maintaining a reliable tool interface.  </li>
+<li><strong>Security:</strong> Tools must validate inputs to prevent unintended operations.  </li>
+<li><strong>Latency:</strong> Each tool call adds round-trip overhead.  </li>
+<li><strong>Observability:</strong> Developers must log and trace tool usage for debugging.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li>Minimize the number of tool calls per request to reduce latency.  </li>
+<li>Cache results for frequently accessed data (e.g., static lookups).  </li>
+<li>Use asynchronous calls when multiple tools might be invoked in sequence.  </li>
+<li>Monitor tool response times to detect performance regressions.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python"># Define a simple tool
+def get_current_time():
+    from datetime import datetime
+    return datetime.now().strftime("%I:%M %p")
+
+# Example of tool use
+user_input = "What time is it?"
+available_tools = {"getCurrentTime": get_current_time}
+
+# Simulated LLM reasoning
+if "time" in user_input.lower():
+    tool_result = available_tools["getCurrentTime"]()
+    response = f"The current time is {tool_result}."
+else:
+    response = "I can answer that directly without a tool."
+
+print(response)
+</code></pre>
+
+
+<h3>Example: Multi-Tool Setup</h3>
+
+<pre><code class="language-python">tools = {
+    "checkCalendar": check_calendar,
+    "makeAppointment": make_appointment,
+    "deleteAppointment": delete_appointment
+}
+
+# LLM decides which tool(s) to use based on user intent
+user_prompt = "Schedule a meeting with Alice on Thursday."
+
+# The LLM might sequentially:
+# 1. Call checkCalendar()
+# 2. Call makeAppointment()
+# 3. Return a confirmation message
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Real-World Examples</h2>
+
+<ul>
+<li><strong>Restaurant Finder:</strong> Uses a web search tool to locate nearby restaurants.  </li>
+<li><strong>Retail Assistant:</strong> Queries a sales database to answer product purchase questions.  </li>
+<li><strong>Finance Assistant:</strong> Invokes an interest calculation or code evaluation tool.  </li>
+<li><strong>Calendar Agent:</strong> Checks availability and creates or cancels appointments.  </li>
+</ul>
+
+
+<h2 class="section-icon">🚀 Key Takeaways</h2>
+
+<ul>
+<li>Tools are <strong>functions</strong> that extend an LLM’s real-world capabilities.  </li>
+<li>The LLM autonomously decides <em>when</em> to use these tools.  </li>
+<li>Tool use transforms static language models into <strong>interactive, action-capable agents</strong>.  </li>
+<li>Developers must thoughtfully design, secure, and expose tools relevant to their application domain.  </li>
+</ul>
+
+
+<p>> In the next episode, you’ll learn <strong>how to write and implement functions as tools</strong> that can be safely and effectively used by your LLM.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Execution | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Code Execution</h1>
+    <p class="subtitle">Module 3 — Episode 4</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Code Execution</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 3 — Episode 4</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Enable LLMs to dynamically generate and execute code to solve complex tasks  </li>
+<li><span class="checkmark">✅</span> Implement safe and effective code execution workflows using Python and sandboxing  </li>
+<li><span class="checkmark">✅</span> Diagnose and mitigate risks associated with arbitrary code execution in agentic systems  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode explores how agentic AI systems can enhance their reasoning and problem-solving capabilities by writing and executing code.</p>
+<p>Instead of building a separate tool for every operation, developers can empower LLMs to generate executable code dynamically.</p>
+<p>This approach is commonly used in math solvers, data analysis assistants, and autonomous coding agents.</p>
+<p>You’ll also learn about execution safety, reflection loops, and sandboxing strategies to prevent unintended damage.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Basics of <strong>tool invocation</strong> and <strong>function calling</strong> in LLM applications  </li>
+<li>Python fundamentals, including the <code>exec()</code> function  </li>
+<li>Concepts from <strong>Module 3, Episode 3 – Reflection</strong></li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Code Execution</strong> – Allowing the LLM to generate and run code (e.g., Python) to compute results beyond its static reasoning capacity.  </li>
+<li><strong>Reflection Loop</strong> – Feeding error messages from failed code execution back to the model so it can correct and retry.  </li>
+<li><strong>Sandbox Environment</strong> – A controlled runtime (e.g., Docker, E2B) where potentially unsafe code can be executed without risking the host system.  </li>
+<li><strong>Dynamic Tooling</strong> – Instead of hardcoding tools for every operation, LLMs can compose and execute custom logic on demand.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_3/E4_code_execution.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram shows the code execution loop where an LLM generates Python code, executes it in a sandbox, and returns results. If errors occur, the reflection mechanism prompts revision and retry.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Prompt Construction:</strong>
+<p>The LLM is instructed to output executable code between special tags, e.g.:</p>
+<pre><code class="language-text">   &lt;executePython&gt;
+   # Python code here
+   &lt;/executePython&gt;
+   </code></pre>
+
+2. <strong>Code Extraction:</strong>
+<p>The application uses pattern matching (e.g., regex) to capture the code block between these tags.</p>
+
+3. <strong>Execution:</strong>
+<p>The extracted code is executed using:</p>
+<pre><code class="language-python">   exec(code_block)
+   </code></pre>
+<p>or sent to a sandbox environment.</p>
+
+4. <strong>Result Handling:</strong>
+<p>The computed result is passed back to the LLM, which formats a human-readable answer.</p>
+
+5. <strong>Reflection (Optional):</strong>
+<p>If execution fails, the error message is returned to the LLM for correction and re-execution.</p>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li>LLMs can reason symbolically by writing code, effectively extending their reasoning capacity beyond text generation.  </li>
+<li>Code execution provides deterministic, verifiable outputs (e.g., precise math results).  </li>
+<li>Reflection loops allow iterative self-correction, improving accuracy and robustness.  </li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+<ul>
+<li>Mathematical or logical problem solving  </li>
+<li>Data transformation or statistical analysis  </li>
+<li>Automated scripting or simulation tasks  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid When</strong>
+<ul>
+<li>Running untrusted or user-supplied code without isolation  </li>
+<li>Handling sensitive data without sandboxing  </li>
+<li>Performance-critical environments where code execution overhead is unacceptable  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Security Risk:</strong> Arbitrary code execution can delete files or leak data if not sandboxed.  </li>
+<li><strong>Performance Overhead:</strong> Executing code adds latency compared to direct reasoning.  </li>
+<li><strong>Error Handling Complexity:</strong> Requires careful management of exceptions and retries.  </li>
+<li><strong>Limited Observability:</strong> Debugging generated code can be non-trivial.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li>Use lightweight sandbox environments (e.g., <strong>E2B</strong>, <strong>Docker</strong>) to balance safety and speed.  </li>
+<li>Cache frequent computations to reduce redundant execution.  </li>
+<li>Limit execution time and memory via sandbox configuration to prevent runaway processes.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python">import re
+
+# Example LLM output
+llm_output = """
+&lt;executePython&gt;
+import math
+result = math.sqrt(2)
+print(result)
+&lt;/executePython&gt;
+"""
+
+# Extract code between tags
+pattern = r"&lt;executePython&gt;(.*?)&lt;/executePython&gt;"
+code_block = re.search(pattern, llm_output, re.DOTALL).group(1)
+
+# Execute safely (simplified example)
+try:
+    exec_globals = {}
+    exec(code_block, exec_globals)
+except Exception as e:
+    print("Execution failed:", e)
+</code></pre>
+
+<h3>Reflection Loop Example</h3>
+
+<pre><code class="language-python">for attempt in range(3):
+    try:
+        exec(code_block, exec_globals)
+        break
+    except Exception as e:
+        # Send error message back to LLM for correction
+        code_block = llm_generate_fixed_code(str(e))
+</code></pre>
+
+
+<h2 class="section-icon">🧩 Best Practices</h2>
+
+<ul>
+<li>Always <strong>sandbox</strong> LLM-generated code to prevent file system or network damage.  </li>
+<li>Implement <strong>execution limits</strong> (CPU time, memory, I/O).  </li>
+<li>Log all code executions for auditing and debugging.  </li>
+<li>Where possible, <strong>validate</strong> generated code before execution.  </li>
+</ul>
+
+
+<h2 class="section-icon">🚀 Next Steps</h2>
+
+<p>In the next episode, we’ll explore the <strong>Model Context Protocol (MCP)</strong> — a new standard that simplifies tool integration and allows LLMs to access a shared ecosystem of capabilities.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

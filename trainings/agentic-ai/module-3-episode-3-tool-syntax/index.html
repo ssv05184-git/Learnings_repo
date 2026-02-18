@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Syntax | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Tool Syntax</h1>
+    <p class="subtitle">Module 3 — Episode 3</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Tool Syntax</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 3 — Episode 3</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Understand how to define and expose tools for LLMs using the <strong>AI Suite</strong> library  </li>
+<li><span class="checkmark">✅</span> Implement tool-calling syntax similar to OpenAI’s function calling interface  </li>
+<li><span class="checkmark">✅</span> Explain how <strong>AI Suite</strong> automatically generates JSON schemas from function definitions  </li>
+<li><span class="checkmark">✅</span> Configure tool call parameters such as <code>max_turns</code> to manage iterative tool invocation loops  </li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode introduces the <strong>syntax and mechanics</strong> of enabling an LLM to “call” tools in code using the <strong>AI Suite</strong> open-source library.</p>
+<p>You’ll learn how AI Suite simplifies multi-provider tool integration by automatically generating the JSON schema that describes each tool to the LLM.</p>
+<p>This concept is foundational for building <strong>agentic systems</strong> where LLMs can take structured actions—such as fetching data or executing code—based on user intent.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>Basic <strong>Python function definitions</strong> and <strong>docstrings</strong>  </li>
+<li>The concept of <strong>tool use</strong> from the previous episode  </li>
+<li>Familiarity with <strong>OpenAI’s Chat Completions API</strong> syntax  </li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Tool Call Syntax</strong> – The structure used to let an LLM request external function execution.  </li>
+<li><strong>AI Suite Library</strong> – An open-source package that abstracts multi-provider LLM integrations and handles automatic tool schema generation.  </li>
+<li><strong>JSON Schema Generation</strong> – The process of describing a function (its name, parameters, and purpose) in a structured format that the LLM can understand.  </li>
+<li><strong>max_turns</strong> – A safeguard parameter that limits how many consecutive tool calls an LLM can request before the loop stops.  </li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_3/E3_tool_syntax.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram illustrates how AISuite manages the full request–response–tool-call cycle, automatically handling schema generation and invocation without manual developer intervention.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+1. <strong>Define a Tool</strong>
+<p>Write a Python function such as <code>get_current_time()</code> with a clear docstring that describes its purpose and parameters.</p>
+
+2. <strong>Initialize the Client</strong>
+<p>Use the <code>AISuite</code> client to create a chat completion request:</p>
+<pre><code class="language-python">   response = client.chat.completions.create(
+       model="gpt-4o",
+       messages=messages,
+       tools=[get_current_time],
+       max_turns=5
+   )
+   </code></pre>
+
+3. <strong>Automatic Schema Generation</strong>
+<p>AISuite inspects the function’s name, parameters, and docstring to automatically generate the JSON schema describing the tool.</p>
+
+4. <strong>LLM Request Handling</strong>
+<p>When the LLM requests a tool call, AISuite executes the corresponding function, captures its output, and feeds it back to the LLM.</p>
+
+5. <strong>Iteration Control</strong>
+<p>The <code>max_turns</code> parameter prevents infinite loops by capping how many sequential tool calls can occur.</p>
+
+
+<h3>Why It Works</h3>
+
+<ul>
+<li><strong>Docstring Introspection:</strong> AISuite reads the function’s Python docstring to construct a meaningful description for the LLM.  </li>
+<li><strong>Schema Abstraction:</strong> Instead of manually defining JSON schemas, AISuite automates the process, reducing boilerplate and human error.  </li>
+<li><strong>Unified Interface:</strong> The syntax mirrors OpenAI’s API patterns, making it intuitive for developers already familiar with that ecosystem.</li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<p><span class="checkmark">✅</span> Use when:</p>
+<ul>
+<li>You want your LLM to perform structured actions (e.g., query APIs, fetch data, compute results).  </li>
+<li>You need to integrate multiple LLM providers without rewriting tool definitions.  </li>
+<li>You prefer automatic schema generation over manual JSON construction.</li>
+</ul>
+
+<p><span class="crossmark">❌</span> Avoid when:</p>
+<ul>
+<li>You require full manual control over schema definitions.  </li>
+<li>You are using an LLM provider that doesn’t support tool/function calling.  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Automation vs. Control:</strong> Automatic schema generation is convenient but may limit fine-tuning of tool descriptions.  </li>
+<li><strong>Debugging Complexity:</strong> When multiple tools are chained, tracking the execution flow can become harder.  </li>
+<li><strong>Provider Compatibility:</strong> While AISuite supports multiple LLM providers, feature parity can vary.  </li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Minimal Overhead:</strong> Schema generation is lightweight and typically only happens once per tool definition.  </li>
+<li><strong>Network Latency:</strong> Each tool call involves a round trip between the LLM and the client.  </li>
+<li><strong>Loop Control:</strong> Proper <code>max_turns</code> configuration prevents runaway tool invocation loops.  </li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python">from aisuite import AISuite
+
+# Define a simple tool
+def get_current_time():
+    """Returns the current time in UTC."""
+    import datetime
+    return datetime.datetime.utcnow().isoformat()
+
+# Initialize the client
+client = AISuite()
+
+# Messages for the LLM
+messages = [{"role": "user", "content": "What time is it?"}]
+
+# Let the LLM use the tool
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=messages,
+    tools=[get_current_time],
+    max_turns=5
+)
+
+print(response)
+</code></pre>
+
+<h3>Example with Parameters</h3>
+
+<pre><code class="language-python">def get_current_time(timezone: str):
+    """Returns the current time for a given timezone (e.g., 'America/New_York')."""
+    from datetime import datetime
+    import pytz
+    tz = pytz.timezone(timezone)
+    return datetime.now(tz).isoformat()
+</code></pre>
+
+<p>AISuite automatically generates a JSON schema describing this function—its name, description, and parameter (<code>timezone</code>)—and provides it to the LLM.</p>
+
+
+<h2 class="section-icon">🧩 Next Steps</h2>
+
+<p>In the next episode, we’ll explore a <strong>special kind of tool</strong>—the <strong>code execution tool</strong>—which allows LLMs to write and run code dynamically.</p>
+<p>This capability unlocks far more flexible and powerful agentic behaviors.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>

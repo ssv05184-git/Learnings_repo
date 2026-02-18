@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Analysis and Prioritizing Next Steps | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Error Analysis and Prioritizing Next Steps</h1>
+    <p class="subtitle">Module 4 — Episode 2</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Error Analysis and Prioritizing Next Steps</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+
+<blockquote><strong>Module 4 — Episode 2</strong></blockquote>
+<p><blockquote><strong>Training:</strong></blockquote> Agentic AI Training</p>
+
+
+<h2 class="section-icon">🎯 Learning Objectives</h2>
+
+<p>By the end of this episode, you will be able to:</p>
+
+<ul>
+<li><span class="checkmark">✅</span> Conduct structured <strong>error analysis</strong> on agentic AI workflows  </li>
+<li><span class="checkmark">✅</span> Identify which workflow components most contribute to poor performance  </li>
+<li><span class="checkmark">✅</span> Use trace inspection and data-driven methods to <strong>prioritize improvement efforts</strong></li>
+</ul>
+
+
+<h2 class="section-icon">🧭 Overview</h2>
+
+<p>This episode explains how to systematically analyze and improve an agentic AI workflow when its performance is suboptimal.</p>
+<p>You’ll learn how to trace intermediate steps, identify weak components, and decide where to focus your optimization efforts.</p>
+<p>Error analysis is a core skill for ensuring that your time and resources are spent on the most impactful parts of your system.</p>
+
+
+<h2 class="section-icon">🧱 Prerequisites</h2>
+
+<p>Readers should already understand:</p>
+
+<ul>
+<li>The structure of <strong>agentic AI workflows</strong> (from Module 4, Episode 1)  </li>
+<li>Basic familiarity with <strong>LLM orchestration</strong> and <strong>multi-step task pipelines</strong>  </li>
+<li>How to interpret intermediate model outputs (prompts, search queries, responses)</li>
+</ul>
+
+
+<h2 class="section-icon">🔑 Core Concepts</h2>
+
+<ul>
+<li><strong>Error Analysis</strong> – A systematic process for identifying which workflow components are responsible for poor outcomes.  </li>
+<li><strong>Trace</strong> – The complete set of intermediate outputs generated during a single run of an agentic workflow.  </li>
+<li><strong>Span</strong> – The output of a single step within a trace; commonly used in observability and tracing systems.  </li>
+<li><strong>Prioritization Matrix</strong> – A structured way to decide which components to improve based on error frequency and fix feasibility.</li>
+</ul>
+
+
+<h2 class="section-icon">🖼 Visual Explanation</h2>
+
+<img src="../../../diagrams/images/agentic-ai/module_4/E2_trace.png" alt="Image" class="content-image">
+
+<strong>Caption:</strong>
+<p>This diagram traces intermediate steps (search term generation, web retrieval, filtering, summarization) to identify where errors occur most frequently, enabling focused optimization efforts.</p>
+
+
+<h2 class="section-icon">⚙️ Technical Breakdown</h2>
+
+<h3>How It Works</h3>
+
+<p>1. <strong>Run the agentic workflow</strong> on several test inputs.</p>
+<p>2. <strong>Collect traces</strong> — intermediate outputs from each step (e.g., search terms, retrieved URLs, selected sources, final summaries).</p>
+<p>3. <strong>Inspect traces manually</strong> or with a small evaluation script to identify where performance diverges from human expectations.</p>
+<p>4. <strong>Record findings in a spreadsheet</strong>, noting which step(s) contributed to each poor outcome.</p>
+<p>5. <strong>Quantify errors</strong> — count how often each component underperforms.</p>
+<p>6. <strong>Prioritize improvements</strong> based on the frequency of issues and the feasibility of fixing them.</p>
+
+
+<h3>Why It Works</h3>
+
+<p>Error analysis replaces intuition with data.</p>
+<p>Rather than guessing which part of a system to improve, developers rely on evidence from actual failures.</p>
+<p>This structured approach:</p>
+<ul>
+<li>Prevents wasted effort on low-impact optimizations  </li>
+<li>Surfaces hidden dependencies between components  </li>
+<li>Enables iterative, measurable progress toward higher-quality outputs</li>
+</ul>
+
+
+<h3>When To Use It</h3>
+
+<span class="checkmark">✅</span> <strong>Ideal Scenarios</strong>
+<ul>
+<li>After an initial prototype is functional but underperforming  </li>
+<li>When multiple components could be responsible for an issue  </li>
+<li>Before large-scale retraining or re-architecture efforts  </li>
+</ul>
+
+<span class="crossmark">❌</span> <strong>Avoid / Misuse</strong>
+<ul>
+<li>When the system has too little data to produce meaningful traces  </li>
+<li>As a substitute for proper evaluation metrics or user testing  </li>
+</ul>
+
+
+<h3>Trade-offs & Limitations</h3>
+
+<ul>
+<li><strong>Time investment:</strong> Manual inspection of traces can be slow.  </li>
+<li><strong>Subjectivity:</strong> Human judgment may bias which outputs are labeled as “errors.”  </li>
+<li><strong>Granularity:</strong> Overly detailed tracing may overwhelm analysis with noise.  </li>
+<li><strong>Automation complexity:</strong> Building automated trace analysis pipelines requires additional engineering effort.</li>
+</ul>
+
+
+<h3>Performance Considerations</h3>
+
+<ul>
+<li><strong>Trace storage:</strong> Large traces can consume significant disk or database space.  </li>
+<li><strong>Computation cost:</strong> Collecting detailed spans for every run increases logging overhead.  </li>
+<li><strong>Optimization focus:</strong> Improving the most error-prone step often yields the best ROI for performance gains.</li>
+</ul>
+
+
+<h2 class="section-icon">💻 Code Examples</h2>
+
+<h3>Minimal Example</h3>
+
+<pre><code class="language-python"># Example: Simplified error analysis for a research agent
+
+from collections import Counter
+
+# Example test cases
+prompts = [
+    "Recent news in black hole science",
+    "Renting vs buying in Seattle",
+    "Robotics for harvesting fruit"
+]
+
+# Simulated workflow results (simplified)
+results = [
+    {"search_terms": "black hole theories Einstein Event Horizon Telescope",
+     "search_quality": "ok",
+     "retrieved_urls": ["astro_kid_news", "spacefun_blog"],
+     "final_quality": "poor"},
+    {"search_terms": "renting buying Seattle housing market",
+     "search_quality": "ok",
+     "retrieved_urls": ["real_estate_blog"],
+     "final_quality": "ok"},
+    {"search_terms": "robot fruit harvesting",
+     "search_quality": "poor",
+     "retrieved_urls": ["generic_robotics_news"],
+     "final_quality": "poor"},
+]
+
+# Count where errors occurred
+error_counts = Counter()
+
+for r in results:
+    if r["search_quality"] == "poor":
+        error_counts["search_terms"] += 1
+    if r["final_quality"] == "poor":
+        error_counts["final_output"] += 1
+
+print("Error frequency by component:")
+for comp, count in error_counts.items():
+    print(f"{comp}: {count}")
+</code></pre>
+
+<strong>Output:</strong>
+<pre><code class="language-text">Error frequency by component:
+search_terms: 1
+final_output: 2
+</code></pre>
+
+<p>This indicates that improving <strong>search term generation</strong> and <strong>final summarization quality</strong> are likely the most impactful next steps.</p>
+
+
+<h2 class="section-icon">🧩 Practical Workflow</h2>
+
+<table class="data-table">
+<thead><tr>
+<th>Component</th>
+<th>Error Frequency</th>
+<th>Example Issue</th>
+<th>Potential Fix</th>
+</tr></thead><tbody>
+<tr>
+<td>Search Terms</td>
+<td>5%</td>
+<td>Too generic</td>
+<td>Add domain-specific keywords</td>
+</tr>
+<tr>
+<td>Web Search</td>
+<td>45%</td>
+<td>Too many low-quality results</td>
+<td>Switch to higher-quality API</td>
+</tr>
+<tr>
+<td>Source Selection</td>
+<td>15%</td>
+<td>Irrelevant sources</td>
+<td>Improve ranking prompt</td>
+</tr>
+<tr>
+<td>Summarization</td>
+<td>10%</td>
+<td>Missed key points</td>
+<td>Increase context window</td>
+</tr>
+</tbody></table>
+
+<p>Use this kind of structured table to guide your prioritization.</p>
+
+
+<h2 class="section-icon">🧠 Key Takeaways</h2>
+
+<ul>
+<li>Always <strong>analyze traces</strong> before optimizing.  </li>
+<li>Focus on <strong>frequent and fixable</strong> sources of error.  </li>
+<li>Use <strong>quantitative tracking</strong> (e.g., spreadsheets, counters) to make prioritization objective.  </li>
+<li>Avoid spending weeks optimizing components that don’t meaningfully improve overall performance.  </li>
+</ul>
+
+<p>Error analysis is the compass that directs your improvement efforts — ensuring that each iteration moves your agentic system toward measurable, reliable gains.</p>
+
+
+    </article>
+
+</main>
+
+</body>
+</html>
