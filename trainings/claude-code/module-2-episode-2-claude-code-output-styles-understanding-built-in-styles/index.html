@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Output Styles - Understanding Built-in Styles | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Claude Code Output Styles - Understanding Built-in Styles</h1>
+    <p class="subtitle">Module 2 — Episode 2</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Claude Code Output Styles - Understanding Built-in Styles</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Claude Code Output Styles - Understanding Built-in Styles</h1>
+<blockquote>
+<p><strong>Module 2 — Episode 2</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Intermediate<br />
+<strong>Time to Master:</strong> 20 minutes to learn | 45 minutes to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Understand what output styles are and why they exist  </li>
+<li>✅ Learn the three built-in output styles: Default, Explanatory, and Learning  </li>
+<li>✅ Recognize when to use each style for different tasks  </li>
+<li>✅ Switch between styles using the <code>/output-style</code> command  </li>
+<li>✅ Customize Claude's behavior for different workflows  </li>
+</ul>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Output styles are preset instructions that guide how Claude Code behaves and responds. By default, Claude focuses on writing and completing code, but output styles allow you to change its behavior for different goals—such as reviewing code, writing documentation, or learning programming step-by-step.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Claude Code works well for coding but isn't optimized for learning or detailed explanations<br />
+- Different tasks require different response formats<br />
+- Users need flexibility to adapt Claude's output without custom prompts  </p>
+<p><strong>Where You'll Use This:</strong>
+- Switching to Learning style when teaching a concept<br />
+- Using Explanatory style when starting a new project<br />
+- Keeping Default for regular coding tasks  </p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- Basic Claude Code usage<br />
+- What commands are and how to invoke them  </p>
+<p><strong>If you're new:</strong><br />
+→ Start with <em>Module 1, Episode 2: What is Claude Code</em></p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: What Are Output Styles?</h3>
+<p><strong>Definition:</strong><br />
+Output styles are preset instructions that determine how Claude responds, including response length, detail level, and format.</p>
+<p><strong>Why It Matters:</strong><br />
+Different tasks need different approaches. A learning objective requires step-by-step guidance; a coding task requires concise solutions.</p>
+<p><strong>When To Use:</strong><br />
+Choose output styles based on your goal: learning, explaining, building, or reviewing.</p>
+<hr />
+<h3>Concept 2: The Three Built-in Styles</h3>
+<p><strong>Definition:</strong><br />
+Default (general coding), Explanatory (detailed understanding), and Learning (step-by-step guidance).</p>
+<p><strong>Why It Matters:</strong><br />
+Each style optimizes for different outcomes—speed, understanding, or skill development.</p>
+<p><strong>When To Use:</strong><br />
+Match the style to your current objective.</p>
+<hr />
+<h3>Concept 3: Style Customization</h3>
+<p><strong>Definition:</strong><br />
+Output styles are just instructions; you can create custom ones tailored to your workflow.</p>
+<p><strong>Why It Matters:</strong><br />
+Generic styles might not fit specialized domains (data analysis, DevOps, etc.).</p>
+<p><strong>When To Use:</strong><br />
+When you have repeating workflows that need consistent, domain-specific responses.</p>
+<hr />
+<h2>🖼 Architecture &amp; Flow Diagrams</h2>
+<h3>Output Style Selection Flow</h3>
+<p><strong>Key Takeaway:</strong><br />
+Switching styles changes Claude's instruction set, affecting response format, detail level, and focus area.</p>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>The Three Built-in Styles</h3>
+<h4>Style 1: Default</h4>
+<p><strong>Purpose:</strong> Mainly used for coding tasks<br />
+<strong>Characteristics:</strong>
+- Provides code and short, clear explanations<br />
+- Focused on producing working solutions<br />
+- Best for: Writing features, fixing bugs, quick implementations  </p>
+<p><strong>Example:</strong></p>
+<pre><code>Input: &quot;Add user authentication to my app&quot;
+Output: Code with brief explanation of key parts
+</code></pre>
+<h4>Style 2: Explanatory</h4>
+<p><strong>Purpose:</strong> Focuses on detailed explanations<br />
+<strong>Characteristics:</strong>
+- Provides extensive context and reasoning<br />
+- Explains why solutions work, not just how<br />
+- Best for: Learning new concepts, understanding design patterns, code reviews  </p>
+<p><strong>Example:</strong></p>
+<pre><code>Input: &quot;Explain how this authentication works&quot;
+Output: Detailed breakdown of each component with conceptual discussion
+</code></pre>
+<h4>Style 3: Learning</h4>
+<p><strong>Purpose:</strong> Great for practicing and learning new concepts<br />
+<strong>Characteristics:</strong>
+- Provides small, guided tasks<br />
+- Encourages independent problem-solving<br />
+- Best for: Skill development, tutorials, workshops  </p>
+<p><strong>Example:</strong></p>
+<pre><code>Input: &quot;Teach me React hooks&quot;
+Output: Step-by-step exercises with hints but not full solutions
+</code></pre>
+<hr />
+<h2>📋 How to Change Output Styles</h2>
+<h3>Using the /output-style Command</h3>
+<pre><code class="language-bash"># Open the output style selector
+/output-style
+
+# You'll see options:
+# 1. Default
+# 2. Explanatory
+# 3. Learning
+</code></pre>
+<p><strong>Steps:</strong>
+1. Type <code>/output-style</code> in Claude Code
+2. Claude displays available styles
+3. Select your desired style
+4. Confirm selection
+5. Claude switches behavior immediately</p>
+<h3>Example Workflow</h3>
+<pre><code class="language-bash">claude&gt; /output-style
+? Select output style:
+&gt; Default
+  Explanatory
+  Learning
+
+# Select &quot;Learning&quot;
+✅ Output style changed to Learning
+
+claude&gt; &quot;Teach me async/await in JavaScript&quot;
+# Claude now responds with step-by-step learning approach
+</code></pre>
+<hr />
+<h2>💡 Best Practices for Using Output Styles</h2>
+<h3>Pro Tip 1: Match Style to Task</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Best Style</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Building features</td>
+<td>Default</td>
+<td>Quick, efficient</td>
+</tr>
+<tr>
+<td>Starting new project</td>
+<td>Explanatory</td>
+<td>Understand architecture</td>
+</tr>
+<tr>
+<td>Learning framework</td>
+<td>Learning</td>
+<td>Progressive skill building</td>
+</tr>
+<tr>
+<td>Code review</td>
+<td>Explanatory</td>
+<td>Detailed analysis</td>
+</tr>
+<tr>
+<td>Bug fixing</td>
+<td>Default</td>
+<td>Direct solution</td>
+</tr>
+</tbody>
+</table>
+<h3>Pro Tip 2: Switch Styles Mid-Session</h3>
+<p>You can change styles mid-conversation to adapt to your needs:</p>
+<pre><code class="language-bash"># Start with Default for implementation
+claude&gt; /output-style Default
+
+# Switch to Explanatory when confused
+claude&gt; /output-style Explanatory
+&quot;Why is this approach better?&quot;
+
+# Back to Default to continue coding
+claude&gt; /output-style Default
+</code></pre>
+<h3>Pro Tip 3: Combine with Custom Output Styles</h3>
+<p>Start with built-in styles, then create custom ones for your specific needs.</p>
+<hr />
+<h2>✅ When To Use This Feature</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Teams with different skill levels<br />
+- Individual learning and development<br />
+- Task-specific customization<br />
+- Workshop and training scenarios  </p>
+<p>✅ <strong>Productivity Gains:</strong>
+- 40% faster learning compared to manual explanations<br />
+- Consistent output format<br />
+- Reduced need for follow-up clarification  </p>
+<h3>Anti-Patterns: When NOT To Use</h3>
+<p>❌ <strong>Avoid When:</strong>
+- You need very specialized behavior (use custom styles instead)<br />
+- Mixing styles mid-task causes confusion  </p>
+<hr />
+<h2>🔧 Practical Implementation Guide</h2>
+<h3>Step 1: Identify Your Current Task</h3>
+<p>Ask: "Do I need code, explanation, or learning?"</p>
+<h3>Step 2: Select Appropriate Style</h3>
+<ul>
+<li>Coding → Default  </li>
+<li>Understanding → Explanatory  </li>
+<li>Learning → Learning  </li>
+</ul>
+<h3>Step 3: Give Clear Instructions</h3>
+<p>Example with Default style:</p>
+<pre><code class="language-bash">/output-style Default
+&quot;Add authentication to my Next.js app&quot;
+</code></pre>
+<p>Example with Explanatory style:</p>
+<pre><code class="language-bash">/output-style Explanatory
+&quot;Explain how OAuth works in Next.js authentication&quot;
+</code></pre>
+<h3>Step 4: Evaluate Output</h3>
+<p>Does the response match your needs? If not, switch styles.</p>
+<hr />
+<h2>🎓 Hands-On Exercise</h2>
+<h3>Exercise: Compare Output Styles</h3>
+<p><strong>Objective:</strong> See how each style differs for the same request.</p>
+<p><strong>Task:</strong> Ask Claude the same question three times with different styles:</p>
+<ol>
+<li><strong>Default Style:</strong></li>
+</ol>
+<pre><code class="language-bash">/output-style Default
+&quot;Create a sorting algorithm&quot;
+</code></pre>
+<ol>
+<li><strong>Explanatory Style:</strong></li>
+</ol>
+<pre><code class="language-bash">/output-style Explanatory
+&quot;Create a sorting algorithm&quot;
+</code></pre>
+<ol>
+<li><strong>Learning Style:</strong></li>
+</ol>
+<pre><code class="language-bash">/output-style Learning
+&quot;Create a sorting algorithm&quot;
+</code></pre>
+<p><strong>Observation:</strong> Notice how response format, detail, and guidance differ.</p>
+<hr />
+<h2>📚 Advanced Topics</h2>
+<h3>Combining Output Styles with Skills</h3>
+<p>Link custom skills to specific output styles for consistent responses.</p>
+<h3>Team-Level Output Style Standards</h3>
+<p>Define output style defaults for team projects in CLAUDE.md.</p>
+<h3>Output Style Chains</h3>
+<p>Create workflows that use multiple styles in sequence.</p>
+<hr />
+<h2>🔗 Key Takeaways</h2>
+<ol>
+<li><strong>Output styles customize Claude's behavior</strong> for different tasks</li>
+<li><strong>Three built-in styles</strong> cover most common needs</li>
+<li><strong>Switch styles</strong> based on your current objective</li>
+<li><strong>Explanatory style</strong> is great for learning and understanding</li>
+<li><strong>Default style</strong> is best for rapid development</li>
+</ol>
+<hr />
+<h2>🎯 Next Steps</h2>
+<ul>
+<li>✅ Experiment with each built-in style</li>
+<li>✅ Notice which styles work best for your workflows</li>
+<li>✅ Document your team's style preferences</li>
+</ul>
+<p><strong>Next Episode:</strong> Learn to create custom output styles tailored to your specific needs.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-2-index.html" class="nav-link">← Back to Module 2</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

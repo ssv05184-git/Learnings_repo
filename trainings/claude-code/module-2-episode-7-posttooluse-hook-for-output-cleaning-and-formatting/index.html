@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostToolUse Hook for Output Cleaning & Formatting | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>PostToolUse Hook for Output Cleaning & Formatting</h1>
+    <p class="subtitle">Module 2 — Episode 7</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>PostToolUse Hook for Output Cleaning & Formatting</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>PostToolUse Hook for Output Cleaning &amp; Formatting</h1>
+<blockquote>
+<p><strong>Module 2 — Episode 7</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Advanced<br />
+<strong>Time to Master:</strong> 25 minutes to learn | 1.5 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Master the PostToolUse hook for output processing  </li>
+<li>✅ Clean and normalize tool outputs programmatically  </li>
+<li>✅ Format outputs for consistency across tools  </li>
+<li>✅ Integrate output formatting with downstream systems  </li>
+<li>✅ Build error recovery and fallback mechanisms  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 25 minutes<br />
+- Core Implementation: 1 hour<br />
+- Advanced Patterns: 30 minutes</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+PostToolUse hooks execute after a tool completes, allowing you to clean, validate, and reformat its output before Claude processes it. This lets you standardize inconsistent tool outputs, filter noise, and enhance data for better downstream processing.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Different tools output in different formats (JSON, CSV, plain text)<br />
+- Tool outputs often contain noise, warnings, or unnecessary formatting<br />
+- Downstream systems expect consistent input formats<br />
+- Tool failures produce unusable output that must be handled gracefully  </p>
+<p><strong>Where You'll Use This:</strong>
+- Standardizing CLI tool outputs (npm, git, terraform)<br />
+- Filtering test output to show only failures<br />
+- Enriching tool outputs with context<br />
+- Converting between formats (JSON → CSV, XML → JSON)<br />
+- Error handling and fallback strategies</p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- Advanced Hooks (Module 2, Episode 4)<br />
+- jq fundamentals (Module 2, Episode 5)<br />
+- Tool output formats (JSON, CSV, plain text)<br />
+- Basic error handling</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: Output Standardization</h3>
+<p><strong>Definition:</strong><br />
+Converting diverse tool outputs into consistent, predictable formats that downstream systems can reliably process.</p>
+<p><strong>Why It Matters:</strong><br />
+Inconsistent output requires conditional logic and error handling everywhere. Standardized output simplifies integration and reduces bugs.</p>
+<p><strong>When To Use:</strong><br />
+Whenever multiple tools produce output that needs integration (CI/CD pipelines, data aggregation).</p>
+<hr />
+<h3>Concept 2: PostToolUse Hook Lifecycle</h3>
+<p><strong>Definition:</strong><br />
+PostToolUse hooks receive the tool name, raw output, and exit code. They can transform or validate before returning to Claude.</p>
+<p><strong>Why It Matters:</strong><br />
+PostToolUse is the ideal place to fix output before Claude sees it, preventing downstream issues.</p>
+<p><strong>When To Use:</strong><br />
+Always use PostToolUse for output cleaning rather than pre-processing elsewhere.</p>
+<hr />
+<h3>Concept 3: Fallback &amp; Error Recovery</h3>
+<p><strong>Definition:</strong><br />
+When tools fail, PostToolUse hooks can generate synthetic outputs or error messages that let workflows continue.</p>
+<p><strong>Why It Matters:</strong><br />
+Resilient workflows don't stop on tool failures. Graceful degradation keeps progress moving.</p>
+<p><strong>When To Use:</strong><br />
+For critical tools where failure shouldn't block tasks.</p>
+<hr />
+<h2>🖼 Architecture &amp; Flow Diagrams</h2>
+<h3>PostToolUse Processing Pipeline</h3>
+<pre><code>Tool Execution
+    ↓
+Tool Output (raw, potentially noisy)
+    ↓
+PostToolUse Hook
+├─ Validate format
+├─ Filter noise
+├─ Enrich context
+├─ Handle errors
+└─ Return standardized output
+    ↓
+Claude Receives Clean Output
+</code></pre>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Pattern 1: JSON Output Standardization</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/post-tool-use-json-standardize.sh
+
+TOOL_NAME=&quot;${1}&quot;
+RAW_OUTPUT=&quot;${2}&quot;
+EXIT_CODE=&quot;${3}&quot;
+
+# If tool failed, generate error response
+if [ &quot;$EXIT_CODE&quot; -ne 0 ]; then
+  echo &quot;$RAW_OUTPUT&quot; | jq -n '{
+    status: &quot;error&quot;,
+    tool: &quot;'$TOOL_NAME'&quot;,
+    exit_code: '$EXIT_CODE',
+    message: input
+  }'
+  exit 0
+fi
+
+# Parse and standardize JSON output
+case &quot;$TOOL_NAME&quot; in
+  &quot;npm_list&quot;)
+    echo &quot;$RAW_OUTPUT&quot; | jq '{
+      status: &quot;success&quot;,
+      tool: &quot;npm_list&quot;,
+      dependencies: [.dependencies | to_entries[] | {
+        name: .key,
+        version: .value.version,
+        resolved: .value.resolved
+      }]
+    }'
+    ;;
+
+  &quot;terraform_plan&quot;)
+    echo &quot;$RAW_OUTPUT&quot; | jq '{
+      status: &quot;success&quot;,
+      tool: &quot;terraform_plan&quot;,
+      changes: {
+        creates: ([.resource_changes[]? | select(.change.actions[] == &quot;create&quot;)] | length),
+        updates: ([.resource_changes[]? | select(.change.actions[] == &quot;update&quot;)] | length),
+        deletes: ([.resource_changes[]? | select(.change.actions[] == &quot;delete&quot;)] | length)
+      }
+    }'
+    ;;
+
+  *)
+    # Default: try to parse as JSON, or return as string
+    echo &quot;$RAW_OUTPUT&quot; | jq '.'  2&gt;/dev/null || \
+      jq -n '{
+        status: &quot;success&quot;,
+        tool: &quot;'$TOOL_NAME'&quot;,
+        output: &quot;'${RAW_OUTPUT}'&quot;
+      }'
+    ;;
+esac
+</code></pre>
+<h3>Pattern 2: Filter Noise &amp; Warnings</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/post-tool-use-filter-noise.sh
+
+TOOL_NAME=&quot;${1}&quot;
+RAW_OUTPUT=&quot;${2}&quot;
+
+# Remove common noise patterns
+CLEANED_OUTPUT=$(echo &quot;$RAW_OUTPUT&quot; |
+  # Remove npm deprecation warnings
+  grep -v &quot;npm WARN&quot; |
+  # Remove git hints
+  grep -v &quot;hint: &quot; |
+  # Remove verbose debug output
+  grep -v &quot;DEBUG:&quot; |
+  # Remove timestamps
+  sed 's/\[.*\]//' |
+  # Trim whitespace
+  sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+# If output is empty after cleaning, report success
+if [ -z &quot;$CLEANED_OUTPUT&quot; ]; then
+  echo &quot;$RAW_OUTPUT&quot; | jq -n '{
+    status: &quot;success&quot;,
+    tool: &quot;'$TOOL_NAME'&quot;,
+    message: &quot;Completed with no significant output&quot;
+  }'
+else
+  echo &quot;$CLEANED_OUTPUT&quot;
+fi
+</code></pre>
+<h3>Pattern 3: Multi-Format Output Conversion</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/post-tool-use-format-convert.sh
+
+TOOL_NAME=&quot;${1}&quot;
+RAW_OUTPUT=&quot;${2}&quot;
+OUTPUT_FORMAT=&quot;${OUTPUT_FORMAT:-json}&quot;
+
+case &quot;$TOOL_NAME&quot; in
+  &quot;csv_export&quot;)
+    # Convert CSV to JSON
+    echo &quot;$RAW_OUTPUT&quot; | jq -Rs '
+      split(&quot;\n&quot;) | 
+      .[0] as $headers | 
+      ($headers | split(&quot;,&quot;)) as $keys |
+      .[1:] | 
+      map(
+        split(&quot;,&quot;) | 
+        to_entries | 
+        map({(.string): .value}) | 
+        add
+      )
+    '
+    ;;
+
+  &quot;xml_report&quot;)
+    # Convert XML to JSON (requires xmllint or similar)
+    if command -v xmllint &amp;&gt; /dev/null; then
+      echo &quot;$RAW_OUTPUT&quot; | xmllint --format - | \
+        jq -Rs 'fromjson'
+    else
+      echo &quot;$RAW_OUTPUT&quot;
+    fi
+    ;;
+
+  *)
+    echo &quot;$RAW_OUTPUT&quot;
+    ;;
+esac
+</code></pre>
+<h3>Pattern 4: Output Enrichment</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/post-tool-use-enrich.sh
+
+TOOL_NAME=&quot;${1}&quot;
+RAW_OUTPUT=&quot;${2}&quot;
+EXIT_CODE=&quot;${3}&quot;
+
+# Add execution metadata
+ENRICHED=$(echo &quot;$RAW_OUTPUT&quot; | jq -s '
+  {
+    data: .[0],
+    metadata: {
+      captured_at: &quot;'$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)'&quot;,
+      tool: &quot;'$TOOL_NAME'&quot;,
+      exit_code: '$EXIT_CODE',
+      hostname: &quot;'$(hostname)'&quot;,
+      user: &quot;'$(whoami)'&quot;
+    }
+  }
+')
+
+echo &quot;$ENRICHED&quot;
+</code></pre>
+<h3>Pattern 5: Test Output Parsing</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/post-tool-use-test-summary.sh
+
+TOOL_NAME=&quot;${1}&quot;
+RAW_OUTPUT=&quot;${2}&quot;
+
+if [ &quot;$TOOL_NAME&quot; != &quot;npm_test&quot; ]; then
+  echo &quot;$RAW_OUTPUT&quot;
+  exit 0
+fi
+
+# Extract only failure summary from verbose test output
+SUMMARY=$(echo &quot;$RAW_OUTPUT&quot; | jq -Rs '
+  . as $text |
+  {
+    status: (if ($text | contains(&quot;failed&quot;)) then &quot;failed&quot; else &quot;passed&quot; end),
+    tests: {
+      passed: ($text | scan([0-9]+&quot; passed&quot;) | .[0] // &quot;0&quot; | tonumber),
+      failed: ($text | scan([0-9]+&quot; failed&quot;) | .[0] // &quot;0&quot; | tonumber),
+      skipped: ($text | scan([0-9]+&quot; skipped&quot;) | .[0] // &quot;0&quot; | tonumber)
+    },
+    failures: [$text | scan(&quot;✖.*&quot;) | select(length &gt; 0)]
+  }
+')
+
+echo &quot;$SUMMARY&quot;
+</code></pre>
+<hr />
+<h2>✅ When To Use This Feature</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Standardizing diverse tool outputs in CI/CD<br />
+- Filtering noise while preserving important information<br />
+- Converting between formats (JSON ↔ CSV, XML ↔ JSON)<br />
+- Adding context and metadata to outputs<br />
+- Graceful error handling  </p>
+<hr />
+<h3>Anti-Patterns: When NOT To Use</h3>
+<p>❌ <strong>Avoid When:</strong>
+- Output is already clean and structured<br />
+- Hook becomes too complex (&gt;50 lines of logic)<br />
+- Processing output that's not UTF-8 safe</p>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Conditional Formatting</h3>
+<p><strong>The Technique:</strong> Handle output differently based on format detection.</p>
+<pre><code class="language-bash"># Detect if output is JSON
+if echo &quot;$RAW_OUTPUT&quot; | jq empty 2&gt;/dev/null; then
+  # It's JSON
+  echo &quot;$RAW_OUTPUT&quot; | jq '.results'
+else
+  # It's plain text
+  echo &quot;$RAW_OUTPUT&quot;
+fi
+</code></pre>
+<p><strong>Expected Result:</strong> Single hook handles multiple output formats.</p>
+<hr />
+<h3>Pro Tip 2: Caching Expensive Transformations</h3>
+<p><strong>The Technique:</strong> Store transformed output to avoid recomputation.</p>
+<pre><code class="language-bash"># In PostToolUse hook
+OUTPUT_HASH=$(echo &quot;$RAW_OUTPUT&quot; | md5sum | cut -d' ' -f1)
+CACHE_FILE=&quot;/tmp/output_cache_${OUTPUT_HASH}&quot;
+
+if [ -f &quot;$CACHE_FILE&quot; ]; then
+  cat &quot;$CACHE_FILE&quot;
+else
+  TRANSFORMED=$(expensive_transformation)
+  echo &quot;$TRANSFORMED&quot; &gt; &quot;$CACHE_FILE&quot;
+  echo &quot;$TRANSFORMED&quot;
+fi
+</code></pre>
+<p><strong>Expected Result:</strong> Repeated tool calls with same output are fast.</p>
+<hr />
+<h3>Pro Tip 3: Streaming Large Outputs</h3>
+<p><strong>The Technique:</strong> Process line-by-line for large outputs.</p>
+<pre><code class="language-bash"># For large outputs, use streaming
+echo &quot;$RAW_OUTPUT&quot; | jq '.results[] | {id, status}' 
+
+# vs non-streaming
+echo &quot;$RAW_OUTPUT&quot; | jq '.results | map({id, status})'
+</code></pre>
+<p><strong>Expected Result:</strong> Memory-efficient processing of large outputs.</p>
+<hr />
+<h2>🚀 Real-World Examples</h2>
+<h3>Example 1: Docker Build Output Processing</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/post-tool-use-docker.sh
+
+TOOL_NAME=&quot;${1}&quot;
+RAW_OUTPUT=&quot;${2}&quot;
+
+if [ &quot;$TOOL_NAME&quot; != &quot;docker_build&quot; ]; then
+  echo &quot;$RAW_OUTPUT&quot;
+  exit 0
+fi
+
+# Extract build summary from verbose Docker output
+SUMMARY=$(echo &quot;$RAW_OUTPUT&quot; | grep -E &quot;Step|Successfully built|ERROR&quot; | \
+  jq -Rs '
+    split(&quot;\n&quot;) |
+    {
+      steps: [.[] | match(&quot;Step [0-9]+&quot;) | .string],
+      final_status: (if any(test(&quot;ERROR&quot;)) then &quot;failed&quot; else &quot;success&quot; end),
+      image_id: (. | match(&quot;Successfully built ([a-f0-9]+)&quot;) | .captures[0].string // &quot;unknown&quot;)
+    }
+  ')
+
+echo &quot;$SUMMARY&quot;
+</code></pre>
+<h3>Example 2: Git Log Parsing</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/post-tool-use-git.sh
+
+TOOL_NAME=&quot;${1}&quot;
+RAW_OUTPUT=&quot;${2}&quot;
+
+if [ &quot;$TOOL_NAME&quot; != &quot;git_log&quot; ]; then
+  echo &quot;$RAW_OUTPUT&quot;
+  exit 0
+fi
+
+# Parse git log output into structured format
+echo &quot;$RAW_OUTPUT&quot; | git log --pretty=format:&quot;%H|%an|%s&quot; | 
+  jq -Rs '
+    split(&quot;\n&quot;) |
+    map(
+      select(length &gt; 0) |
+      split(&quot;|&quot;) |
+      {
+        hash: .[0],
+        author: .[1],
+        message: .[2]
+      }
+    )
+  '
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Create PostToolUse Hook</h3>
+<pre><code class="language-bash">cat &gt; .claude/hooks/post-tool-use.sh &lt;&lt; 'EOF'
+#!/bin/bash
+
+TOOL_NAME=&quot;${1}&quot;
+RAW_OUTPUT=&quot;${2}&quot;
+EXIT_CODE=&quot;${3:-0}&quot;
+
+# Implement patterns from above
+# ...
+
+echo &quot;$OUTPUT&quot;
+EOF
+
+chmod +x .claude/hooks/post-tool-use.sh
+</code></pre>
+<h3>Step 2: Register Hook</h3>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;onToolUse&quot;: {
+      &quot;post&quot;: &quot;.claude/hooks/post-tool-use.sh&quot;
+    }
+  }
+}
+</code></pre>
+<h3>Step 3: Test with Real Tools</h3>
+<pre><code class="language-bash"># Test with npm
+npm list --json | bash .claude/hooks/post-tool-use.sh npm_list
+
+# Test with git
+git log | bash .claude/hooks/post-tool-use.sh git_log
+</code></pre>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: How do I debug PostToolUse hook issues?</h3>
+<p><strong>A:</strong> Log outputs to file: <code>echo "DEBUG: $RAW_OUTPUT" &gt;&gt; /tmp/hook_debug.log</code></p>
+<h3>Q: Can PostToolUse hooks modify behavior?</h3>
+<p><strong>A:</strong> They can transform output but can't change tool execution. Use PreToolUse for that.</p>
+<h3>Q: What if output is binary?</h3>
+<p><strong>A:</strong> Check with <code>file</code> command; handle separately (don't parse binary as text).</p>
+<hr />
+<h2>📊 Performance &amp; Optimization</h2>
+<ul>
+<li><strong>Hook Overhead:</strong> 10-50ms for output processing  </li>
+<li><strong>Memory:</strong> Streaming for large outputs prevents buffering  </li>
+<li><strong>Optimization:</strong> Cache expensive transformations</li>
+</ul>
+<hr />
+<h2>🔗 Related Topics &amp; Next Steps</h2>
+<p><strong>You Should Also Learn About:</strong>
+- Advanced Hooks (Episode 4) — hook orchestration<br />
+- Building Bash Logger (Episode 6) — practical hook patterns<br />
+- Claude Code Subagents (Episode 8) — multi-tool coordination</p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>PostToolUse standardizes outputs</strong> — convert noise to signal  </li>
+<li><strong>Consistent output simplifies integration</strong> — downstream systems work reliably  </li>
+<li><strong>Enrichment adds context</strong> — metadata makes outputs actionable  </li>
+<li><strong>Graceful degradation resilience</strong> — handle failures gracefully</li>
+</ol>
+<hr />
+<h2>🎓 Quick Reference</h2>
+<h3>Hook Signature</h3>
+<pre><code class="language-bash">TOOL_NAME=&quot;${1}&quot;
+RAW_OUTPUT=&quot;${2}&quot;
+EXIT_CODE=&quot;${3}&quot;
+</code></pre>
+<h3>Common Transformations</h3>
+<pre><code class="language-bash"># JSON standardization
+jq '{status: &quot;success&quot;, data: .}'
+
+# CSV to JSON
+csvjson input.csv
+
+# Filter noise
+grep -v &quot;WARN\|DEBUG&quot;
+
+# Add metadata
+jq '. += {timestamp: now}'
+</code></pre>
+<hr />
+<h2>⚠️ Common Mistakes to Avoid</h2>
+<ol>
+<li><strong>Blocking on complex processing</strong> — use streaming for large data  </li>
+<li><strong>Not handling errors</strong> — check exit codes  </li>
+<li><strong>Losing original data</strong> — preserve raw output when possible  </li>
+<li><strong>Over-processing</strong> — only transform what's necessary</li>
+</ol>
+<hr />
+<h2>🔐 Security &amp; Best Practices</h2>
+<p><strong>Data Safety:</strong>
+- Scrub sensitive data (API keys, tokens) from outputs<br />
+- Don't log full outputs to unencrypted storage  </p>
+<p><strong>Reliability:</strong>
+- Implement timeouts for expensive transforms<br />
+- Fallback to raw output if transformation fails</p>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You can now clean, standardize, and enrich tool outputs using PostToolUse hooks, enabling reliable downstream integration.</p>
+<p><strong>How This Fits Into Real Development:</strong><br />
+Clean, consistent data is foundational for automation. This episode bridges messy real-world tool outputs and reliable downstream systems.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Claude Code Subagents</strong> (Episode 8) to coordinate multiple tools and outputs at scale.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Build a library of PostToolUse patterns for common tools (npm, git, docker, terraform). Share with your team to standardize output handling organization-wide.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-2-index.html" class="nav-link">← Back to Module 2</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code with GitHub Flow - Complete Development Workflow | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Claude Code with GitHub Flow - Complete Development Workflow</h1>
+    <p class="subtitle">Module 3 — Episode 7</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Claude Code with GitHub Flow - Complete Development Workflow</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Claude Code with GitHub Flow - Complete Development Workflow</h1>
+<blockquote>
+<p><strong>Module 3 — Episode 7</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Expert<br />
+<strong>Time to Master:</strong> 40 minutes to learn | 3+ hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Implement complete GitHub Flow with Claude Code  </li>
+<li>✅ Automate feature branch creation and PR management  </li>
+<li>✅ Build a React To-Do app end-to-end with Claude  </li>
+<li>✅ Orchestrate code review, testing, and deployment  </li>
+<li>✅ Create production-ready workflows combining all Module 3 concepts  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 40 minutes<br />
+- Design: 45 minutes<br />
+- Implementation: 2+ hours</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+This capstone brings everything together—Claude Code orchestrates complete feature development from requirements to production deployment using GitHub Flow. A single Claude session manages branching, development, testing, code review, and deployment.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Development workflows require context-switching between tools<br />
+- Manual code review and testing are inconsistent<br />
+- PR management is tedious<br />
+- Deployment requires multiple manual steps  </p>
+<p><strong>Where You'll Use This:</strong>
+- Complete feature delivery automation<br />
+- Complex projects requiring coordination<br />
+- Consistent, reliable development workflows</p>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Complete Feature Workflow</h3>
+<pre><code class="language-bash">#!/bin/bash
+# complete_workflow.sh
+
+FEATURE_NAME=&quot;add-task-editing&quot;
+FEATURE_BRANCH=&quot;feature/$FEATURE_NAME&quot;
+
+echo &quot;🚀 Starting complete feature workflow for: $FEATURE_NAME&quot;
+
+# Phase 1: Planning
+echo &quot;📋 Phase 1: Planning&quot;
+claude &quot;
+Plan feature: $FEATURE_NAME
+Requirements:
+- Users can edit existing tasks
+- Edit happens inline with save/cancel buttons
+- Changes persist to database
+- Optimistic updates for UX
+
+Output a detailed technical specification including:
+- Component architecture
+- State management approach
+- API endpoints needed
+- Database schema changes
+- Testing strategy
+&quot;
+
+# Phase 2: Create Feature Branch
+echo &quot;🌿 Phase 2: Creating feature branch&quot;
+git checkout -b &quot;$FEATURE_BRANCH&quot;
+git push origin &quot;$FEATURE_BRANCH&quot;
+
+# Phase 3: Implementation
+echo &quot;💻 Phase 3: Implementation&quot;
+claude &quot;
+Implement $FEATURE_NAME:
+
+1. Create/update React components:
+   - TaskEditForm component for inline editing
+   - EditableTask wrapper component
+
+2. Update state management (Redux/Context):
+   - Actions for startEdit, saveEdit, cancelEdit
+   - Selectors for editing state
+
+3. Create API endpoints:
+   - PATCH /tasks/:id for updates
+   - Validation middleware
+
+4. Update database:
+   - Ensure updated_at timestamp
+   - Version tracking for edits
+
+5. Write comprehensive tests:
+   - Unit tests for components
+   - Integration tests for API
+   - E2E tests for user flows
+
+Commit changes with descriptive messages.
+Ensure all tests pass.
+&quot;
+
+# Phase 4: Code Quality
+echo &quot;🔍 Phase 4: Quality Checks&quot;
+claude &quot;
+Review code quality:
+1. Run linter: npm run lint
+2. Run tests: npm run test
+3. Check coverage: npm run coverage
+4. Performance audit: npm run audit
+
+If issues found:
+- Fix linting errors
+- Improve test coverage to &gt;80%
+- Address performance concerns
+- Fix security vulnerabilities
+
+Commit fixes if any.
+&quot;
+
+# Phase 5: PR Creation
+echo &quot;📝 Phase 5: Creating Pull Request&quot;
+claude &quot;
+Create a comprehensive GitHub PR:
+
+1. Title: Implement inline task editing
+
+2. Description:
+   - Problem statement
+   - Solution overview
+   - Breaking changes (if any)
+   - Testing approach
+   - Screenshots/demo
+
+3. Labels: feature, enhancement
+
+4. Reviewers: @team-lead, @senior-dev
+
+5. Checklist:
+   - [ ] Tests pass
+   - [ ] Coverage &gt; 80%
+   - [ ] Documentation updated
+   - [ ] No breaking changes
+   - [ ] Performance reviewed
+
+Use GitHub MCP to create the PR programmatically.
+&quot;
+
+# Phase 6: Automated Review
+echo &quot;✅ Phase 6: Automated Review&quot;
+claude &quot;
+Conduct thorough code review:
+
+1. Security Check:
+   - Input validation
+   - SQL injection prevention
+   - XSS prevention
+   - Authentication/authorization
+
+2. Performance:
+   - Database query optimization
+   - Component re-render prevention
+   - Bundle size impact
+
+3. Best Practices:
+   - Code style compliance
+   - Error handling
+   - Logging appropriateness
+   - Documentation
+
+4. Test Coverage:
+   - Edge cases covered
+   - Error scenarios tested
+   - Integration tests present
+
+Provide detailed feedback. If issues found, fix them.
+&quot;
+
+# Phase 7: Merge to Develop
+echo &quot;🔀 Phase 7: Merging&quot;
+git checkout develop
+git pull origin develop
+git merge &quot;$FEATURE_BRANCH&quot;
+git push origin develop
+
+# Phase 8: Deploy to Staging
+echo &quot;🚀 Phase 8: Deploy to Staging&quot;
+claude &quot;
+Trigger deployment to staging:
+1. Via GitHub Actions or deployment script
+2. Verify deployment succeeded
+3. Run smoke tests against staging
+4. Check error logs
+&quot;
+
+# Phase 9: E2E Testing
+echo &quot;🧪 Phase 9: End-to-End Testing&quot;
+claude &quot;
+Run comprehensive E2E tests:
+
+Test Scenarios:
+1. Create task
+2. Edit task with various inputs
+3. Edit task with long text
+4. Concurrent edits
+5. Network error recovery
+6. Undo edit (if applicable)
+7. Delete edited task
+8. Permission checks
+
+Report results with screenshots/videos.
+&quot;
+
+# Phase 10: Deploy to Production
+echo &quot;🎯 Phase 10: Deploy to Production&quot;
+claude &quot;
+Deploy to production:
+
+Pre-deployment:
+1. Final security scan
+2. Performance check
+3. Database migration validation
+4. Backup verification
+
+Deployment:
+1. Create release tag
+2. Deploy to production (blue-green or canary)
+3. Monitor error rates
+4. Check performance metrics
+
+Post-deployment:
+1. Verify feature works
+2. Monitor logs for issues
+3. Send deployment notification
+4. Update documentation
+&quot;
+
+# Phase 11: Documentation &amp; Cleanup
+echo &quot;📚 Phase 11: Documentation&quot;
+claude &quot;
+Complete documentation:
+
+1. Update README if needed
+2. Add API documentation
+3. Create user guide
+4. Document database changes
+5. Add release notes
+6. Document any config changes
+&quot;
+
+# Phase 12: Close and Cleanup
+echo &quot;🧹 Phase 12: Cleanup&quot;
+git branch -d &quot;$FEATURE_BRANCH&quot;
+git push origin --delete &quot;$FEATURE_BRANCH&quot;
+
+echo &quot;✅ Feature workflow complete!&quot;
+</code></pre>
+<h3>Real Example: React To-Do App</h3>
+<pre><code class="language-bash">#!/bin/bash
+# todo_app_example.sh
+
+echo &quot;🚀 Building React To-Do App with Claude&quot;
+
+# Initial setup
+claude &quot;
+Create a React To-Do application with:
+
+Features:
+1. View all tasks
+2. Create new task
+3. Mark task complete/incomplete
+4. Edit task description (inline)
+5. Delete task
+6. Filter: All, Active, Completed
+7. Task statistics (total, completed, remaining)
+
+Tech Stack:
+- React + TypeScript
+- Redux for state
+- Express.js backend
+- PostgreSQL database
+- Tailwind CSS styling
+
+Please:
+1. Create project structure
+2. Set up all dependencies
+3. Create database schema
+4. Implement all components
+5. Write comprehensive tests
+6. Set up GitHub Actions CI/CD
+7. Create deployment manifests
+&quot;
+
+# Development workflow
+for feature in \
+  &quot;task-editing&quot; \
+  &quot;task-filtering&quot; \
+  &quot;task-statistics&quot;
+do
+  echo &quot;Implementing: $feature&quot;
+
+  # Claude handles entire feature branch workflow
+  claude &quot;
+  Implement feature: $feature
+  - Create feature branch
+  - Develop feature
+  - Write tests
+  - Create PR
+  - Handle code review
+  - Merge when ready
+  &quot;
+done
+
+echo &quot;✅ To-Do app complete and deployed!&quot;
+</code></pre>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Workflow Context File</h3>
+<pre><code class="language-bash"># .claude/workflow.md
+# Feature Workflow Context
+
+## Standards
+- Commit messages: conventional commits
+- Branch naming: feature/*, bugfix/*, hotfix/*
+- PR requirements: 2 approvals, CI passing
+- Testing: &gt;80% coverage required
+
+## Tools
+- Linter: ESLint
+- Tests: Jest + React Testing Library
+- CI/CD: GitHub Actions
+</code></pre>
+<h3>Pro Tip 2: Workflow Templates</h3>
+<pre><code class="language-bash"># Complete workflow template ready for Claude
+cat &gt; .claude/templates/feature_workflow.md &lt;&lt; 'EOF'
+# Feature Workflow Template
+
+## Phases
+1. Planning &amp; Specification
+2. Branch Creation
+3. Implementation
+4. Testing
+5. Code Review
+6. Merge &amp; Deploy
+7. Monitoring &amp; Docs
+
+## Checklist
+- [ ] Specification approved
+- [ ] Branch created
+- [ ] Code implemented
+- [ ] Tests pass
+- [ ] PR reviewed
+- [ ] Changes merged
+- [ ] Deployed to production
+- [ ] Documentation updated
+EOF
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<p><strong>Step 1:</strong> Set up GitHub with Claude MCP integration</p>
+<p><strong>Step 2:</strong> Create workflow orchestration script</p>
+<p><strong>Step 3:</strong> Define feature requirements</p>
+<p><strong>Step 4:</strong> Run: <code>claude &lt; deployment_script.sh</code></p>
+<p><strong>Step 5:</strong> Monitor completion</p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>Complete workflows require orchestration</strong> — Claude coordinates multiple tools  </li>
+<li><strong>Quality is built-in</strong> — testing and review happen automatically  </li>
+<li><strong>Consistency eliminates errors</strong> — standardized workflows are reliable  </li>
+<li><strong>Autonomy scales teams</strong> — Claude handles complex orchestration</li>
+</ol>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You can orchestrate complete feature development workflows with Claude Code, from requirements to production.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Claude Code Plugins</strong> (Episode 8) for extending capabilities further.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Collect workflow templates. Build a library of orchestration patterns for your organization's development process.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-3-index.html" class="nav-link">← Back to Module 3</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

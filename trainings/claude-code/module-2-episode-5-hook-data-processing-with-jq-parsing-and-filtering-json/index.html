@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hook Data Processing with jq - Parsing & Filtering JSON | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Hook Data Processing with jq - Parsing & Filtering JSON</h1>
+    <p class="subtitle">Module 2 — Episode 5</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Hook Data Processing with jq - Parsing & Filtering JSON</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Hook Data Processing with jq - Parsing &amp; Filtering JSON</h1>
+<blockquote>
+<p><strong>Module 2 — Episode 5</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Advanced<br />
+<strong>Time to Master:</strong> 25 minutes to learn | 2 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Master jq fundamentals for JSON processing in hooks  </li>
+<li>✅ Extract, filter, and transform hook data efficiently  </li>
+<li>✅ Build complex jq pipelines for data validation  </li>
+<li>✅ Integrate jq into hook workflows for conditional logic  </li>
+<li>✅ Debug and optimize jq expressions  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 25 minutes<br />
+- Core Implementation: 1.5 hours<br />
+- Advanced Pipelines: 30 minutes</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Hooks often deal with JSON data—file metadata, tool outputs, testing results. jq is a lightweight JSON processor that lets you parse, filter, and transform this data without writing code. Mastering jq in hooks transforms them from simple checks into intelligent decision-making systems.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Manual JSON parsing in shell scripts is error-prone and verbose<br />
+- Complex filtering requires conditional logic that's hard to maintain<br />
+- Extracting specific fields from nested JSON is tedious<br />
+- Validating JSON structure requires multiple validation checks  </p>
+<p><strong>Where You'll Use This:</strong>
+- Parsing tool output in hooks<br />
+- Filtering test results and metrics<br />
+- Extracting specific data for logging<br />
+- Conditional hook execution based on JSON criteria<br />
+- Data transformation before passing to external systems</p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- Basic JSON structure and syntax<br />
+- Advanced Hooks concepts (Module 2, Episode 4)<br />
+- Shell scripting fundamentals<br />
+- Command-line pipes and redirection</p>
+<p><strong>You'll Need:</strong>
+- jq installed (<code>brew install jq</code> or <code>apt-get install jq</code>)</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: jq Pipe Semantics</h3>
+<p><strong>Definition:</strong><br />
+jq uses pipes to chain operations: <code>input | filter1 | filter2 | output</code>. Each stage transforms data.</p>
+<p><strong>Why It Matters:</strong><br />
+Understanding pipes lets you build complex data transformations from simple, composable pieces. This mirrors Unix philosophy and makes expressions maintainable.</p>
+<p><strong>When To Use:</strong><br />
+When you need to extract → filter → transform JSON in a single, readable command.</p>
+<hr />
+<h3>Concept 2: Selectors and Path Expressions</h3>
+<p><strong>Definition:</strong><br />
+Selectors like <code>.field</code>, <code>.[]</code>, and <code>.[0]</code> navigate JSON structure and extract values.</p>
+<p><strong>Why It Matters:</strong><br />
+Selectors are the foundation of jq. Mastering them lets you navigate arbitrary JSON quickly without trial-and-error.</p>
+<p><strong>When To Use:</strong><br />
+Always—they're fundamental to any jq operation.</p>
+<hr />
+<h3>Concept 3: Conditional Logic in jq</h3>
+<p><strong>Definition:</strong><br />
+jq supports <code>if-then-else</code> conditions and filters that allow complex decision logic within JSON processing.</p>
+<p><strong>Why It Matters:</strong><br />
+Enables hooks to make intelligent decisions based on data values without writing shell conditionals. Keeps logic in data, not code.</p>
+<p><strong>When To Use:</strong><br />
+When hook behavior should depend on specific data values or thresholds.</p>
+<hr />
+<h2>🖼 Architecture &amp; Flow Diagrams</h2>
+<h3>jq Processing Pipeline</h3>
+<pre><code>Raw JSON Input
+    ↓
+jq: .files[]  (extract array)
+    ↓
+jq: select(.size &gt; 1000)  (filter)
+    ↓
+jq: {name: .path, size}  (transform)
+    ↓
+Processed Output
+</code></pre>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>jq Fundamentals</h3>
+<p><strong>Basic Selection:</strong></p>
+<pre><code class="language-bash"># Input: {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 30}
+
+jq '.name'                 # → &quot;Alice&quot;
+jq '.age'                  # → 30
+jq '.'                     # → (entire object)
+</code></pre>
+<p><strong>Array Operations:</strong></p>
+<pre><code class="language-bash"># Input: {&quot;files&quot;: [{&quot;name&quot;: &quot;a.js&quot;, &quot;size&quot;: 100}]}
+
+jq '.files'                # → [{&quot;name&quot;: &quot;a.js&quot;, &quot;size&quot;: 100}]
+jq '.files[]'              # → {&quot;name&quot;: &quot;a.js&quot;, &quot;size&quot;: 100}
+jq '.files[0]'             # → {&quot;name&quot;: &quot;a.js&quot;, &quot;size&quot;: 100}
+jq '.files | length'       # → 1
+</code></pre>
+<p><strong>Filtering with <code>select</code>:</strong></p>
+<pre><code class="language-bash"># Find files larger than 1000 bytes
+jq '.files[] | select(.size &gt; 1000)'
+
+# Find test results that failed
+jq '.results[] | select(.status == &quot;failed&quot;)'
+
+# Multiple conditions
+jq '.results[] | select(.status == &quot;failed&quot; and .attempts &gt; 3)'
+</code></pre>
+<h3>Complex Transformations</h3>
+<p><strong>Object Construction:</strong></p>
+<pre><code class="language-bash"># Create new object with selected fields
+echo '{&quot;name&quot;:&quot;test.js&quot;, &quot;lines&quot;:150, &quot;errors&quot;:2}' | \
+  jq '{filename: .name, errorCount: .errors}'
+# → {&quot;filename&quot;:&quot;test.js&quot;,&quot;errorCount&quot;:2}
+</code></pre>
+<p><strong>Array Aggregation:</strong></p>
+<pre><code class="language-bash"># Count items by type
+echo '[{&quot;type&quot;:&quot;error&quot;},{&quot;type&quot;:&quot;warning&quot;},{&quot;type&quot;:&quot;error&quot;}]' | \
+  jq 'group_by(.type) | map({type: .[0].type, count: length})'
+# → [{&quot;type&quot;:&quot;error&quot;,&quot;count&quot;:2},{&quot;type&quot;:&quot;warning&quot;,&quot;count&quot;:1}]
+</code></pre>
+<p><strong>Conditional Transformation:</strong></p>
+<pre><code class="language-bash"># Mark as critical if size &gt; 1MB
+echo '{&quot;name&quot;:&quot;file.bin&quot;,&quot;size&quot;:1500000}' | \
+  jq '.severity = if .size &gt; 1000000 then &quot;critical&quot; else &quot;normal&quot; end'
+# → {&quot;name&quot;:&quot;file.bin&quot;,&quot;size&quot;:1500000,&quot;severity&quot;:&quot;critical&quot;}
+</code></pre>
+<hr />
+<h2>✅ When To Use This Feature</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Parsing npm test output to extract failures<br />
+- Filtering log entries by severity<br />
+- Extracting metrics from build results<br />
+- Building conditional hook logic based on data<br />
+- Aggregating results from multiple tools</p>
+<p>✅ <strong>Productivity Gains:</strong>
+- Convert multi-line shell logic into single jq expression<br />
+- Reduce bugs in data extraction  </p>
+<hr />
+<h3>Anti-Patterns: When NOT To Use</h3>
+<p>❌ <strong>Avoid When:</strong>
+- jq expression becomes &gt;3 lines long (too complex)<br />
+- You're doing heavy computation (use Python instead)<br />
+- Parsing non-JSON data (use grep/sed/awk)</p>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Pretty-Print for Debugging</h3>
+<p><strong>The Technique:</strong> Use <code>jq '.'</code> to validate and format JSON.</p>
+<pre><code class="language-bash"># Input might be invalid JSON
+echo &quot;$potentially_invalid_json&quot; | jq '.' &gt; /dev/null
+if [ $? -ne 0 ]; then
+  echo &quot;Invalid JSON&quot;
+fi
+</code></pre>
+<p><strong>Expected Result:</strong> Immediate validation without manual parsing.</p>
+<hr />
+<h3>Pro Tip 2: Safe Navigation with <code>//</code> (Alternative Operator)</h3>
+<p><strong>The Technique:</strong> Use <code>//</code> to provide defaults for missing fields.</p>
+<pre><code class="language-bash"># If .error doesn't exist, use &quot;no error&quot;
+jq '.error // &quot;no error&quot;'
+
+# Chain defaults
+jq '.message // .msg // &quot;unknown&quot;'
+</code></pre>
+<p><strong>Expected Result:</strong> Never crash on missing fields.</p>
+<hr />
+<h3>Pro Tip 3: String Interpolation for Logging</h3>
+<p><strong>The Technique:</strong> Build formatted strings directly in jq.</p>
+<pre><code class="language-bash"># Create descriptive log message
+jq '&quot;File \(.name) contains \(.errors | length) errors&quot;'
+
+# Output: &quot;File test.js contains 2 errors&quot;
+</code></pre>
+<p><strong>Expected Result:</strong> Rich logging without post-processing strings.</p>
+<hr />
+<h2>🚀 Real-World Examples</h2>
+<h3>Example 1: Parse npm test output</h3>
+<pre><code class="language-bash">#!/bin/bash
+# Hook: Extract test failures from npm test JSON output
+
+npm test --json 2&gt;&amp;1 | jq '
+  .testResults[]
+  | select(.status == &quot;failed&quot;)
+  | {
+      file: .name,
+      failures: [.assertionResults[] | select(.status == &quot;failed&quot;) | .title],
+      duration: .perfStats.end - .perfStats.start
+    }
+' | while read -r result; do
+  echo &quot;❌ Test failed: $(echo $result | jq -r '.file')&quot;
+done
+
+# Output:
+# ❌ Test failed: src/__tests__/auth.test.ts
+</code></pre>
+<h3>Example 2: Filter Build Warnings by Severity</h3>
+<pre><code class="language-bash">#!/bin/bash
+# Hook: Extract critical warnings from build output
+
+BUILD_OUTPUT='{&quot;warnings&quot;:[
+  {&quot;type&quot;:&quot;deprecated&quot;,&quot;message&quot;:&quot;lodash&quot;},
+  {&quot;type&quot;:&quot;security&quot;,&quot;message&quot;:&quot;SQL injection risk&quot;},
+  {&quot;type&quot;:&quot;performance&quot;,&quot;message&quot;:&quot;unused variable&quot;}
+]}'
+
+echo &quot;$BUILD_OUTPUT&quot; | jq '
+  .warnings[]
+  | select(.type == &quot;security&quot; or .type == &quot;deprecated&quot;)
+  | &quot;⚠️  [\(.type | ascii_upcase)]: \(.message)&quot;
+'
+
+# Output:
+# ⚠️  [DEPRECATED]: lodash
+# ⚠️  [SECURITY]: SQL injection risk
+</code></pre>
+<h3>Example 3: Aggregate Test Metrics</h3>
+<pre><code class="language-bash">#!/bin/bash
+# Hook: Generate test summary
+
+TEST_RESULTS='{&quot;tests&quot;:[
+  {&quot;name&quot;:&quot;auth&quot;,&quot;passed&quot;:45,&quot;failed&quot;:2,&quot;duration&quot;:1200},
+  {&quot;name&quot;:&quot;api&quot;,&quot;passed&quot;:78,&quot;failed&quot;:1,&quot;duration&quot;:2300},
+  {&quot;name&quot;:&quot;ui&quot;,&quot;passed&quot;:120,&quot;failed&quot;:5,&quot;duration&quot;:3400}
+]}'
+
+echo &quot;$TEST_RESULTS&quot; | jq '
+  {
+    total_passed: [.tests[].passed] | add,
+    total_failed: [.tests[].failed] | add,
+    total_duration: [.tests[].duration] | add,
+    suites: .tests | map({
+      name,
+      pass_rate: (.passed / (.passed + .failed) * 100 | round)
+    })
+  }
+'
+
+# Output:
+# {
+#   &quot;total_passed&quot;: 243,
+#   &quot;total_failed&quot;: 8,
+#   &quot;total_duration&quot;: 6900,
+#   &quot;suites&quot;: [
+#     {&quot;name&quot;:&quot;auth&quot;,&quot;pass_rate&quot;:96},
+#     {&quot;name&quot;:&quot;api&quot;,&quot;pass_rate&quot;:99},
+#     {&quot;name&quot;:&quot;ui&quot;,&quot;pass_rate&quot;:96}
+#   ]
+# }
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Install jq</h3>
+<pre><code class="language-bash"># macOS
+brew install jq
+
+# Ubuntu/Debian
+apt-get install jq
+
+# Verify
+jq --version
+</code></pre>
+<h3>Step 2: Test jq Basic Syntax</h3>
+<pre><code class="language-bash"># Create test JSON
+cat &gt; test_data.json &lt;&lt; 'EOF'
+{
+  &quot;files&quot;: [
+    {&quot;name&quot;: &quot;index.js&quot;, &quot;size&quot;: 2500, &quot;changes&quot;: 12},
+    {&quot;name&quot;: &quot;utils.js&quot;, &quot;size&quot;: 1200, &quot;changes&quot;: 5}
+  ]
+}
+EOF
+
+# Experiment with jq
+jq '.files[]' test_data.json
+jq '.files[] | select(.size &gt; 2000)' test_data.json
+jq '.files | map(.name)' test_data.json
+</code></pre>
+<h3>Step 3: Integrate into Hook</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/validate-file-changes.sh
+
+CHANGED_FILES=$(git diff --name-only HEAD~1 | jq -Rs 'split(&quot;\n&quot;)[:-1]')
+
+echo &quot;$CHANGED_FILES&quot; | jq -r '.[]' | while read file; do
+  SIZE=$(wc -c &lt; &quot;$file&quot;)
+
+  # Validate not too large
+  if [ &quot;$SIZE&quot; -gt 500000 ]; then
+    echo &quot;❌ File too large: $file ($SIZE bytes)&quot;
+    exit 1
+  fi
+done
+
+echo &quot;✅ File validation: PASSED&quot;
+</code></pre>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: How do I get raw output (no quotes)?</h3>
+<p><strong>A:</strong> Use <code>-r</code> flag: <code>jq -r '.field'</code></p>
+<h3>Q: How do I handle arrays within arrays?</h3>
+<p><strong>A:</strong> Use nested loops: <code>jq '.parent[] | .children[]'</code></p>
+<h3>Q: Can I modify the input JSON?</h3>
+<p><strong>A:</strong> Yes, jq outputs new JSON; original stays unchanged. Use <code>|=</code> for in-place modification: <code>jq '.field |= . + 1'</code></p>
+<h3>Q: How do I debug jq expressions?</h3>
+<p><strong>A:</strong> Use <code>@json</code> to see intermediate results: <code>jq '... | @json | debug'</code></p>
+<hr />
+<h2>📊 Performance &amp; Optimization</h2>
+<ul>
+<li><strong>Speed:</strong> Very fast for files &lt;10MB  </li>
+<li><strong>Memory:</strong> Uses streaming by default, efficient on large files  </li>
+<li><strong>Optimization:</strong> Use <code>--slurpfile</code> for multiple files  </li>
+</ul>
+<hr />
+<h2>🔗 Related Topics &amp; Next Steps</h2>
+<p><strong>You Should Also Learn About:</strong>
+- Building Bash Command Logger (Episode 6) — jq in practice<br />
+- PostToolUse Hook (Episode 7) — data transformation patterns<br />
+- Advanced Hooks (Episode 4) — hook composition</p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>jq pipes transform data step-by-step</strong> — compose simple operations  </li>
+<li><strong>Selectors navigate JSON efficiently</strong> — <code>.field</code>, <code>.[]</code>, <code>.[index]</code>  </li>
+<li><strong>Conditional logic enables smart hooks</strong> — <code>select()</code>, <code>if-then-else</code>  </li>
+<li><strong>Safe navigation prevents errors</strong> — use <code>//</code> for defaults</li>
+</ol>
+<hr />
+<h2>🎓 Quick Reference</h2>
+<h3>Essential jq Commands</h3>
+<pre><code class="language-bash"># Selection
+jq '.field'              # Access field
+jq '.field.subfield'     # Nested access
+jq '.[]'                 # Array elements
+jq '.[0]'                # First element
+
+# Filtering
+jq 'select(.size &gt; 100)' # Conditional filter
+jq 'map(.name)'          # Transform all
+
+# Aggregation
+jq 'add'                 # Sum array
+jq 'group_by(.type)'     # Group by field
+jq 'unique'              # Remove duplicates
+
+# Output control
+jq -r '.field'           # Raw output (no quotes)
+jq -s '.'                # Slurp (read entire input)
+jq -c '.'                # Compact output
+</code></pre>
+<hr />
+<h2>⚠️ Common Mistakes to Avoid</h2>
+<ol>
+<li><strong>Forgetting quotes on strings</strong> — <code>"text"</code> not <code>text</code>  </li>
+<li><strong>Mixing <code>.field</code> and <code>.[field]</code></strong> — first is literal, second is variable  </li>
+<li><strong>Assuming arrays are maps</strong> — <code>.[0]</code> not <code>.key</code>  </li>
+<li><strong>Not testing with real data</strong> — always validate against actual JSON</li>
+</ol>
+<hr />
+<h2>🔐 Security &amp; Best Practices</h2>
+<p><strong>Input Validation:</strong>
+- Always validate JSON format with <code>jq . &gt; /dev/null</code><br />
+- Avoid executing jq expressions from untrusted input  </p>
+<p><strong>Performance:</strong>
+- Use streaming for large files<br />
+- Avoid creating huge intermediate arrays  </p>
+<hr />
+<h2>📚 Extra Resources</h2>
+<p><strong>Official Documentation:</strong>
+- <a href="https://stedolan.github.io/jq/">jq Manual</a><br />
+- <a href="https://jqlang.github.io/jq/">jq Playground</a>  </p>
+<p><strong>Practice:</strong>
+- jqlang.github.io online editor<br />
+- Real project JSON files  </p>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You can now parse, filter, and transform JSON efficiently using jq, enabling sophisticated data processing in hooks.</p>
+<p><strong>How This Fits Into Real Development:</strong><br />
+jq is the lingua franca of JSON processing. Combined with hooks, it enables building intelligent validation and automation systems.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Building a Bash Command Logger</strong> (Episode 6) where jq processes real hook data in a complete workflow.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Collect and organize jq snippets for your team. Build a library of common patterns (filtering, aggregation, transformation) to speed up future hook development.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-2-index.html" class="nav-link">← Back to Module 2</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

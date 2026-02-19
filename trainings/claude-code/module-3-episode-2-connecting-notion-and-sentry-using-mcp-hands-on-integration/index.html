@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connecting Notion and Sentry Using MCP - Hands-On Integration | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Connecting Notion and Sentry Using MCP - Hands-On Integration</h1>
+    <p class="subtitle">Module 3 — Episode 2</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Connecting Notion and Sentry Using MCP - Hands-On Integration</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Connecting Notion and Sentry Using MCP - Hands-On Integration</h1>
+<blockquote>
+<p><strong>Module 3 — Episode 2</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Advanced<br />
+<strong>Time to Master:</strong> 35 minutes to learn | 2.5 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Integrate Notion MCP server for documentation automation  </li>
+<li>✅ Integrate Sentry MCP server for error tracking and analysis  </li>
+<li>✅ Build workflows combining code, monitoring, and documentation  </li>
+<li>✅ Automate incident response using MCP  </li>
+<li>✅ Create cross-platform synchronization workflows  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 35 minutes<br />
+- Setup: 45 minutes<br />
+- Hands-on Implementation: 1.5 hours</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Notion and Sentry represent two critical aspects of modern development: documentation and monitoring. This episode teaches you to orchestrate both simultaneously with Claude Code—automatically documenting features and responding to errors across systems.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Documentation is manual, incomplete, and falls out of sync with code<br />
+- Errors need manual investigation and documentation<br />
+- Context switches between code, docs, and monitoring are inefficient<br />
+- Incident response requires coordinated updates across systems  </p>
+<p><strong>Where You'll Use This:</strong>
+- Automated documentation generation<br />
+- Incident response automation<br />
+- Error triage and assignment<br />
+- Feature documentation from code changes  </p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- MCP Introduction (Module 3, Episode 1)<br />
+- Basic API authentication<br />
+- JSON data structures<br />
+- Workflow orchestration</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: Notion as Documentation Hub</h3>
+<p><strong>Definition:</strong><br />
+Using Notion MCP to centralize documentation that Claude automatically generates and maintains.</p>
+<p><strong>Why It Matters:</strong><br />
+Documentation-driven development ensures features are documented as they're built, not retrofitted.</p>
+<p><strong>When To Use:</strong><br />
+For all feature development; every feature should be documented automatically.</p>
+<hr />
+<h3>Concept 2: Sentry as Error Integration</h3>
+<p><strong>Definition:</strong><br />
+Using Sentry MCP to aggregate errors, and Claude Code to analyze, debug, and fix them.</p>
+<p><strong>Why It Matters:</strong><br />
+Error intelligence -&gt; action. Errors become debugging input, not just metrics.</p>
+<p><strong>When To Use:</strong><br />
+For production systems where errors need rapid response and understanding.</p>
+<hr />
+<h3>Concept 3: Cross-System Coordination</h3>
+<p><strong>Definition:</strong><br />
+Workflows that synchronize information across Notion, Sentry, GitHub, and other systems.</p>
+<p><strong>Why It Matters:</strong><br />
+Single source of truth. Information stays in sync without manual updates.</p>
+<p><strong>When To Use:</strong><br />
+For any multi-system workflow (dev + docs + monitoring).</p>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Part 1: Notion MCP Integration</h3>
+<pre><code class="language-bash">#!/bin/bash
+# notion_integration.sh
+
+# Setup Notion MCP
+setup_notion_mcp() {
+  # Create Notion config
+  cat &gt; .claude/mcp-config/notion.json &lt;&lt; 'EOF'
+{
+  &quot;name&quot;: &quot;notion&quot;,
+  &quot;command&quot;: &quot;node&quot;,
+  &quot;args&quot;: [&quot;node_modules/@modelcontextprotocol/server-notion/index.js&quot;],
+  &quot;env&quot;: {
+    &quot;NOTION_API_KEY&quot;: &quot;${NOTION_TOKEN}&quot;,
+    &quot;NOTION_WORKSPACE_ID&quot;: &quot;${NOTION_WORKSPACE_ID}&quot;
+  }
+}
+EOF
+
+  echo &quot;✅ Notion MCP configured&quot;
+}
+
+# Create documentation database
+create_doc_database() {
+  local db_name=&quot;$1&quot;
+
+  cat &gt; claude_notion_schema.md &lt;&lt; EOF
+# Documentation Database Schema
+
+## Properties:
+- **Title**: Document title
+- **Type**: feature | bug | guide | api
+- **Status**: draft | review | published
+- **Author**: AI/Claude
+- **CreatedAt**: timestamp
+- **LastUpdated**: timestamp
+- **Content**: Rich text
+- **Related**: Relation to code files
+- **Tags**: Multi-select
+
+EOF
+
+  echo &quot;✅ Documentation schema defined&quot;
+}
+
+# Create feature documentation
+create_feature_doc() {
+  local feature_name=&quot;$1&quot;
+  local description=&quot;$2&quot;
+  local code_location=&quot;$3&quot;
+
+  # Claude would call Notion MCP to create:
+  cat &gt; /tmp/feature_doc.json &lt;&lt; EOF
+{
+  &quot;title&quot;: &quot;Feature: $feature_name&quot;,
+  &quot;type&quot;: &quot;feature&quot;,
+  &quot;status&quot;: &quot;draft&quot;,
+  &quot;content&quot;: &quot;$description&quot;,
+  &quot;code_location&quot;: &quot;$code_location&quot;,
+  &quot;created_at&quot;: &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot;
+}
+EOF
+
+  echo &quot;✅ Feature documentation created&quot;
+}
+</code></pre>
+<h3>Part 2: Sentry MCP Integration</h3>
+<pre><code class="language-bash">#!/bin/bash
+# sentry_integration.sh
+
+setup_sentry_mcp() {
+  # Create Sentry config
+  cat &gt; .claude/mcp-config/sentry.json &lt;&lt; 'EOF'
+{
+  &quot;name&quot;: &quot;sentry&quot;,
+  &quot;command&quot;: &quot;node&quot;,
+  &quot;args&quot;: [&quot;node_modules/@modelcontextprotocol/server-sentry/index.js&quot;],
+  &quot;env&quot;: {
+    &quot;SENTRY_AUTH_TOKEN&quot;: &quot;${SENTRY_AUTH_TOKEN}&quot;,
+    &quot;SENTRY_ORG&quot;: &quot;${SENTRY_ORG}&quot;,
+    &quot;SENTRY_PROJECT&quot;: &quot;${SENTRY_PROJECT}&quot;
+  }
+}
+EOF
+
+  echo &quot;✅ Sentry MCP configured&quot;
+}
+
+# Query errors from Sentry
+query_recent_errors() {
+  # Claude queries via MCP, this shows the structure
+  cat &gt; /tmp/sentry_query.json &lt;&lt; 'EOF'
+{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;search_events&quot;,
+    &quot;arguments&quot;: {
+      &quot;query&quot;: &quot;is:error&quot;,
+      &quot;statsPeriod&quot;: &quot;24h&quot;,
+      &quot;limit&quot;: 10
+    }
+  }
+}
+EOF
+
+  echo &quot;✅ Recent errors queried&quot;
+}
+
+# Analyze error patterns
+analyze_error_pattern() {
+  local error_type=&quot;$1&quot;
+
+  # Group similar errors
+  cat &gt; /tmp/error_analysis.json &lt;&lt; EOF
+{
+  &quot;error_type&quot;: &quot;$error_type&quot;,
+  &quot;occurrences&quot;: [
+    {
+      &quot;message&quot;: &quot;TypeError: Cannot read property 'x' of undefined&quot;,
+      &quot;frequency&quot;: 127,
+      &quot;first_seen&quot;: &quot;2025-02-15&quot;,
+      &quot;last_seen&quot;: &quot;2025-02-19&quot;,
+      &quot;affected_users&quot;: 45,
+      &quot;trend&quot;: &quot;increasing&quot;
+    }
+  ]
+}
+EOF
+
+  echo &quot;✅ Error patterns analyzed&quot;
+}
+
+# Create error fix ticket
+create_error_fix_ticket() {
+  local error_id=&quot;$1&quot;
+  local root_cause=&quot;$2&quot;
+  local proposed_fix=&quot;$3&quot;
+
+  # Would be created in Notion via MCP
+  cat &gt; /tmp/error_fix.json &lt;&lt; EOF
+{
+  &quot;type&quot;: &quot;bug&quot;,
+  &quot;title&quot;: &quot;Fix: $error_id&quot;,
+  &quot;status&quot;: &quot;to_fix&quot;,
+  &quot;root_cause&quot;: &quot;$root_cause&quot;,
+  &quot;proposed_solution&quot;: &quot;$proposed_fix&quot;,
+  &quot;sentry_link&quot;: &quot;https://sentry.io/...&quot;,
+  &quot;priority&quot;: &quot;high&quot;
+}
+EOF
+
+  echo &quot;✅ Error fix ticket created&quot;
+}
+</code></pre>
+<h3>Part 3: Cross-System Incident Response</h3>
+<pre><code class="language-bash">#!/bin/bash
+# incident_response_orchestrator.sh
+
+# Automated incident response workflow
+respond_to_incident() {
+  local error_id=&quot;$1&quot;
+
+  echo &quot;🚨 Incident Response Workflow Started&quot;
+
+  # Step 1: Query error details from Sentry
+  echo &quot;1️⃣  Fetching error details from Sentry via MCP...&quot;
+  ERROR_DETAILS=$(
+    # Claude MCP call to Sentry
+    echo &quot;Error details retrieved&quot;
+  )
+
+  # Step 2: Analyze root cause
+  echo &quot;2️⃣  Analyzing root cause...&quot;
+  ROOT_CAUSE=$(echo &quot;$ERROR_DETAILS&quot; | jq -r '.stack_trace' | head -20)
+
+  # Step 3: Locate affected code via GitHub
+  echo &quot;3️⃣  Locating affected code...&quot;
+  AFFECTED_FILES=$(echo &quot;$ROOT_CAUSE&quot; | grep -oP 'at \K[^\.]+\.[a-z]+' | sort | uniq)
+
+  # Step 4: Create incident documentation in Notion
+  echo &quot;4️⃣  Creating incident documentation in Notion...&quot;
+  NOTION_DOC=$(cat &gt; /tmp/incident_doc.json &lt;&lt; EOF
+{
+  &quot;title&quot;: &quot;Incident: $error_id&quot;,
+  &quot;type&quot;: &quot;bug&quot;,
+  &quot;status&quot;: &quot;investigating&quot;,
+  &quot;error_details&quot;: &quot;$ERROR_DETAILS&quot;,
+  &quot;root_cause&quot;: &quot;$ROOT_CAUSE&quot;,
+  &quot;affected_files&quot;: &quot;$AFFECTED_FILES&quot;,
+  &quot;timeline&quot;: &quot;$(date)&quot;,
+  &quot;assigned_to&quot;: &quot;Claude Code&quot;
+}
+EOF
+  )
+
+  # Step 5: Generate fix proposal
+  echo &quot;5️⃣  Generating fix proposal...&quot;
+  FIX_PROPOSAL=$(cat &gt; /tmp/fix_proposal.md &lt;&lt; 'EOF'
+## Proposed Fix
+
+### Root Cause Analysis
+[Details from Sentry]
+
+### Proposed Solution
+1. Add null check for affected property
+2. Improve error handling
+3. Add monitoring for edge case
+
+### Testing Strategy
+- Unit test for null case
+- Integration test with actual data
+- Monitor in canary deployment
+
+### Rollback Plan
+If fix causes issues, revert immediately and investigate further.
+EOF
+  )
+
+  # Step 6: Update GitHub with fix PR
+  echo &quot;6️⃣  Creating GitHub PR with fix...&quot;
+  # Would use GitHub MCP to create PR
+
+  # Step 7: Notify team
+  echo &quot;7️⃣  Notifying team...&quot;
+  cat &gt; /tmp/notification.json &lt;&lt; EOF
+{
+  &quot;channel&quot;: &quot;incidents&quot;,
+  &quot;message&quot;: &quot;🔴 Incident detected and fix proposed&quot;,
+  &quot;error_id&quot;: &quot;$error_id&quot;,
+  &quot;documentation&quot;: &quot;Link to Notion doc&quot;,
+  &quot;pr&quot;: &quot;Link to GitHub PR&quot;
+}
+EOF
+
+  echo &quot;✅ Incident Response Complete&quot;
+}
+</code></pre>
+<h3>Part 4: Feature Documentation Automation</h3>
+<pre><code class="language-bash">#!/bin/bash
+# feature_doc_orchestrator.sh
+
+# Automatically generate docs for new features
+document_feature() {
+  local feature_branch=&quot;$1&quot;
+
+  echo &quot;📝 Feature Documentation Workflow&quot;
+
+  # Step 1: Get git changes
+  echo &quot;1️⃣  Analyzing feature changes...&quot;
+  CHANGES=$(git diff main..$feature_branch --stat)
+  NEW_FILES=$(git diff main..$feature_branch --name-only | grep -E '\.(ts|tsx|js|jsx)$')
+
+  # Step 2: Extract API signatures
+  echo &quot;2️⃣  Extracting API signatures...&quot;
+  API_DOC=$(
+    for file in $NEW_FILES; do
+      grep -E &quot;^export (const|function|class)&quot; &quot;$file&quot;
+    done
+  )
+
+  # Step 3: Generate feature summary
+  echo &quot;3️⃣  Generating feature summary...&quot;
+  FEATURE_SUMMARY=$(cat &gt; /tmp/feature_summary.md &lt;&lt; 'EOF'
+# New Feature Documentation
+
+## Overview
+[AI-generated summary of changes]
+
+## API Changes
+[Extracted signatures]
+
+## Config Changes
+[Modified configuration files]
+
+## Breaking Changes
+[Compatibility notes]
+
+## Migration Guide
+[Steps for users to adopt this feature]
+
+## Examples
+[Sample code demonstrating new capability]
+
+## Performance Impact
+[Analysis of performance implications]
+
+## Testing
+[Test coverage information]
+EOF
+  )
+
+  # Step 4: Post to Notion
+  echo &quot;4️⃣  Publishing to Notion...&quot;
+  # MCP call to create Notion doc
+
+  # Step 5: Create GitHub discussion
+  echo &quot;5️⃣  Creating GitHub discussion for feedback...&quot;
+  # MCP call to create GitHub discussion
+
+  echo &quot;✅ Feature Documentation Created&quot;
+}
+</code></pre>
+<hr />
+<h2>🚀 Real-World Workflow Example</h2>
+<h3>Complete Incident-to-Fix Workflow</h3>
+<pre><code class="language-bash">#!/bin/bash
+# complete_incident_workflow.sh
+
+source sentry_integration.sh
+source notion_integration.sh
+
+INCIDENT_ID=&quot;sentry_error_123&quot;
+
+echo &quot;🔴 Incident Detected: $INCIDENT_ID&quot;
+
+# 1. Alert: Error threshold exceeded
+ERROR_COUNT=$(curl -s &quot;https://sentry.io/api/.../events/&quot; | jq '.total')
+if [ $ERROR_COUNT -gt 100 ]; then
+  echo &quot;⚠️  Error spike detected: $ERROR_COUNT new errors in last hour&quot;
+
+  # 2. Investigate
+  curl -s &quot;https://sentry.io/api/.../issues/&quot; | jq '.[] | select(.stats.24h &gt; 50)' &gt; /tmp/top_errors.json
+
+  # 3. Claude analyzes patterns
+  echo &quot;🤖 Claude analyzing error patterns...&quot;
+
+  # 4. Create Notion incident doc
+  create_notion_incident_doc &quot;Error Spike Analysis&quot;
+
+  # 5. Generate and propose fix
+  create_github_pr_with_fix &quot;Fix: Handle error case&quot;
+
+  # 6. Monitor fix deployment
+  echo &quot;📊 Monitoring fix effectiveness...&quot;
+  sleep 30
+  NEW_ERROR_COUNT=$(curl -s &quot;https://sentry.io/api/.../events/?since=30m&quot; | jq '.total')
+
+  if [ $NEW_ERROR_COUNT -lt $((ERROR_COUNT / 10)) ]; then
+    echo &quot;✅ Fix successful! Error rate reduced by 90%&quot;
+    # Update Notion: mark incident as resolved
+  else
+    echo &quot;⚠️  Fix partially effective; further investigation needed&quot;
+    # Create new ticket for deeper investigation
+  fi
+fi
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Get API Credentials</h3>
+<pre><code class="language-bash"># Notion
+# 1. Create integration at https://www.notion.com/my-integrations
+# 2. Create internal database
+# 3. Share database with integration
+export NOTION_TOKEN=&quot;ntn_...&quot;
+export NOTION_WORKSPACE_ID=&quot;...&quot;
+
+# Sentry
+# 1. Create auth token at https://sentry.io/settings/auth-tokens/
+# 2. Note organization and project slugs
+export SENTRY_AUTH_TOKEN=&quot;sn_...&quot;
+export SENTRY_ORG=&quot;my-org&quot;
+export SENTRY_PROJECT=&quot;my-project&quot;
+</code></pre>
+<h3>Step 2: Configure MCP</h3>
+<pre><code class="language-json">{
+  &quot;servers&quot;: [
+    {
+      &quot;name&quot;: &quot;notion&quot;,
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;node_modules/@modelcontextprotocol/server-notion/index.js&quot;]
+    },
+    {
+      &quot;name&quot;: &quot;sentry&quot;,
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;node_modules/@modelcontextprotocol/server-sentry/index.js&quot;]
+    }
+  ]
+}
+</code></pre>
+<h3>Step 3: Test Integration</h3>
+<pre><code class="language-bash"># Test Notion connection
+claude &quot;Create a test document in Notion&quot;
+
+# Test Sentry connection
+claude &quot;Show me the top 5 most common errors from production&quot;
+</code></pre>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: How do I handle rate limits from Notion/Sentry?</h3>
+<p><strong>A:</strong> Implement caching and batch operations. Claude MCP client has built-in rate limit handling.</p>
+<h3>Q: Can I sync Notion and Sentry data bidirectionally?</h3>
+<p><strong>A:</strong> Yes, but be careful of consistency. Implement versioning and change tracking.</p>
+<h3>Q: What if Notion or Sentry API is down?</h3>
+<p><strong>A:</strong> Graceful degradation—work proceeds locally; sync when service recovers.</p>
+<hr />
+<h2>📊 Performance &amp; Optimization</h2>
+<ul>
+<li><strong>Notion API Latency:</strong> 200-500ms per request  </li>
+<li><strong>Sentry API Latency:</strong> 100-300ms per request  </li>
+<li><strong>Batch Operations:</strong> Group requests to reduce latency; single batch query faster than multiple individual queries</li>
+</ul>
+<hr />
+<h2>🔗 Related Topics &amp; Next Steps</h2>
+<p><strong>You Should Also Learn About:</strong>
+- Building Custom MCP Servers (Episode 3) — create your own integration<br />
+- GitHub Actions integration (Episodes 4-6) — automate with CI/CD</p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>Documentation automation keeps docs in sync</strong> — generated, not manual  </li>
+<li><strong>Error intelligence enables proactive fixes</strong> — errors become actionable  </li>
+<li><strong>Cross-system coordination eliminates silos</strong> — single workflow, multiple systems  </li>
+<li><strong>MCP enables this at scale</strong> — standardized, reusable patterns</li>
+</ol>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You can now build sophisticated workflows connecting code, documentation, and monitoring using MCP.</p>
+<p><strong>How This Fits Into Real Development:</strong><br />
+This is the foundation of modern DevOps—documentation, monitoring, and remediation working together seamlessly.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Building Custom MCP Servers</strong> (Episode 3) to integrate your own systems.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Instrument your entire development pipeline with MCP servers. Turn every system—tests, deployments, customer feedback—into inputs Claude can orchestrate.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-3-index.html" class="nav-link">← Back to Module 3</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

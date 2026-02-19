@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creating Custom Output Styles - Data Analyst Mode | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Creating Custom Output Styles - Data Analyst Mode</h1>
+    <p class="subtitle">Module 2 — Episode 3</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Creating Custom Output Styles - Data Analyst Mode</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Creating Custom Output Styles - Data Analyst Mode</h1>
+<blockquote>
+<p><strong>Module 2 — Episode 3</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Intermediate → Advanced<br />
+<strong>Time to Master:</strong> 20 minutes to learn | 2 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Understand how Claude Code's output styles work and why they matter for different use cases  </li>
+<li>✅ Learn the Data Analyst mode and its specialized output formatting  </li>
+<li>✅ Create custom output styles for domain-specific workflows  </li>
+<li>✅ Apply output styles to data processing and reporting tasks  </li>
+<li>✅ Build a hands-on data analysis project with custom styling  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 20 minutes<br />
+- Hands-on Exercise: 1.5 hours<br />
+- Advanced Experimentation: 30 minutes</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Different tasks require different output formats. A data analyst needs tables, charts, and summary statistics. A frontend developer needs code snippets and UI previews. Claude Code's output styles let you customize how information is presented, significantly improving productivity for specialized workflows.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Generic output formats waste time for domain-specific work<br />
+- Data analysts struggle with Claude defaulting to prose explanations<br />
+- Custom workflows need consistent, scannable formatting<br />
+- Reports must be presentation-ready without reformatting  </p>
+<p><strong>Where You'll Use This:</strong>
+- Data analysis and visualization workflows<br />
+- Statistical reporting and dashboards<br />
+- Business intelligence task automation<br />
+- ETL pipeline monitoring and logging  </p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- Claude Code basics (Module 1)<br />
+- File operations and basic Python or R<br />
+- CSV/JSON data format basics  </p>
+<p><strong>Recommended Reading:</strong>
+- <em>Module 2, Episode 1: Claude Skills</em> — for understanding customization<br />
+- <em>Module 2, Episode 2: Claude Code Output Styles</em> — foundational concepts</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: Output Style Architecture</h3>
+<p><strong>Definition:</strong><br />
+Output styles are configuration templates that govern how Claude formats responses—structuring data as tables, markdown, JSON, or custom formats.</p>
+<p><strong>Why It Matters:</strong><br />
+Proper formatting reduces cognitive load and accelerates decision-making. A well-formatted table communicates insights faster than unstructured prose.</p>
+<p><strong>When To Use:</strong><br />
+- When working with structured data (tables, time series)<br />
+- When generating reports that need consistent formatting<br />
+- When integrating Claude output into dashboards or BI tools</p>
+<hr />
+<h3>Concept 2: Data Analyst Mode</h3>
+<p><strong>Definition:</strong><br />
+A specialized output style optimized for data professionals, emphasizing summary statistics, tabular data, and visual insights over narrative explanations.</p>
+<p><strong>Why It Matters:</strong><br />
+Data analysts work at speed; they need insights presented immediately without unnecessary context. Analyst mode strips unnecessary narrative and prioritizes patterns.</p>
+<p><strong>When To Use:</strong><br />
+- Exploratory data analysis (EDA) workflows<br />
+- Statistical summaries and trend identification<br />
+- Business metrics reporting  </p>
+<hr />
+<h3>Concept 3: Custom Output Formatters</h3>
+<p><strong>Definition:</strong><br />
+Functions or configurations that transform raw data into domain-specific formats (markdown tables, JSON schemas, LaTeX equations, etc.).</p>
+<p><strong>Why It Matters:</strong><br />
+Enables seamless integration with downstream tools (BI platforms, markdown renderers, code generators).</p>
+<p><strong>When To Use:</strong><br />
+When you need output automatically formatted for specific tools or reporting systems.</p>
+<hr />
+<h2>🖼 Architecture &amp; Flow Diagrams</h2>
+<h3>Output Style Processing Pipeline</h3>
+<pre><code>User Task → Claude Analysis → Style Selection → Format Transformation → Rendered Output
+                                     ↓
+                         Data Analyst Mode applies:
+                         - Statistical summaries first
+                         - Tables over prose
+                         - Metrics highlighted
+</code></pre>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>How Output Styles Work</h3>
+<p><strong>Step 1: Style Configuration</strong><br />
+Output styles are defined in <code>.claude/config.json</code> or via command-line flags:</p>
+<pre><code class="language-json">{
+  &quot;outputStyle&quot;: &quot;data_analyst&quot;,
+  &quot;formatting&quot;: {
+    &quot;tables&quot;: &quot;markdown&quot;,
+    &quot;charts&quot;: &quot;ascii_art&quot;,
+    &quot;summary&quot;: true,
+    &quot;precision&quot;: 2
+  }
+}
+</code></pre>
+<p><strong>Step 2: Claude's Response Processing</strong><br />
+Claude receives the style configuration and formats outputs accordingly:</p>
+<pre><code class="language-markdown"># Data Analysis Report
+
+## Summary Statistics
+| Metric | Value |
+|--------|-------|
+| Rows   | 5,240 |
+| Revenue | $2.3M |
+| Growth | +12% |
+
+## Key Insights
+- Top segment: Enterprise (60% revenue share)
+- Trend: 3-month growth acceleration
+</code></pre>
+<p><strong>Step 3: Integration with Tools</strong><br />
+Formatted output integrates directly with dashboards, reports, or downstream systems.</p>
+<hr />
+<h2>✅ When To Use This Feature</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Exploratory data analysis with automatic tabulation<br />
+- Building executive dashboards with consistent formatting<br />
+- Automated data quality reports<br />
+- Time-series analysis and anomaly detection  </p>
+<p>✅ <strong>Productivity Gains:</strong>
+- 40–60% faster report generation<br />
+- Reduced manual formatting overhead<br />
+- Consistent data presentation across teams</p>
+<hr />
+<h3>Anti-Patterns: When NOT To Use</h3>
+<p>❌ <strong>Avoid When:</strong>
+- You need narrative-driven storytelling (use standard mode)<br />
+- Output is simple or unstructured (performance overhead)<br />
+- Working with highly specialized non-tabular formats  </p>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Configure Data Analyst Mode Defaults</h3>
+<p><strong>The Technique:</strong> Set up a <code>.claude/config.json</code> for your project.</p>
+<pre><code class="language-json">{
+  &quot;outputStyle&quot;: &quot;data_analyst&quot;,
+  &quot;formatting&quot;: {
+    &quot;tables&quot;: &quot;markdown&quot;,
+    &quot;precision&quot;: 2,
+    &quot;summary&quot;: true,
+    &quot;showNullValues&quot;: false
+  }
+}
+</code></pre>
+<p><strong>Expected Result:</strong> All data analysis outputs automatically format as clean tables without you specifying format repeatedly.</p>
+<hr />
+<h3>Pro Tip 2: Custom Summary Metrics</h3>
+<p><strong>The Technique:</strong> Define key metrics Claude should always include in analysis.</p>
+<pre><code class="language-json">{
+  &quot;dataAnalyst&quot;: {
+    &quot;autoSummary&quot;: [&quot;count&quot;, &quot;mean&quot;, &quot;stddev&quot;, &quot;quantiles&quot;],
+    &quot;outlierDetection&quot;: true,
+    &quot;anomalyThreshold&quot;: 2.5
+  }
+}
+</code></pre>
+<p><strong>Expected Result:</strong> Statistical summaries appear automatically without explicit requests.</p>
+<hr />
+<h3>Pro Tip 3: Markdown Table Optimization</h3>
+<p><strong>The Technique:</strong> Use conditional formatting for better readability.</p>
+<pre><code class="language-markdown">| Metric | Value | Status |
+|--------|-------|--------|
+| Revenue | $2.3M | 🟢 ↑12% |
+| Churn | 2.1% | 🔴 ↑0.3% |
+| NPS | 72 | 🟢 ↑3pts |
+</code></pre>
+<p><strong>Expected Result:</strong> Data becomes immediately scannable and dashboard-ready.</p>
+<hr />
+<h2>🚀 Real-World Examples</h2>
+<h3>Example 1: E-Commerce Dashboard Analysis</h3>
+<p><strong>Context:</strong> Analyzing Q4 sales performance across 15 product categories.</p>
+<p><strong>Standard Claude Approach:</strong></p>
+<pre><code>cd &quot;Analytics&quot;
+claude &quot;Analyze Q4 sales by category and identify top performers&quot;
+</code></pre>
+<p><strong>Output with Data Analyst Mode:</strong></p>
+<pre><code class="language-markdown"># Q4 Sales Analysis
+
+## Volume Summary
+| Category | Units | Revenue | Growth | AOV |
+|----------|-------|---------|--------|-----|
+| Electronics | 24.5K | $847K | +18% | $34.6 |
+| Home | 18.2K | $612K | +8% | $33.6 |
+| Sports | 15.1K | $389K | +22% | $25.7 |
+
+## Top Insights
+🏆 Sports: Highest growth (22%), targeting seasonal holiday demand
+⚠️ Textiles: RevenueForecast suggests decline; inventory review needed
+✅ Electronics: Sustained momentum; recommend stock increase
+</code></pre>
+<p><strong>Benefit:</strong> Executive can digest entire analysis in 30 seconds vs 5 minutes of prose reading.</p>
+<hr />
+<h3>Example 2: Data Quality Report Generation</h3>
+<p><strong>Context:</strong> Daily ETL validation for a data warehouse.</p>
+<p><strong>Claude Command:</strong></p>
+<pre><code class="language-bash">claude &quot;Generate data quality report for staging tables&quot;
+</code></pre>
+<p><strong>Auto-Formatted Output:</strong></p>
+<pre><code class="language-markdown"># Data Quality Report - 2025-02-19
+
+## Table Status Summary
+| Table | Rows | Errors | Warnings | Status |
+|-------|------|--------|----------|--------|
+| customers | 125K | 0 | 2 | ✅ |
+| orders | 2.3M | 12 | 8 | ⚠️ |
+| payments | 845K | 0 | 0 | ✅ |
+
+## Issue Details
+**orders table:**
+- 12 invalid foreign keys → Recommend quarantine &amp; investigation
+- 8 null values in price field → Suggest data correction
+
+## Recommendations
+1. Investigate FK violations before next load
+2. Add NOT NULL constraint to price
+3. Schedule incremental validation
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Enable Data Analyst Mode</h3>
+<p>Create or update <code>.claude/config.json</code>:</p>
+<pre><code class="language-json">{
+  &quot;outputStyle&quot;: &quot;data_analyst&quot;,
+  &quot;formatting&quot;: {
+    &quot;defaultFormat&quot;: &quot;markdown&quot;,
+    &quot;tables&quot;: {
+      &quot;maxRows&quot;: 50,
+      &quot;precision&quot;: 2,
+      &quot;highlightAnomalies&quot;: true
+    },
+    &quot;charts&quot;: &quot;ascii&quot;,
+    &quot;summary&quot;: true
+  }
+}
+</code></pre>
+<h3>Step 2: Create Analysis Skill</h3>
+<p>Create <code>.claude/skills/analyze_data/skill.md</code>:</p>
+<pre><code class="language-markdown"># Analyze Data Skill
+
+## Description
+Analyze CSV or JSON data and return formatted summary with key insights.
+
+## When to Use
+When asked to analyze, summarize, or explore data files.
+
+## Instructions
+1. Load data file
+2. Generate summary statistics (count, mean, median, std)
+3. Identify outliers (IQR method)
+4. Return findings in markdown table format
+5. Highlight 3-5 key insights
+</code></pre>
+<h3>Step 3: Test with Sample Data</h3>
+<pre><code class="language-bash"># Create sample CSV
+cat &gt; sales_data.csv &lt;&lt; 'EOF'
+date,region,product,revenue
+2025-02-01,US,Widget,2500
+2025-02-01,EU,Gadget,1800
+2025-02-02,US,Widget,3200
+EOF
+
+# Run analysis
+claude &quot;Analyze the sales data in sales_data.csv&quot;
+</code></pre>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: How do I switch output styles mid-project?</h3>
+<p><strong>A:</strong> Use the style flag: <code>claude --style data_analyst "your task"</code></p>
+<h3>Q: Can I create my own output style?</h3>
+<p><strong>A:</strong> Yes! Define custom formatters in your project's style config. Document the format specification clearly.</p>
+<h3>Q: Does output style affect analysis quality?</h3>
+<p><strong>A:</strong> No—analysis quality is unchanged. Style only affects presentation format.</p>
+<h3>Q: How do I export formatted tables to Excel?</h3>
+<p><strong>A:</strong> Markdown tables convert easily: export to HTML, then import to Excel, or use <code>pandoc</code> CLI for direct conversion.</p>
+<hr />
+<h2>📊 Performance &amp; Optimization</h2>
+<ul>
+<li><strong>Processing Overhead:</strong> +5-15% for formatting transformation  </li>
+<li><strong>Output Size:</strong> Can increase 20-40% due to formatting  </li>
+<li><strong>Optimization:</strong> Cache formatted templates for repeated analyses</li>
+</ul>
+<hr />
+<h2>🔗 Related Topics &amp; Next Steps</h2>
+<p><strong>You Should Also Learn About:</strong>
+- Advanced Hooks (Episode 4) — automate style application<br />
+- Hook Data Processing (Episode 5) — format jq output with styles<br />
+- Building Dashboards (Module 1, Episode 8)</p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>Output styles match workflows</strong> — choose the right one for your task  </li>
+<li><strong>Data Analyst mode optimizes for speed</strong> — tables before prose  </li>
+<li><strong>Custom formatters enable integration</strong> — dashboards, BI tools, reports  </li>
+<li><strong>Configuration is reusable</strong> — set once, benefit consistently</li>
+</ol>
+<hr />
+<h2>🎓 Quick Reference</h2>
+<h3>Output Style Commands</h3>
+<pre><code class="language-bash">claude --style data_analyst &quot;Analyze sales.csv&quot;
+claude --style developer &quot;Refactor auth.ts&quot;
+claude --style report &quot;Summarize findings&quot;
+</code></pre>
+<h3>Configuration Template</h3>
+<pre><code class="language-json">{
+  &quot;outputStyle&quot;: &quot;data_analyst&quot;,
+  &quot;formatting&quot;: {
+    &quot;tables&quot;: &quot;markdown&quot;,
+    &quot;precision&quot;: 2,
+    &quot;summary&quot;: true,
+    &quot;maxRows&quot;: 50
+  }
+}
+</code></pre>
+<h3>Common Analysis Patterns</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Command</th>
+<th>Output Style</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quick stats</td>
+<td><code>"Summarize data.csv"</code></td>
+<td>data_analyst</td>
+</tr>
+<tr>
+<td>Anomalies</td>
+<td><code>"Find outliers in metrics"</code></td>
+<td>data_analyst</td>
+</tr>
+<tr>
+<td>Report</td>
+<td><code>"Generate KPI report"</code></td>
+<td>data_analyst</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>⚠️ Common Mistakes to Avoid</h2>
+<ol>
+<li><strong>Over-Configuration</strong> — Start simple; add complexity only when needed  </li>
+<li><strong>Ignoring Precision</strong> — Set appropriate decimal places for domain (finance: 2, science: 4)  </li>
+<li><strong>Forgetting Context</strong> — Include units and time periods in tables  </li>
+<li><strong>Ignoring Small Datasets</strong> — Don't use Analyst mode for &lt;20 rows; overhead outweighs benefit</li>
+</ol>
+<hr />
+<h2>🔐 Security &amp; Best Practices</h2>
+<p><strong>Data Privacy:</strong>
+- Analyst mode doesn't store or transmit sensitive data beyond normal protections<br />
+- Scrub PII before analysis</p>
+<p><strong>Data Integrity:</strong>
+- Validate data before analysis<br />
+- Document any data transformations  </p>
+<p><strong>Reproducibility:</strong>
+- Keep analysis scripts in version control<br />
+- Document custom output styles in README</p>
+<hr />
+<h2>📚 Extra Resources</h2>
+<p><strong>Official Documentation:</strong>
+- <a href="https://docs.anthropic.com">Claude Code Output Styles</a><br />
+- <a href="https://docs.anthropic.com">Data Analysis Best Practices</a>  </p>
+<p><strong>Tools &amp; Integration:</strong>
+- Markdown table generators<br />
+- Pandas/Polars for local data processing  </p>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You now understand how output styles customize Claude's responses for different workflows, with deep expertise in Data Analyst mode for accelerating analytics work.</p>
+<p><strong>How This Fits Into Real Development:</strong><br />
+Data professionals save hours weekly by letting Claude handle formatting automatically. This frees you to focus on insights instead of presentation.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Advanced Hooks</strong> (Episode 4) to automate output style selection based on task context.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Build a style library for your team. Share <code>.claude/config.json</code> across projects to standardize analysis output organization-wide.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-2-index.html" class="nav-link">← Back to Module 2</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

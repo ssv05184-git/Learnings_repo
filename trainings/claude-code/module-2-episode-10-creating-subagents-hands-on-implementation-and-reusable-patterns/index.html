@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creating Subagents - Hands-On Implementation & Reusable Patterns | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Creating Subagents - Hands-On Implementation & Reusable Patterns</h1>
+    <p class="subtitle">Module 2 — Episode 10</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Creating Subagents - Hands-On Implementation & Reusable Patterns</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Creating Subagents - Hands-On Implementation &amp; Reusable Patterns</h1>
+<blockquote>
+<p><strong>Module 2 — Episode 10</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Expert<br />
+<strong>Time to Master:</strong> 35 minutes to learn | 3 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Implement production-ready subagent systems  </li>
+<li>✅ Create reusable subagent templates and patterns  </li>
+<li>✅ Build robust error handling and recovery  </li>
+<li>✅ Integrate subagents with monitoring systems  </li>
+<li>✅ Deploy your own subagent framework  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 35 minutes<br />
+- Implementation: 2+ hours<br />
+- Testing &amp; Optimization: 30 minutes</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+This capstone episode brings everything together. You'll build a production-grade subagent system with templates, error handling, monitoring, and deployment. By the end, you'll have a reusable framework for orchestrating multi-agent teams.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Each subagent project requires custom scaffolding<br />
+- Error handling and monitoring aren't standardized<br />
+- Debugging multi-agent systems is difficult without instrumentation<br />
+- Reusability requires documented patterns<br />
+- Scaling requires battle-tested frameworks  </p>
+<p><strong>Where You'll Use This:</strong>
+- Enterprise-scale code generation<br />
+- Complex system development<br />
+- Automation frameworks<br />
+- CV/portfolio showcases  </p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- All Module 2 concepts (Episodes 1–9)<br />
+- Advanced bash scripting and jq<br />
+- Process management and coordination<br />
+- Git and deployment basics</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: Subagent Templates</h3>
+<p><strong>Definition:</strong><br />
+Reusable project structures that subagents inherit, providing standardized logging, error handling, and communication.</p>
+<p><strong>Why It Matters:</strong><br />
+Templates eliminate repetitive setup and ensure consistency across multiple agents. They accelerate development and reduce bugs.</p>
+<p><strong>When To Use:</strong><br />
+Always—each subagent should inherit from a template.</p>
+<hr />
+<h3>Concept 2: Error Handling at Scale</h3>
+<p><strong>Definition:</strong><br />
+Comprehensive strategies for handling failures across multiple agent processes (timeouts, crashes, resource exhaustion, conflicts).</p>
+<p><strong>Why It Matters:</strong><br />
+Multi-agent systems have exponentially more failure modes. Robust error handling ensures resilience.</p>
+<p><strong>When To Use:</strong><br />
+Always—production systems require it.</p>
+<hr />
+<h3>Concept 3: Instrumentation &amp; Observability</h3>
+<p><strong>Definition:</strong><br />
+Built-in logging, metrics, tracing that makes system behavior visible for debugging and optimization.</p>
+<p><strong>Why It Matters:</strong><br />
+Black-box systems are unmaintainable. Instrumentation enables understanding what's happening.</p>
+<p><strong>When To Use:</strong><br />
+Always—observability should be built-in, not retrofitted.</p>
+<hr />
+<h2>🖼 Architecture &amp; Flow Diagrams</h2>
+<h3>Production Subagent System</h3>
+<pre><code>┌─ Orchestrator (Parent Process)
+│  ├─ Config &amp; Planning
+│  ├─ Agent Pool Management
+│  ├─ Health Monitoring
+│  └─ Result Aggregation
+│
+├─ Agent 1                    ├─ Agent 2                    ├─ Agent N
+│ ├─ Template Inherited       │ ├─ Template Inherited       │ ├─ Template Inherited
+│ ├─ Context Loaded           │ ├─ Context Loaded           │ ├─ Context Loaded
+│ ├─ Task Execution           │ ├─ Task Execution           │ ├─ Task Execution
+│ ├─ Result Captured          │ ├─ Result Captured          │ ├─ Result Captured
+│ ├─ Metrics Logged           │ ├─ Metrics Logged           │ ├─ Metrics Logged
+│ └─ Status Reported          │ └─ Status Reported          │ └─ Status Reported
+│                             │                             │
+└─ Shared Services           └─ Shared Services           └─ Shared Services
+ ├─ Metrics Backend
+ ├─ Event Bus
+ ├─ State Store
+ └─ Secret Management
+</code></pre>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Part 1: Subagent Template Structure</h3>
+<pre><code class="language-bash">#!/bin/bash
+# create_subagent_template.sh
+
+create_subagent_template() {
+  local template_name=&quot;$1&quot;
+  local template_dir=&quot;.claude/agent_templates/$template_name&quot;
+
+  mkdir -p &quot;$template_dir&quot;
+
+  # Create directory structure
+  mkdir -p &quot;$template_dir&quot;/{
+    &quot;bootstrap&quot;,
+    &quot;runtime&quot;,
+    &quot;error_handling&quot;,
+    &quot;instrumentation&quot;,
+    &quot;config&quot;
+  }
+
+  # Bootstrap script
+  cat &gt; &quot;$template_dir/bootstrap/init.sh&quot; &lt;&lt; 'BOOTSTRAP'
+#!/bin/bash
+set -euo pipefail
+
+# Initialize subagent environment
+export AGENT_ID=&quot;${AGENT_ID:-$(uuidgen)}&quot;
+export AGENT_START_TIME=&quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot;
+export AGENT_LOG_DIR=&quot;./.logs&quot;
+mkdir -p &quot;$AGENT_LOG_DIR&quot;
+
+# Load inherited context
+if [ -f &quot;CLAUDE_CONTEXT.md&quot; ]; then
+  source CLAUDE_CONTEXT.md
+fi
+
+# Initialize logging
+source runtime/logger.sh
+log_event &quot;agent_started&quot; &quot;Agent $AGENT_ID started at $AGENT_START_TIME&quot;
+BOOTSTRAP
+  chmod +x &quot;$template_dir/bootstrap/init.sh&quot;
+
+  # Logger utility
+  cat &gt; &quot;$template_dir/runtime/logger.sh&quot; &lt;&lt; 'LOGGER'
+#!/bin/bash
+
+log_event() {
+  local event_type=&quot;$1&quot;
+  local message=&quot;$2&quot;
+  local metadata=&quot;${3:-{}}&quot;
+
+  local log_entry=$(jq -n \
+    --arg type &quot;$event_type&quot; \
+    --arg msg &quot;$message&quot; \
+    --arg agent &quot;$AGENT_ID&quot; \
+    --arg time &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+    --argjson meta &quot;$metadata&quot; \
+    '{
+      type: $type,
+      message: $msg,
+      agent_id: $agent,
+      timestamp: $time,
+      metadata: $meta
+    }')
+
+  # Log to file
+  echo &quot;$log_entry&quot; &gt;&gt; &quot;$AGENT_LOG_DIR/events.jsonl&quot;
+
+  # Log to stdout if verbose
+  if [ &quot;${VERBOSE:-false}&quot; == &quot;true&quot; ]; then
+    echo &quot;$log_entry&quot; | jq .
+  fi
+}
+
+log_error() {
+  log_event &quot;error&quot; &quot;$1&quot; &quot;{\&quot;severity\&quot;: \&quot;error\&quot;}&quot;
+}
+
+log_warning() {
+  log_event &quot;warning&quot; &quot;$1&quot; &quot;{\&quot;severity\&quot;: \&quot;warning\&quot;}&quot;
+}
+
+log_debug() {
+  if [ &quot;${DEBUG:-false}&quot; == &quot;true&quot; ]; then
+    log_event &quot;debug&quot; &quot;$1&quot; &quot;{\&quot;severity\&quot;: \&quot;debug\&quot;}&quot;
+  fi
+}
+LOGGER
+  chmod +x &quot;$template_dir/runtime/logger.sh&quot;
+
+  # Error handler
+  cat &gt; &quot;$template_dir/error_handling/handlers.sh&quot; &lt;&lt; 'HANDLERS'
+#!/bin/bash
+
+# Global error handler
+trap 'handle_error $? $LINENO' ERR
+
+handle_error() {
+  local exit_code=&quot;$1&quot;
+  local line_number=&quot;$2&quot;
+
+  log_error &quot;Script failed at line $line_number with exit code $exit_code&quot;
+
+  # Attempt recovery
+  case &quot;$exit_code&quot; in
+    1) recovery_generic_error ;;
+    124) recovery_timeout ;;
+    255) recovery_connection_error ;;
+    *) recovery_unknown_error ;;
+  esac
+
+  exit 1
+}
+
+recovery_generic_error() {
+  log_warning &quot;Attempting generic error recovery&quot;
+  # Custom recovery logic
+}
+
+recovery_timeout() {
+  log_warning &quot;Timeout detected, retrying with exponential backoff&quot;
+  # Retry logic
+}
+
+recovery_connection_error() {
+  log_warning &quot;Connection error, attempting reconnect&quot;
+  # Reconnect logic
+}
+
+recovery_unknown_error() {
+  log_warning &quot;Unknown error, attempting basic recovery&quot;
+}
+
+# Cleanup on exit
+cleanup() {
+  log_event &quot;agent_shutdown&quot; &quot;Agent shutting down&quot;
+  # Cleanup resources
+}
+
+trap cleanup EXIT
+HANDLERS
+  chmod +x &quot;$template_dir/error_handling/handlers.sh&quot;
+
+  # Instrumentation/metrics
+  cat &gt; &quot;$template_dir/instrumentation/metrics.sh&quot; &lt;&lt; 'METRICS'
+#!/bin/bash
+
+record_metric() {
+  local metric_name=&quot;$1&quot;
+  local metric_value=&quot;$2&quot;
+  local unit=&quot;${3:-count}&quot;
+
+  local metric=$(jq -n \
+    --arg name &quot;$metric_name&quot; \
+    --arg value &quot;$metric_value&quot; \
+    --arg unit &quot;$unit&quot; \
+    --arg agent &quot;$AGENT_ID&quot; \
+    --arg time &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+    '{
+      name: $name,
+      value: $value,
+      unit: $unit,
+      agent_id: $agent,
+      timestamp: $time
+    }')
+
+  echo &quot;$metric&quot; &gt;&gt; &quot;$AGENT_LOG_DIR/metrics.jsonl&quot;
+}
+
+# Helper metrics
+record_task_duration() {
+  local start_time=&quot;$1&quot;
+  local end_time=&quot;$2&quot;
+  local duration=$((end_time - start_time))
+
+  record_metric &quot;task_duration&quot; &quot;$duration&quot; &quot;seconds&quot;
+}
+
+record_file_changes() {
+  local file_count=&quot;$1&quot;
+
+  record_metric &quot;files_modified&quot; &quot;$file_count&quot; &quot;count&quot;
+}
+METRICS
+  chmod +x &quot;$template_dir/instrumentation/metrics.sh&quot;
+
+  # Config template
+  cat &gt; &quot;$template_dir/config/agent_config.json&quot; &lt;&lt; 'CONFIG'
+{
+  &quot;agent&quot;: {
+    &quot;type&quot;: &quot;specialist&quot;,
+    &quot;specialty&quot;: &quot;general&quot;,
+    &quot;max_retries&quot;: 3,
+    &quot;timeout_minutes&quot;: 30,
+    &quot;debug&quot;: false
+  },
+  &quot;communication&quot;: {
+    &quot;parent_state_file&quot;: &quot;../parent_state.json&quot;,
+    &quot;result_file&quot;: &quot;./results.json&quot;,
+    &quot;heartbeat_interval&quot;: 60
+  },
+  &quot;resources&quot;: {
+    &quot;max_memory_mb&quot;: 2000,
+    &quot;max_cpu_percent&quot;: 80
+  },
+  &quot;logging&quot;: {
+    &quot;level&quot;: &quot;info&quot;,
+    &quot;destinations&quot;: [&quot;local&quot;, &quot;remote&quot;]
+  }
+}
+CONFIG
+
+  echo &quot;✅ Subagent template created: $template_dir&quot;
+}
+
+# Usage
+create_subagent_template &quot;default&quot;
+</code></pre>
+<h3>Part 2: Subagent Factory (Instantiation)</h3>
+<pre><code class="language-bash">#!/bin/bash
+# subagent_factory.sh
+
+instantiate_subagent() {
+  local agent_name=&quot;$1&quot;
+  local template_name=&quot;${2:-default}&quot;
+  local task_description=&quot;$3&quot;
+  local parent_context=&quot;${4:-.}&quot;
+
+  # Create agent working directory
+  local agent_dir=&quot;./.claude/agents/$agent_name&quot;
+  mkdir -p &quot;$agent_dir&quot;
+
+  # Copy template
+  cp -r &quot;.claude/agent_templates/$template_name&quot;/* &quot;$agent_dir/&quot;
+
+  # Create agent-specific context
+  cat &gt; &quot;$agent_dir/AGENT_CONFIG.env&quot; &lt;&lt; EOF
+AGENT_NAME=&quot;$agent_name&quot;
+AGENT_ID=&quot;$(uuidgen)&quot;
+AGENT_TASK=&quot;$task_description&quot;
+AGENT_CREATED_AT=&quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot;
+PARENT_CONTEXT_PATH=&quot;$parent_context&quot;
+EOF
+
+  # Create startup script
+  cat &gt; &quot;$agent_dir/start.sh&quot; &lt;&lt; 'STARTUP'
+#!/bin/bash
+cd &quot;$(dirname &quot;$0&quot;)&quot;
+
+# Source template bootstrap
+source bootstrap/init.sh
+source runtime/logger.sh
+source error_handling/handlers.sh
+source instrumentation/metrics.sh
+
+# Load agent config
+source AGENT_CONFIG.env
+
+# Record startup metrics
+STARTUP_TIME=$(date +%s)
+
+# Load parent context
+log_event &quot;context_loaded&quot; &quot;Loaded parent context from $PARENT_CONTEXT_PATH&quot;
+
+# Execute main task
+log_event &quot;task_start&quot; &quot;Starting task: $AGENT_TASK&quot;
+
+# Main work happens here
+# claude &quot;$AGENT_TASK&quot;
+
+log_event &quot;task_complete&quot; &quot;Task completed successfully&quot;
+
+# Record completion metrics
+END_TIME=$(date +%s)
+record_task_duration $STARTUP_TIME $END_TIME
+
+# Write results
+jq -n \
+  --arg agent &quot;$AGENT_NAME&quot; \
+  --arg id &quot;$AGENT_ID&quot; \
+  --arg status &quot;completed&quot; \
+  --arg time &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+  '{
+    agent_name: $agent,
+    agent_id: $id,
+    status: $status,
+    completion_time: $time
+  }' &gt; results.json
+
+STARTUP
+  chmod +x &quot;$agent_dir/start.sh&quot;
+
+  log_event &quot;agent_instantiated&quot; &quot;Agent $agent_name instantiated&quot;
+  echo &quot;$agent_dir&quot;
+}
+</code></pre>
+<h3>Part 3: Orchestrator with Monitoring</h3>
+<pre><code class="language-bash">#!/bin/bash
+# orchestrator.sh
+
+ORCHESTRATOR_STATE=&quot;./.claude/orchestrator_state.json&quot;
+AGENT_POOL_DIR=&quot;./.claude/agent_pool&quot;
+
+init_orchestrator() {
+  jq -n '{
+    orchestrator_id: &quot;'$(uuidgen)'&quot;,
+    start_time: &quot;'$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)'&quot;,
+    agents: {},
+    metrics: {
+      total_spawned: 0,
+      total_completed: 0,
+      total_failed: 0
+    }
+  }' &gt; &quot;$ORCHESTRATOR_STATE&quot;
+}
+
+spawn_agent_with_monitoring() {
+  local agent_name=&quot;$1&quot;
+  local task=&quot;$2&quot;
+
+  # Instantiate
+  local agent_dir=$(instantiate_subagent &quot;$agent_name&quot; &quot;default&quot; &quot;$task&quot;)
+
+  # Launch in background with monitoring
+  (
+    &quot;$agent_dir/start.sh&quot; 2&gt;&amp;1 | tee &quot;$agent_dir/execution.log&quot;
+
+    # On completion, update orchestrator state
+    RESULT_FILE=&quot;$agent_dir/results.json&quot;
+    if [ -f &quot;$RESULT_FILE&quot; ]; then
+      jq --slurpfile result &quot;$RESULT_FILE&quot; \
+         --arg agent &quot;$agent_name&quot; \
+         '.agents[$agent] = $result[0] |
+          .metrics.total_completed += 1' \
+         &quot;$ORCHESTRATOR_STATE&quot; &gt; &quot;${ORCHESTRATOR_STATE}.tmp&quot; &amp;&amp; \
+         mv &quot;${ORCHESTRATOR_STATE}.tmp&quot; &quot;$ORCHESTRATOR_STATE&quot;
+    else
+      jq --arg agent &quot;$agent_name&quot; \
+         '.agents[$agent] = {status: &quot;failed&quot;} |
+          .metrics.total_failed += 1' \
+         &quot;$ORCHESTRATOR_STATE&quot; &gt; &quot;${ORCHESTRATOR_STATE}.tmp&quot; &amp;&amp; \
+         mv &quot;${ORCHESTRATOR_STATE}.tmp&quot; &quot;$ORCHESTRATOR_STATE&quot;
+    fi
+  ) &amp;
+
+  # Update state with agent PID
+  jq --arg agent &quot;$agent_name&quot; --argjson pid &quot;$!&quot; \
+     '.agents[$agent] = {pid: $pid, status: &quot;running&quot;}' \
+     &quot;$ORCHESTRATOR_STATE&quot; &gt; &quot;${ORCHESTRATOR_STATE}.tmp&quot; &amp;&amp; \
+     mv &quot;${ORCHESTRATOR_STATE}.tmp&quot; &quot;$ORCHESTRATOR_STATE&quot;
+}
+
+# Health check loop
+monitor_agents() {
+  while true; do
+    local agents=$(jq -r '.agents | keys[]' &quot;$ORCHESTRATOR_STATE&quot;)
+
+    for agent_name in $agents; do
+      local agent_dir=&quot;./.claude/agents/$agent_name&quot;
+      local pid=$(jq -r &quot;.agents[\&quot;$agent_name\&quot;].pid&quot; &quot;$ORCHESTRATOR_STATE&quot;)
+
+      if ! kill -0 &quot;$pid&quot; 2&gt;/dev/null; then
+        echo &quot;⚠️  Agent $agent_name (PID $pid) is not running&quot;
+
+        # Check if it completed
+        if [ -f &quot;$agent_dir/results.json&quot; ]; then
+          echo &quot;✅ Agent $agent_name completed&quot;
+        else
+          echo &quot;❌ Agent $agent_name crashed&quot;
+        fi
+      fi
+    done
+
+    sleep 10
+  done
+}
+
+# Wait for all agents
+wait_for_all_agents() {
+  local total_expected=&quot;$1&quot;
+  local timeout=&quot;${2:-600}&quot;
+  local elapsed=0
+
+  while [ $elapsed -lt $timeout ]; do
+    local completed=$(jq '.metrics.total_completed' &quot;$ORCHESTRATOR_STATE&quot;)
+
+    if [ &quot;$completed&quot; -eq &quot;$total_expected&quot; ]; then
+      echo &quot;✅ All $total_expected agents completed&quot;
+      return 0
+    fi
+
+    sleep 5
+    elapsed=$((elapsed + 5))
+  done
+
+  echo &quot;❌ Timeout: only $(jq '.metrics.total_completed' &quot;$ORCHESTRATOR_STATE&quot;)/$total_expected agents completed&quot;
+  return 1
+}
+</code></pre>
+<hr />
+<h2>✅ When To Use This Feature</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Repeatable multi-agent workflows<br />
+- Enterprise systems requiring standardization<br />
+- Building frameworks for teams  </p>
+<hr />
+<h3>Anti-Patterns: When NOT To Use</h3>
+<p>❌ <strong>Avoid When:</strong>
+- One-off projects (overhead not worth it)<br />
+- Small teams where ad-hoc coordination suffices</p>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Template Versioning</h3>
+<p><strong>The Technique:</strong> Version your agent templates like software.</p>
+<pre><code class="language-bash">cp -r .claude/agent_templates/default .claude/agent_templates/default_v1.0
+echo &quot;v1.0&quot; &gt; .claude/agent_templates/default/VERSION
+</code></pre>
+<p><strong>Expected Result:</strong> Can roll back to older template versions if needed.</p>
+<hr />
+<h3>Pro Tip 2: Agent Health Dashboard</h3>
+<p><strong>The Technique:</strong> Generate real-time status page from agent metrics.</p>
+<pre><code class="language-bash">generate_status_dashboard() {
+  cat &gt; AGENT_STATUS.md &lt;&lt; EOF
+# Agent Status Dashboard
+
+Orchestrator Started: $(jq -r '.start_time' $ORCHESTRATOR_STATE)
+
+## Metrics
+- Total Spawned: $(jq '.metrics.total_spawned' $ORCHESTRATOR_STATE)
+- Completed: $(jq '.metrics.total_completed' $ORCHESTRATOR_STATE)
+- Failed: $(jq '.metrics.total_failed' $ORCHESTRATOR_STATE)
+
+## Running Agents
+$(jq -r '.agents[] | select(.status == &quot;running&quot;) | &quot;- \(.agent_name): \(.pid)&quot;' $ORCHESTRATOR_STATE)
+
+EOF
+}
+</code></pre>
+<p><strong>Expected Result:</strong> Real-time visibility into agent execution.</p>
+<hr />
+<h3>Pro Tip 3: Resource Limits</h3>
+<p><strong>The Technique:</strong> Use Docker or systemd to enforce resource limits.</p>
+<pre><code class="language-bash"># Limit memory to 2GB
+ulimit -v 2097152
+
+# Run agent
+./agent/start.sh
+</code></pre>
+<p><strong>Expected Result:</strong> Prevent runaway agents from consuming all system resources.</p>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Create Templates</h3>
+<pre><code class="language-bash">bash create_subagent_template.sh
+</code></pre>
+<h3>Step 2: Instantiate Agents</h3>
+<pre><code class="language-bash">source subagent_factory.sh
+
+AGENT_DIR=$(instantiate_subagent &quot;feature_dev&quot; &quot;default&quot; &quot;Implement authentication&quot;)
+</code></pre>
+<h3>Step 3: Launch Orchestrator</h3>
+<pre><code class="language-bash">source orchestrator.sh
+
+init_orchestrator
+
+spawn_agent_with_monitoring &quot;frontend&quot; &quot;Build React components&quot;
+spawn_agent_with_monitoring &quot;backend&quot; &quot;Build API endpoints&quot;
+
+monitor_agents &amp;
+wait_for_all_agents 2 600
+</code></pre>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: How do I debug failing agents?</h3>
+<p><strong>A:</strong> Check <code>.logs/events.jsonl</code> and <code>execution.log</code> in agent directory.</p>
+<h3>Q: Can agents communicate directly?</h3>
+<p><strong>A:</strong> Yes, use message queue pattern from Episode 8.</p>
+<h3>Q: How do I scale to 100+ agents?</h3>
+<p><strong>A:</strong> Use containerization (Docker) or orchestration (Kubernetes).</p>
+<hr />
+<h2>📊 Performance &amp; Optimization</h2>
+<ul>
+<li><strong>Agent Overhead:</strong> ~500ms startup + ~50ms per transaction  </li>
+<li><strong>Monitoring Overhead:</strong> ~5% CPU  </li>
+<li><strong>Optimization:</strong> Batch status checks; async communication</li>
+</ul>
+<hr />
+<h2>🔗 Related Topics &amp; Next Steps</h2>
+<p><strong>You Should Also Learn About:</strong>
+- Module 3: GitHub Actions, MCP, and plugins for deployment integration  </p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>Templates eliminate repetition</strong> — standardize subagent structure  </li>
+<li><strong>Error handling at scale is essential</strong> — expect and handle failures  </li>
+<li><strong>Instrumentation enables debugging</strong> — observability is not optional  </li>
+<li><strong>Monitoring ensures reliability</strong> — health checks prevent silent failures</li>
+</ol>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You can now build production-grade, scalable multi-agent systems with standardized templates, robust error handling, and comprehensive monitoring.</p>
+<p><strong>How This Fits Into Real Development:</strong><br />
+This represents the pinnacle of Claude Code capabilities—orchestrating teams of agents to tackle complex projects efficiently and reliably.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Module 3</strong> for integrating subagents with MCP servers, GitHub Actions, and plugins for end-to-end automation.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Open-source your agent templates. Contribute to the Claude Code community by sharing reusable patterns that help others build scalable systems.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-2-index.html" class="nav-link">← Back to Module 2</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Custom Local MCP Servers - Python Implementation | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Building Custom Local MCP Servers - Python Implementation</h1>
+    <p class="subtitle">Module 3 — Episode 3</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Building Custom Local MCP Servers - Python Implementation</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Building Custom Local MCP Servers - Python Implementation</h1>
+<blockquote>
+<p><strong>Module 3 — Episode 3</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Advanced → Expert<br />
+<strong>Time to Master:</strong> 40 minutes to learn | 3+ hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Understand MCP server architecture and protocol  </li>
+<li>✅ Build a custom MCP server in Python  </li>
+<li>✅ Implement resources, tools, and capabilities  </li>
+<li>✅ Deploy and test your MCP server  </li>
+<li>✅ Create domain-specific Claude integrations  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 40 minutes<br />
+- Architecture &amp; Design: 45 minutes<br />
+- Implementation: 2+ hours</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Custom MCP servers connect Claude Code directly to your proprietary systems—internal APIs, databases, business logic. This episode teaches you to build servers that expose your domain knowledge to Claude, enabling context-aware automation specific to your company.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Claude lacks access to internal systems<br />
+- Building one-off integrations for each tool is repetitive<br />
+- Team-specific workflows can't be automated<br />
+- Knowledge about internal systems isn't accessible to Claude  </p>
+<p><strong>Where You'll Use This:</strong>
+- Internal company integrations (HR systems, expense tracking, CRM)<br />
+- Domain-specific automation (trading systems, medical records, legal documents)<br />
+- Proprietary data access (company databases, knowledge bases)<br />
+- Custom business logic (pricing engines, recommendation systems)</p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- MCP Introduction (Module 3, Episode 1)<br />
+- Python basics (classes, decorators, async)<br />
+- API design concepts<br />
+- RESTful architecture</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: MCP Server Interface</h3>
+<p><strong>Definition:</strong><br />
+Custom servers implement the MCP protocol: exposing resources, tools, and capabilities that Claude discovers and uses.</p>
+<p><strong>Why It Matters:</strong><br />
+Standard interface means Claude adapts to your server without modification. Write once, works everywhere.</p>
+<p><strong>When To Use:</strong><br />
+Whenever you have custom domain knowledge to share with Claude.</p>
+<hr />
+<h3>Concept 2: Resource-Based Architecture</h3>
+<p><strong>Definition:</strong><br />
+Resources are data entities (database records, files, API objects) that Claude can read and interact with.</p>
+<p><strong>Why It Matters:</strong><br />
+Resources provide context. Instead of Claude blindly asking questions, it reads resources and understands your domain.</p>
+<p><strong>When To Use:</strong><br />
+For any system where Claude needs to understand domain data.</p>
+<hr />
+<h3>Concept 3: Tool-Based Automation</h3>
+<p><strong>Definition:</strong><br />
+Tools are actions Claude can invoke (create records, execute workflows, query systems).</p>
+<p><strong>Why It Matters:</strong><br />
+Tools are how Claude takes action in your systems autonomously.</p>
+<p><strong>When To Use:</strong><br />
+For any system action that should be automated with Claude.</p>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Part 1: MCP Server Skeleton</h3>
+<pre><code class="language-python">#!/usr/bin/env python3
+# mcp_server_template.py
+
+from typing import Any
+import json
+import sys
+from abc import ABC, abstractmethod
+
+class MCPServer(ABC):
+    &quot;&quot;&quot;Base class for MCP servers.&quot;&quot;&quot;
+
+    def __init__(self, name: str, version: str):
+        self.name = name
+        self.version = version
+        self.resources = {}
+        self.tools = {}
+
+    def register_resource(self, uri: str, resource: Any):
+        &quot;&quot;&quot;Register a resource.&quot;&quot;&quot;
+        self.resources[uri] = resource
+
+    def register_tool(self, name: str, tool: Any):
+        &quot;&quot;&quot;Register a tool.&quot;&quot;&quot;
+        self.tools[name] = tool
+
+    def handle_request(self, request: dict) -&gt; dict:
+        &quot;&quot;&quot;Handle MCP protocol requests.&quot;&quot;&quot;
+        method = request.get(&quot;method&quot;)
+
+        if method == &quot;initialize&quot;:
+            return self.handle_initialize(request)
+        elif method == &quot;resources/list&quot;:
+            return self.handle_resources_list()
+        elif method == &quot;resources/read&quot;:
+            return self.handle_resources_read(request)
+        elif method == &quot;tools/list&quot;:
+            return self.handle_tools_list()
+        elif method == &quot;tools/call&quot;:
+            return self.handle_tools_call(request)
+        else:
+            return {&quot;error&quot;: f&quot;Unknown method: {method}&quot;}
+
+    def handle_initialize(self, request: dict) -&gt; dict:
+        &quot;&quot;&quot;Initialize server.&quot;&quot;&quot;
+        return {
+            &quot;jsonrpc&quot;: &quot;2.0&quot;,
+            &quot;result&quot;: {
+                &quot;name&quot;: self.name,
+                &quot;version&quot;: self.version,
+                &quot;capabilities&quot;: {
+                    &quot;resources&quot;: {},
+                    &quot;tools&quot;: {}
+                }
+            }
+        }
+
+    def handle_resources_list(self) -&gt; dict:
+        &quot;&quot;&quot;List available resources.&quot;&quot;&quot;
+        resources = [
+            {
+                &quot;uri&quot;: uri,
+                &quot;name&quot;: self.resources[uri].get(&quot;name&quot;, uri),
+                &quot;description&quot;: self.resources[uri].get(&quot;description&quot;, &quot;&quot;)
+            }
+            for uri in self.resources
+        ]
+        return {
+            &quot;jsonrpc&quot;: &quot;2.0&quot;,
+            &quot;result&quot;: {&quot;resources&quot;: resources}
+        }
+
+    def handle_resources_read(self, request: dict) -&gt; dict:
+        &quot;&quot;&quot;Read a resource.&quot;&quot;&quot;
+        uri = request.get(&quot;params&quot;, {}).get(&quot;uri&quot;)
+        if uri in self.resources:
+            return {
+                &quot;jsonrpc&quot;: &quot;2.0&quot;,
+                &quot;result&quot;: {&quot;contents&quot;: self.resources[uri].get(&quot;data&quot;, &quot;&quot;)}
+            }
+        return {&quot;error&quot;: f&quot;Resource not found: {uri}&quot;}
+
+    def handle_tools_list(self) -&gt; dict:
+        &quot;&quot;&quot;List available tools.&quot;&quot;&quot;
+        tools = [
+            {
+                &quot;name&quot;: name,
+                &quot;description&quot;: self.tools[name].get(&quot;description&quot;, &quot;&quot;),
+                &quot;inputSchema&quot;: self.tools[name].get(&quot;schema&quot;, {})
+            }
+            for name in self.tools
+        ]
+        return {
+            &quot;jsonrpc&quot;: &quot;2.0&quot;,
+            &quot;result&quot;: {&quot;tools&quot;: tools}
+        }
+
+    def handle_tools_call(self, request: dict) -&gt; dict:
+        &quot;&quot;&quot;Call a tool.&quot;&quot;&quot;
+        name = request.get(&quot;params&quot;, {}).get(&quot;name&quot;)
+        arguments = request.get(&quot;params&quot;, {}).get(&quot;arguments&quot;, {})
+
+        if name in self.tools:
+            try:
+                result = self.tools[name][&quot;handler&quot;](**arguments)
+                return {
+                    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+                    &quot;result&quot;: {&quot;output&quot;: result}
+                }
+            except Exception as e:
+                return {&quot;error&quot;: str(e)}
+        return {&quot;error&quot;: f&quot;Tool not found: {name}&quot;}
+
+    def run(self):
+        &quot;&quot;&quot;Run server (read from stdin, write to stdout).&quot;&quot;&quot;
+        while True:
+            try:
+                line = sys.stdin.readline()
+                if not line:
+                    break
+
+                request = json.loads(line)
+                response = self.handle_request(request)
+                print(json.dumps(response))
+                sys.stdout.flush()
+            except json.JSONDecodeError:
+                print(json.dumps({&quot;error&quot;: &quot;Invalid JSON&quot;}))
+                sys.stdout.flush()
+            except Exception as e:
+                print(json.dumps({&quot;error&quot;: str(e)}))
+                sys.stdout.flush()
+</code></pre>
+<h3>Part 2: Example - Customer Database Server</h3>
+<pre><code class="language-python">#!/usr/bin/env python3
+# customer_database_mcp_server.py
+
+from mcp_server_template import MCPServer
+import sqlite3
+from datetime import datetime
+from typing import Dict, Any
+
+class CustomerDatabaseServer(MCPServer):
+    &quot;&quot;&quot;MCP server for customer database access.&quot;&quot;&quot;
+
+    def __init__(self):
+        super().__init__(&quot;customer-db&quot;, &quot;1.0.0&quot;)
+        self.conn = sqlite3.connect(&quot;:memory:&quot;)
+        self._init_database()
+        self._register_resources()
+        self._register_tools()
+
+    def _init_database(self):
+        &quot;&quot;&quot;Initialize sample database.&quot;&quot;&quot;
+        cursor = self.conn.cursor()
+        cursor.execute(&quot;&quot;&quot;
+            CREATE TABLE customers (
+                id INTEGER PRIMARY KEY,
+                name TEXT,
+                email TEXT,
+                tier TEXT,
+                lifetime_value REAL,
+                created_at TEXT
+            )
+        &quot;&quot;&quot;)
+
+        # Sample data
+        cursor.execute(&quot;&quot;&quot;
+            INSERT INTO customers VALUES
+            (1, 'Alice Corp', 'alice@corp.com', 'enterprise', 500000, '2023-01-15'),
+            (2, 'Bob Ltd', 'bob@ltd.com', 'standard', 50000, '2023-06-20')
+        &quot;&quot;&quot;)
+        self.conn.commit()
+
+    def _register_resources(self):
+        &quot;&quot;&quot;Register queryable resources.&quot;&quot;&quot;
+        # All customers resource
+        self.register_resource(
+            &quot;db://customers/all&quot;,
+            {
+                &quot;name&quot;: &quot;All Customers&quot;,
+                &quot;description&quot;: &quot;List of all customers in the database&quot;,
+                &quot;data&quot;: self._get_all_customers()
+            }
+        )
+
+        # High-value customers resource
+        self.register_resource(
+            &quot;db://customers/high-value&quot;,
+            {
+                &quot;name&quot;: &quot;High-Value Customers&quot;,
+                &quot;description&quot;: &quot;Customers with lifetime value &gt; $100k&quot;,
+                &quot;data&quot;: self._get_high_value_customers()
+            }
+        )
+
+    def _register_tools(self):
+        &quot;&quot;&quot;Register executable tools.&quot;&quot;&quot;
+        self.register_tool(
+            &quot;create_customer&quot;,
+            {
+                &quot;description&quot;: &quot;Create a new customer&quot;,
+                &quot;handler&quot;: self.create_customer,
+                &quot;schema&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                        &quot;name&quot;: {&quot;type&quot;: &quot;string&quot;},
+                        &quot;email&quot;: {&quot;type&quot;: &quot;string&quot;},
+                        &quot;tier&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;starter&quot;, &quot;standard&quot;, &quot;enterprise&quot;]}
+                    },
+                    &quot;required&quot;: [&quot;name&quot;, &quot;email&quot;]
+                }
+            }
+        )
+
+        self.register_tool(
+            &quot;update_customer&quot;,
+            {
+                &quot;description&quot;: &quot;Update customer information&quot;,
+                &quot;handler&quot;: self.update_customer,
+                &quot;schema&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                        &quot;id&quot;: {&quot;type&quot;: &quot;integer&quot;},
+                        &quot;name&quot;: {&quot;type&quot;: &quot;string&quot;},
+                        &quot;tier&quot;: {&quot;type&quot;: &quot;string&quot;}
+                    },
+                    &quot;required&quot;: [&quot;id&quot;]
+                }
+            }
+        )
+
+        self.register_tool(
+            &quot;query_customers&quot;,
+            {
+                &quot;description&quot;: &quot;Query customers by criteria&quot;,
+                &quot;handler&quot;: self.query_customers,
+                &quot;schema&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                        &quot;tier&quot;: {&quot;type&quot;: &quot;string&quot;},
+                        &quot;min_lifetime_value&quot;: {&quot;type&quot;: &quot;number&quot;}
+                    }
+                }
+            }
+        )
+
+    def _get_all_customers(self) -&gt; str:
+        &quot;&quot;&quot;Get all customers as formatted string.&quot;&quot;&quot;
+        cursor = self.conn.cursor()
+        cursor.execute(&quot;SELECT * FROM customers&quot;)
+        rows = cursor.fetchall()
+
+        formatted = &quot;# All Customers\n\n&quot;
+        for row in rows:
+            formatted += f&quot;- {row[1]} ({row[2]}), Tier: {row[3]}, LTV: ${row[4]:,.0f}\n&quot;
+        return formatted
+
+    def _get_high_value_customers(self) -&gt; str:
+        &quot;&quot;&quot;Get high-value customers.&quot;&quot;&quot;
+        cursor = self.conn.cursor()
+        cursor.execute(&quot;SELECT * FROM customers WHERE lifetime_value &gt; 100000&quot;)
+        rows = cursor.fetchall()
+
+        formatted = &quot;# High-Value Customers\n\n&quot;
+        for row in rows:
+            formatted += f&quot;- {row[1]}: ${row[4]:,.0f} lifetime value\n&quot;
+        return formatted
+
+    def create_customer(self, name: str, email: str, tier: str = &quot;standard&quot;) -&gt; Dict[str, Any]:
+        &quot;&quot;&quot;Create a new customer.&quot;&quot;&quot;
+        cursor = self.conn.cursor()
+        created_at = datetime.now().isoformat()
+
+        cursor.execute(
+            &quot;INSERT INTO customers (name, email, tier, lifetime_value, created_at) VALUES (?, ?, ?, 0, ?)&quot;,
+            (name, email, tier, created_at)
+        )
+        self.conn.commit()
+
+        return {
+            &quot;status&quot;: &quot;success&quot;,
+            &quot;message&quot;: f&quot;Customer {name} created&quot;,
+            &quot;id&quot;: cursor.lastrowid
+        }
+
+    def update_customer(self, id: int, name: str = None, tier: str = None) -&gt; Dict[str, Any]:
+        &quot;&quot;&quot;Update customer information.&quot;&quot;&quot;
+        cursor = self.conn.cursor()
+
+        if name:
+            cursor.execute(&quot;UPDATE customers SET name = ? WHERE id = ?&quot;, (name, id))
+        if tier:
+            cursor.execute(&quot;UPDATE customers SET tier = ? WHERE id = ?&quot;, (tier, id))
+
+        self.conn.commit()
+
+        return {&quot;status&quot;: &quot;success&quot;, &quot;message&quot;: f&quot;Customer {id} updated&quot;}
+
+    def query_customers(self, tier: str = None, min_lifetime_value: float = None) -&gt; Dict[str, Any]:
+        &quot;&quot;&quot;Query customers by criteria.&quot;&quot;&quot;
+        cursor = self.conn.cursor()
+
+        query = &quot;SELECT * FROM customers WHERE 1=1&quot;
+        params = []
+
+        if tier:
+            query += &quot; AND tier = ?&quot;
+            params.append(tier)
+
+        if min_lifetime_value is not None:
+            query += &quot; AND lifetime_value &gt;= ?&quot;
+            params.append(min_lifetime_value)
+
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+
+        return {
+            &quot;count&quot;: len(rows),
+            &quot;customers&quot;: [
+                {
+                    &quot;id&quot;: row[0],
+                    &quot;name&quot;: row[1],
+                    &quot;email&quot;: row[2],
+                    &quot;tier&quot;: row[3],
+                    &quot;lifetime_value&quot;: row[4]
+                }
+                for row in rows
+            ]
+        }
+
+if __name__ == &quot;__main__&quot;:
+    server = CustomerDatabaseServer()
+    server.run()
+</code></pre>
+<h3>Part 3: Integration with Claude Code</h3>
+<pre><code class="language-bash">#!/bin/bash
+# claude_config.json
+
+{
+  &quot;servers&quot;: [
+    {
+      &quot;name&quot;: &quot;customer-db&quot;,
+      &quot;command&quot;: &quot;python3&quot;,
+      &quot;args&quot;: [&quot;./customer_database_mcp_server.py&quot;],
+      &quot;env&quot;: {
+        &quot;DB_CONNECTION&quot;: &quot;production&quot;
+      }
+    }
+  ]
+}
+
+# Usage:
+# claude &quot;List all enterprise customers and their lifetime value&quot;
+# Claude uses the customer-db MCP server to query the database
+</code></pre>
+<hr />
+<h2>✅ When To Use Custom MCP Servers</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Internal system integration<br />
+- Proprietary data access<br />
+- Domain-specific automation<br />
+- Team-specific workflows</p>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Create Server Structure</h3>
+<pre><code class="language-bash">mkdir -p my_mcp_server
+cd my_mcp_server
+
+cat &gt; requirements.txt &lt;&lt; 'EOF'
+anthropic&gt;=0.7.0
+EOF
+
+pip install -r requirements.txt
+</code></pre>
+<h3>Step 2: Implement Your Server</h3>
+<pre><code class="language-bash"># Copy mcp_server_template.py
+# Extend CustomerDatabaseServer example
+# Test with JSON input/output
+</code></pre>
+<h3>Step 3: Deploy with Claude Code</h3>
+<pre><code class="language-bash">export PATH=&quot;$PATH:$(pwd)&quot;
+claude &quot;Query customer database&quot;
+</code></pre>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: How do I handle authentication in custom servers?</h3>
+<p><strong>A:</strong> Use environment variables for credentials; they're passed via MCP config.</p>
+<h3>Q: Can servers make external API calls?</h3>
+<p><strong>A:</strong> Yes, implement in your tool handlers. Just manage timeouts.</p>
+<h3>Q: How do I version my MCP server?</h3>
+<p><strong>A:</strong> Use semantic versioning. Include version in server initialization response.</p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>MCP servers expose domain knowledge</strong> — Claude gains context for your systems  </li>
+<li><strong>Resources provide read access</strong> — immutable knowledge Claude can reference  </li>
+<li><strong>Tools enable actions</strong> — Claude can modify your systems autonomously  </li>
+<li><strong>Standard protocol scales</strong> — write once, Claude uses it always</li>
+</ol>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You can build custom MCP servers that connect Claude Code to any system.</p>
+<p><strong>How This Fits Into Real Development:</strong><br />
+Custom servers are the bridge between Claude and your business logic. They're the foundation of company-specific automation at scale.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>GitHub Actions integration</strong> (Episodes 4-6) to automate CI/CD with Claude.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Build a library of reusable MCP servers. Share across your organization to standardize Claude integration patterns.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-3-index.html" class="nav-link">← Back to Module 3</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

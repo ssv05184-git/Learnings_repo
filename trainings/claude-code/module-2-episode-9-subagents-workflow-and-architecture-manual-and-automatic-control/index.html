@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subagents Workflow & Architecture - Manual & Automatic Control | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Subagents Workflow & Architecture - Manual & Automatic Control</h1>
+    <p class="subtitle">Module 2 — Episode 9</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Subagents Workflow & Architecture - Manual & Automatic Control</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Subagents Workflow &amp; Architecture - Manual &amp; Automatic Control</h1>
+<blockquote>
+<p><strong>Module 2 — Episode 9</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Expert<br />
+<strong>Time to Master:</strong> 40 minutes to learn | 2.5 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Design complex multi-agent workflows with decision trees  </li>
+<li>✅ Implement manual control vs automatic orchestration  </li>
+<li>✅ Build agent state machines for sophisticated workflows  </li>
+<li>✅ Handle asynchronous coordination and dependencies  </li>
+<li>✅ Create self-healing and self-optimizing agent systems  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 40 minutes<br />
+- Workflow Design: 45 minutes<br />
+- Advanced Implementation: 1+ hours</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Subagent workflows go beyond simple parallelization. Advanced architectures use state machines to coordinate complex tasks, decision trees to route work to specialist agents, and feedback loops for continuous optimization. This episode covers sophisticated patterns used in enterprise systems.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Simple parallelization doesn't handle complex dependencies<br />
+- Workflows need intelligent branching based on results<br />
+- Agents need feedback loops to improve over time<br />
+- Manual coordination doesn't scale<br />
+- Self-healing systems recover from partial failures</p>
+<p><strong>Where You'll Use This:</strong>
+- Multi-day enterprise projects with complex workflows<br />
+- Continuous integration/deployment at scale<br />
+- Adaptive systems that learn and improve<br />
+- Deadline-driven workflows with fallbacks  </p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- Claude Code Subagents - Task Delegation (Module 2, Episode 8)<br />
+- Advanced state management and coordination<br />
+- Workflow orchestration concepts<br />
+- System design patterns</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: Workflow State Machines</h3>
+<p><strong>Definition:</strong><br />
+Workflows modeled as state machines with discrete states (IDLE, RUNNING, REVIEWING, MERGING) and transitions based on conditions.</p>
+<p><strong>Why It Matters:</strong><br />
+State machines prevent invalid transitions and make workflow logic explicit and debuggable. They're the foundation of reliable, complex workflows.</p>
+<p><strong>When To Use:</strong><br />
+Whenever workflow has more than 2-3 sequential steps or conditional branching.</p>
+<hr />
+<h3>Concept 2: Decision Trees &amp; Agent Routing</h3>
+<p><strong>Definition:</strong><br />
+Logic that routes tasks to appropriate agents based on task characteristics, current capacity, and past performance.</p>
+<p><strong>Why It Matters:</strong><br />
+Intelligent routing optimizes resource utilization and ensures best-fit agents for each task, improving quality and speed.</p>
+<p><strong>When To Use:</strong><br />
+When you have specialist agents with different capabilities and need to match tasks optimally.</p>
+<hr />
+<h3>Concept 3: Feedback Loops &amp; Optimization</h3>
+<p><strong>Definition:</strong><br />
+Workflows that track agent performance, learn from results, and adapt routing and strategies continuously.</p>
+<p><strong>Why It Matters:</strong><br />
+Systems improve over time. Feedback loops enable continuous optimization without manual tuning.</p>
+<p><strong>When To Use:</strong><br />
+Long-running systems or projects that repeat similar tasks frequently.</p>
+<hr />
+<h2>🖼 Architecture &amp; Flow Diagrams</h2>
+<h3>Advanced Workflow State Machine</h3>
+<pre><code>START
+  ↓
+ANALYSIS
+├─ Frontend Heavy? → Frontend Specialist Agent
+├─ Backend Heavy? → Backend Specialist Agent
+└─ Balanced? → Generalist Agent
+  ↓
+IMPLEMENTATION (All agents in parallel)
+  ↓
+CODE_REVIEW
+├─ Frontend Reviewer → validates UI
+├─ Backend Reviewer → validates API
+└─ Security Reviewer → validates security
+  ↓
+Errors Found? → REVISIONS (agents fix)
+             ↓
+             CODE_REVIEW (loop)
+  ↓
+READY_TO_MERGE
+  ↓
+DEPLOYMENT
+├─ Staging? → Deploy staging
+  ↓
+  TESTING
+  ├─ E2E tests OK? → PRODUCTION_DEPLOY
+  ├─ Errors? → ROLLBACK
+  ↓
+COMPLETE
+</code></pre>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Pattern 1: Workflow State Machine</h3>
+<pre><code class="language-bash">#!/bin/bash
+# workflow_state_machine.sh
+
+STATE_FILE=&quot;.claude/workflow_state.json&quot;
+
+# State definitions
+declare -A STATE_TRANSITIONS=(
+  [START]=&quot;ANALYSIS&quot;
+  [ANALYSIS]=&quot;PLANNING&quot;
+  [PLANNING]=&quot;IMPLEMENTATION&quot;
+  [IMPLEMENTATION]=&quot;REVIEW CODE_REVIEW&quot;
+  [REVIEW]=&quot;IMPLEMENTATION COMPLETE&quot;
+  [CODE_REVIEW]=&quot;REVISION MERGE&quot;
+  [REVISION]=&quot;CODE_REVIEW&quot;
+  [MERGE]=&quot;DEPLOYMENT&quot;
+  [DEPLOYMENT]=&quot;TESTING&quot;
+  [TESTING]=&quot;COMPLETE ROLLBACK&quot;
+  [ROLLBACK]=&quot;ANALYSIS&quot;
+  [COMPLETE]=&quot;COMPLETE&quot;
+)
+
+# Initialize state machine
+init_workflow() {
+  local workflow_id=&quot;$1&quot;
+
+  jq -n \
+    --arg id &quot;$workflow_id&quot; \
+    --arg state &quot;START&quot; \
+    --arg time &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+    '{
+      workflow_id: $id,
+      current_state: $state,
+      history: [{state: $state, timestamp: $time}],
+      agent_results: {},
+      errors: []
+    }' &gt; &quot;$STATE_FILE&quot;
+}
+
+# Transition to new state
+transition_state() {
+  local new_state=&quot;$1&quot;
+  local context=&quot;$2&quot;
+
+  # Validate transition
+  local current=$(jq -r '.current_state' $STATE_FILE)
+  local valid_transitions=&quot;${STATE_TRANSITIONS[$current]}&quot;
+
+  if [[ ! &quot;$valid_transitions&quot; =~ &quot;$new_state&quot; ]]; then
+    echo &quot;❌ Invalid transition: $current → $new_state&quot;
+    return 1
+  fi
+
+  # Perform transition
+  jq --arg new_state &quot;$new_state&quot; \
+     --arg context &quot;$context&quot; \
+     --arg time &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+     '.current_state = $new_state |
+      .history += [{
+        state: $new_state,
+        timestamp: $time,
+        context: $context
+      }]' \
+     $STATE_FILE &gt; ${STATE_FILE}.tmp &amp;&amp; \
+     mv ${STATE_FILE}.tmp $STATE_FILE
+
+  echo &quot;✅ Transitioned to $new_state&quot;
+}
+
+# Record error in state
+record_error() {
+  local error_msg=&quot;$1&quot;
+  local severity=&quot;${2:-error}&quot;
+
+  jq --arg msg &quot;$error_msg&quot; \
+     --arg sev &quot;$severity&quot; \
+     --arg time &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+     '.errors += [{
+       message: $msg,
+       severity: $sev,
+       timestamp: $time
+     }]' \
+     $STATE_FILE &gt; ${STATE_FILE}.tmp &amp;&amp; \
+     mv ${STATE_FILE}.tmp $STATE_FILE
+}
+
+# Get current state
+get_state() {
+  jq -r '.current_state' $STATE_FILE
+}
+</code></pre>
+<h3>Pattern 2: Decision Tree for Agent Routing</h3>
+<pre><code class="language-bash">#!/bin/bash
+# decision_tree_router.sh
+
+route_task_to_agent() {
+  local task_description=&quot;$1&quot;
+  local available_agents=(&quot;$@&quot;)
+
+  # Analyze task characteristics
+  local is_frontend=$(echo &quot;$task_description&quot; | grep -iE &quot;react|ui|component|frontend&quot; | wc -l)
+  local is_backend=$(echo &quot;$task_description&quot; | grep -iE &quot;api|database|backend|server&quot; | wc -l)
+  local is_security=$(echo &quot;$task_description&quot; | grep -iE &quot;auth|security|encrypt|permission&quot; | wc -l)
+  local is_deployment=$(echo &quot;$task_description&quot; | grep -iE &quot;deploy|infra|docker|kubernetes&quot; | wc -l)
+
+  # Score available agents
+  local best_agent=&quot;&quot;
+  local best_score=0
+
+  for agent in &quot;${available_agents[@]}&quot;; do
+    local score=0
+
+    case &quot;$agent&quot; in
+      &quot;frontend_specialist&quot;)
+        score=$((score + is_frontend * 100))
+        ;;
+      &quot;backend_specialist&quot;)
+        score=$((score + is_backend * 100))
+        ;;
+      &quot;security_specialist&quot;)
+        score=$((score + is_security * 100))
+        ;;
+      &quot;devops_specialist&quot;)
+        score=$((score + is_deployment * 100))
+        ;;
+      &quot;generalist&quot;)
+        score=$((score + is_frontend * 40 + is_backend * 40 + is_security * 20 + is_deployment * 20))
+        ;;
+    esac
+
+    # Tie-break by agent availability
+    local agent_load=$(jq &quot;.agents[\&quot;$agent\&quot;].current_load // 0&quot; .claude/state.json)
+    score=$((score - agent_load * 10))
+
+    if [ $score -gt $best_score ]; then
+      best_score=$score
+      best_agent=$agent
+    fi
+  done
+
+  echo &quot;$best_agent&quot;
+}
+
+# Example usage
+TASK=&quot;Create a React authentication component with OAuth integration&quot;
+AGENTS=(&quot;frontend_specialist&quot; &quot;backend_specialist&quot; &quot;security_specialist&quot; &quot;generalist&quot;)
+CHOSEN=$(route_task_to_agent &quot;$TASK&quot; &quot;${AGENTS[@]}&quot;)
+echo &quot;Task routed to: $CHOSEN&quot;
+</code></pre>
+<h3>Pattern 3: Feedback Loop for Optimization</h3>
+<pre><code class="language-bash">#!/bin/bash
+# feedback_loop_optimizer.sh
+
+METRICS_FILE=&quot;.claude/agent_metrics.json&quot;
+
+# Record agent performance
+record_performance() {
+  local agent_name=&quot;$1&quot;
+  local task_description=&quot;$2&quot;
+  local success=&quot;$3&quot;          # true/false
+  local time_minutes=&quot;$4&quot;
+  local quality_score=&quot;$5&quot;    # 1-10
+
+  local metric=$(jq -n \
+    --arg agent &quot;$agent_name&quot; \
+    --arg task &quot;$task_description&quot; \
+    --arg success &quot;$success&quot; \
+    --argjson time &quot;$time_minutes&quot; \
+    --argjson quality &quot;$quality_score&quot; \
+    --arg timestamp &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+    '{
+      agent: $agent,
+      task_type: $task,
+      success: ($success == &quot;true&quot;),
+      duration_minutes: $time,
+      quality: $quality,
+      timestamp: $timestamp
+    }')
+
+  # Append to metrics
+  echo &quot;$metric&quot; &gt;&gt; &quot;$METRICS_FILE&quot;
+}
+
+# Calculate agent stats
+calculate_agent_stats() {
+  local agent_name=&quot;$1&quot;
+
+  jq -s --arg agent &quot;$agent_name&quot; '
+    map(select(.agent == $agent)) |
+    {
+      agent: $agent,
+      tasks_completed: length,
+      success_rate: (map(select(.success == true)) | length) / length * 100,
+      avg_quality: (map(.quality) | add / length),
+      avg_duration: (map(.duration_minutes) | add / length),
+      recent_trend: .[(-5):] | map(.quality) | add / length
+    }
+  ' &quot;$METRICS_FILE&quot;
+}
+
+# Optimize routing based on metrics
+optimize_routing() {
+  local agents=(&quot;frontend_specialist&quot; &quot;backend_specialist&quot; &quot;generalist&quot;)
+
+  for agent in &quot;${agents[@]}&quot;; do
+    local stats=$(calculate_agent_stats &quot;$agent&quot;)
+    local success_rate=$(echo &quot;$stats&quot; | jq '.success_rate')
+    local avg_quality=$(echo &quot;$stats&quot; | jq '.avg_quality')
+
+    if (( $(echo &quot;$success_rate &lt; 70&quot; | bc -l) )); then
+      echo &quot;⚠️  $agent success rate below 70%: $success_rate%&quot;
+      # Reduce load assigned to this agent
+      jq &quot;.agents[\&quot;$agent\&quot;].reliability = $success_rate&quot; .claude/state.json &gt; .claude/state.json.tmp &amp;&amp; \
+        mv .claude/state.json.tmp .claude/state.json
+    fi
+  done
+}
+
+# Continuous optimization loop
+run_optimization_loop() {
+  while true; do
+    echo &quot;Running optimization loop...&quot;
+    optimize_routing
+
+    # Generate recommendations
+    jq -s 'group_by(.agent) | map({
+      agent: .[0].agent,
+      recommendation: (
+        if (map(select(.success == true)) | length) / length &gt; 0.9 then
+          &quot;Good performance - maintain&quot;
+        elif (map(select(.success == true)) | length) / length &lt; 0.7 then
+          &quot;Poor performance - investigate&quot;
+        else
+          &quot;Average - monitor&quot;
+        end
+      )
+    })' &quot;$METRICS_FILE&quot;
+
+    sleep 3600  # Run hourly
+  done
+}
+</code></pre>
+<h3>Pattern 4: Asynchronous Dependencies</h3>
+<pre><code class="language-bash">#!/bin/bash
+# async_dependencies.sh
+
+DEPENDENCY_GRAPH=&quot;.claude/dependency_graph.json&quot;
+
+# Define task dependencies
+add_dependency() {
+  local task_id=&quot;$1&quot;
+  local depends_on=&quot;$2&quot;
+
+  jq --arg task &quot;$task_id&quot; \
+     --arg dep &quot;$depends_on&quot; \
+     '.dependencies[$task] += [$dep]' \
+     $DEPENDENCY_GRAPH &gt; ${DEPENDENCY_GRAPH}.tmp &amp;&amp; \
+     mv ${DEPENDENCY_GRAPH}.tmp $DEPENDENCY_GRAPH
+}
+
+# Check if dependencies satisfied
+are_dependencies_met() {
+  local task_id=&quot;$1&quot;
+
+  jq --arg task &quot;$task_id&quot; \
+     '.dependencies[$task][] as $dep |
+      select(.completed[] | contains($dep)) |
+      true' \
+     $DEPENDENCY_GRAPH | grep -q &quot;true&quot;
+}
+
+# Get ready-to-run tasks
+get_runnable_tasks() {
+  jq -r '
+    .tasks[] |
+    select(
+      .dependencies as $deps |
+      ($deps | length) == 0 or
+      ($deps[] | . as $dep | .completed[] | contains($dep)) | . == true
+    ) |
+    .id
+  ' $DEPENDENCY_GRAPH
+}
+
+# Execute tasks respecting dependencies
+execute_workflow_with_dependencies() {
+  while true; do
+    local runnable=$(get_runnable_tasks)
+
+    if [ -z &quot;$runnable&quot; ]; then
+      echo &quot;✅ All tasks completed&quot;
+      break
+    fi
+
+    for task_id in $runnable; do
+      echo &quot;Running task: $task_id&quot;
+
+      # Execute task...
+      if task_successful; then
+        jq --arg task &quot;$task_id&quot; \
+           '.completed += [$task]' \
+           $DEPENDENCY_GRAPH &gt; ${DEPENDENCY_GRAPH}.tmp &amp;&amp; \
+           mv ${DEPENDENCY_GRAPH}.tmp $DEPENDENCY_GRAPH
+      fi
+    done
+  done
+}
+</code></pre>
+<hr />
+<h2>✅ When To Use This Feature</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Complex, multi-stage projects with interdependencies<br />
+- Systems that require continuous optimization<br />
+- Long-running workflows with recovery needs<br />
+- Enterprise deployments requiring sophisticated coordination  </p>
+<hr />
+<h3>Anti-Patterns: When NOT To Use</h3>
+<p>❌ <strong>Avoid When:</strong>
+- Workflow is simple and linear<br />
+- Team is small and coordination is manual<br />
+- Complexity isn't justified by project scale</p>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Visualize State Machines</h3>
+<p><strong>The Technique:</strong> Generate workflow diagrams from state definitions.</p>
+<pre><code class="language-bash"># Generate Mermaid diagram from state machine
+jq -r '@csv' $STATE_FILE | while read state; do
+  echo &quot;$state&quot; | tr ',' '\n' | sed 's/^/  /'
+done &gt; workflow.mmd
+
+# View with tool of choice
+</code></pre>
+<p><strong>Expected Result:</strong> Visual documentation of workflows.</p>
+<hr />
+<h3>Pro Tip 2: State Rollback</h3>
+<p><strong>The Technique:</strong> Save state snapshots for recovery.</p>
+<pre><code class="language-bash"># Snapshot current state
+cp .claude/workflow_state.json .claude/workflow_state_$(date +%s).json.backup
+
+# Rollback to previous state
+cp .claude/workflow_state_*.json.backup .claude/workflow_state.json
+</code></pre>
+<p><strong>Expected Result:</strong> Easy recovery from invalid states.</p>
+<hr />
+<h3>Pro Tip 3: Deadlock Detection</h3>
+<p><strong>The Technique:</strong> Monitor for circular dependencies.</p>
+<pre><code class="language-bash">detect_deadlock() {
+  # If no tasks are runnable but workflow isn't complete
+  local runnable=$(get_runnable_tasks | wc -l)
+  local completed=$(jq '.completed | length' $DEPENDENCY_GRAPH)
+  local total=$(jq '.tasks | length' $DEPENDENCY_GRAPH)
+
+  if [ $runnable -eq 0 ] &amp;&amp; [ $completed -lt $total ]; then
+    echo &quot;🚨 DEADLOCK DETECTED: No runnable tasks, workflow incomplete&quot;
+    return 1
+  fi
+}
+</code></pre>
+<p><strong>Expected Result:</strong> Early detection of workflow problems.</p>
+<hr />
+<h2>🚀 Real-World Example: Enterprise Deployment Pipeline</h2>
+<pre><code class="language-bash">#!/bin/bash
+# enterprise_deployment.sh
+
+init_workflow &quot;deployment_$(date +%s)&quot;
+
+# Define workflow stages
+echo &quot;📋 Setting up deployment workflow...&quot;
+
+# Stage 1: Analysis
+transition_state &quot;ANALYSIS&quot; &quot;Analyzing code changes&quot;
+spawn_subagent &quot;analyzer&quot; &quot;Analyze code quality and complexity&quot;
+
+# Stage 2: Conditional routing based on analysis
+ANALYSIS_RESULT=$(cat .claude/agents/analyzer/results.json | jq '.complexity')
+
+if [ &quot;$ANALYSIS_RESULT&quot; == &quot;HIGH&quot; ]; then
+  echo &quot;High complexity - adding extra review stages&quot;
+  transition_state &quot;CODE_REVIEW&quot; &quot;High-complexity review&quot;
+  spawn_subagent &quot;senior_reviewer&quot; &quot;Expert-level code review&quot;
+else
+  transition_state &quot;CODE_REVIEW&quot; &quot;Standard code review&quot;
+  spawn_subagent &quot;reviewer&quot; &quot;Standard code review&quot;
+fi
+
+# Stage 3: Test before deployment
+transition_state &quot;TESTING&quot; &quot;Running test suites&quot;
+spawn_subagent &quot;tester&quot; &quot;Run complete test suite&quot;
+
+# Check test results
+TEST_RESULT=$(cat .claude/agents/tester/results.json | jq '.status')
+
+if [ &quot;$TEST_RESULT&quot; != &quot;passed&quot; ]; then
+  echo &quot;❌ Tests failed - transitioning to revision&quot;
+  transition_state &quot;REVISION&quot; &quot;Fixing test failures&quot;
+  spawn_subagent &quot;fixer&quot; &quot;Fix failing tests&quot;
+  # Loop back to testing
+  transition_state &quot;TESTING&quot; &quot;Re-running tests after fixes&quot;
+else
+  echo &quot;✅ Tests passed - ready for deployment&quot;
+  transition_state &quot;DEPLOYMENT&quot; &quot;Deploying to production&quot;
+fi
+
+# Final stage
+transition_state &quot;COMPLETE&quot; &quot;Deployment complete&quot;
+echo &quot;🎉 Deployment workflow complete!&quot;
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Define State Machine</h3>
+<pre><code class="language-bash">cat &gt; define_workflow.sh &lt;&lt; 'EOF'
+#!/bin/bash
+source workflow_state_machine.sh
+source decision_tree_router.sh
+source feedback_loop_optimizer.sh
+
+init_workflow &quot;my_project&quot;
+EOF
+
+chmod +x define_workflow.sh
+</code></pre>
+<h3>Step 2: Implement Decision Tree</h3>
+<p>Add agent routing logic to your workflow orchestrator.</p>
+<h3>Step 3: Add Feedback Loop</h3>
+<p>Enable performance tracking and continuous optimization.</p>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: How do I prevent infinite loops in state machines?</h3>
+<p><strong>A:</strong> Add iteration counters and max-attempt limits.</p>
+<h3>Q: How do I handle exceptions during transitions?</h3>
+<p><strong>A:</strong> Catch errors, record them, and transition to error-handling state.</p>
+<h3>Q: Can I visualize complex workflows?</h3>
+<p><strong>A:</strong> Yes, generate Mermaid or GraphViz diagrams from state definitions.</p>
+<hr />
+<h2>📊 Performance &amp; Optimization</h2>
+<ul>
+<li><strong>State Machine Overhead:</strong> Minimal (&lt;5ms per transition)  </li>
+<li><strong>Decision Tree Routing:</strong> O(n) where n = number of agents  </li>
+<li><strong>Optimization:</strong> Cache routing decisions; update asynchronously</li>
+</ul>
+<hr />
+<h2>🔗 Related Topics &amp; Next Steps</h2>
+<p><strong>You Should Also Learn About:</strong>
+- Creating Subagents (Episode 10) — implementation details<br />
+- Module 3 episodes for advanced integration  </p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>State machines enforce correctness</strong> — only valid transitions allowed  </li>
+<li><strong>Smart routing optimizes utilization</strong> — match tasks to best agents  </li>
+<li><strong>Feedback loops enable improvement</strong> — learn and adapt continuously  </li>
+<li><strong>Asynchronous dependencies scale</strong> — handle complex interdependencies  </li>
+</ol>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You can now design and implement sophisticated multi-agent workflows with advanced coordination, feedback loops, and optimization.</p>
+<p><strong>How This Fits Into Real Development:</strong><br />
+Enterprise projects require sophisticated orchestration. These patterns enable reliable, efficient, large-scale systems.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Creating Subagents</strong> (Episode 10) for hands-on implementation.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Build a library of reusable state machines and decision trees. Share across projects to standardize workflow orchestration.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-2-index.html" class="nav-link">← Back to Module 2</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

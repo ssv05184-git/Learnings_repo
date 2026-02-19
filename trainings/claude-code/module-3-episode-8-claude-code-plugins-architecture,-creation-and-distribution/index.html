@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Plugins - Architecture, Creation & Distribution | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Claude Code Plugins - Architecture, Creation & Distribution</h1>
+    <p class="subtitle">Module 3 — Episode 8</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Claude Code Plugins - Architecture, Creation & Distribution</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Claude Code Plugins - Architecture, Creation &amp; Distribution</h1>
+<blockquote>
+<p><strong>Module 3 — Episode 8</strong> (Capstone)<br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Expert<br />
+<strong>Time to Master:</strong> 45 minutes to learn | 3+ hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Understand Claude Code plugin architecture  </li>
+<li>✅ Build and package custom plugins  </li>
+<li>✅ Extend Claude Code capabilities permanently  </li>
+<li>✅ Distribute plugins to teams and community  </li>
+<li>✅ Create a plugin ecosystem for your organization  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 45 minutes<br />
+- Architecture &amp; Design: 1 hour<br />
+- Implementation &amp; Testing: 2+ hours</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Plugins are persistent extensions to Claude Code. Unlike one-off automations, plugins become part of Claude's toolkit permanently. They're discoverable, versioned, reusable across projects, and distributable to teams.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Repeated solutions need to be re-implemented<br />
+- Team knowledge isn't captured in reusable form<br />
+- Custom automation is project-specific and scattered<br />
+- Sharing solutions across teams is manual  </p>
+<p><strong>Where You'll Use This:</strong>
+- Company-specific coding standards<br />
+- Domain expertise automation<br />
+- Cross-team best practices<br />
+- Organizational scaling  </p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: Plugin Architecture</h3>
+<p><strong>Definition:</strong><br />
+Plugins are modular packages containing commands, skills, MCP servers, and configurations that extend Claude Code.</p>
+<p><strong>Why It Matters:</strong><br />
+Modularity enables composition. Complex capabilities are built from simple plugins.</p>
+<p><strong>When To Use:</strong><br />
+Whenever you build repeatable automation worth sharing.</p>
+<hr />
+<h3>Concept 2: Discovery &amp; Registration</h3>
+<p><strong>Definition:</strong><br />
+Plugins are discoverable through registries. Claude discovers and activates them automatically.</p>
+<p><strong>Why It Matters:</strong><br />
+Discovery eliminates manual setup. Users don't need to know about plugins; Claude finds what's needed.</p>
+<p><strong>When To Use:</strong><br />
+Essential for adoption and scale.</p>
+<hr />
+<h3>Concept 3: Distribution &amp; Versioning</h3>
+<p><strong>Definition:</strong><br />
+Plugins are versioned, distributed through registries, and updated independently.</p>
+<p><strong>Why It Matters:</strong><br />
+Decoupled versioning enables rapid updates without breaking workflows.</p>
+<p><strong>When To Use:</strong><br />
+For any plugin used by multiple teams or projects.</p>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Part 1: Plugin Structure</h3>
+<pre><code class="language-directory">my-plugin/
+├── plugin.yml                 # Plugin metadata
+├── README.md                  # Documentation
+├── LICENSE                    # License
+├── src/
+│   ├── index.ts              # Entry point
+│   ├── commands/
+│   │   └── generate_docs.ts
+│   ├── skills/
+│   │   └── code_review.md
+│   ├── mcp/
+│   │   └── custom_server.py
+│   └── utils/
+│       └── helpers.ts
+├── tests/
+│   └── *.test.ts
+├── examples/
+│   └── example_usage.md
+└── package.json
+</code></pre>
+<h3>Part 2: Plugin Manifest</h3>
+<pre><code class="language-yaml"># plugin.yml
+
+id: org.example.code-review
+name: Code Review Enhancement
+version: 1.0.0
+description: Automated code review with security scanning
+
+author:
+  name: Your Company
+  url: https://company.com
+
+repository:
+  url: https://github.com/company/claude-code-review-plugin
+
+license: MIT
+
+# Plugin capabilities
+capabilities:
+  commands:
+    - id: review-code
+      name: Review Code
+      description: Conduct AI code review with security scanning
+      usage: &quot;claude review-code &lt;file-or-directory&gt;&quot;
+
+  skills:
+    - id: security-scan
+      name: Security Scanner
+      description: Scan code for security vulnerabilities
+      trigger: &quot;automatic&quot;
+
+  mcp-servers:
+    - id: custom-database
+      name: Company Database MCP
+      description: Access to internal databases
+
+# Configuration schema
+config:
+  properties:
+    review-style:
+      type: string
+      enum: [strict, moderate, lenient]
+      default: moderate
+    include-security-scan:
+      type: boolean
+      default: true
+    integration:
+      type: object
+      properties:
+        slack-webhook:
+          type: string
+        github-token:
+          type: string
+
+# Dependencies
+dependencies:
+  - id: org.example.code-quality
+    version: &quot;&gt;=1.0.0&quot;
+
+# Activation conditions
+activation:
+  events:
+    - file-changed
+    - pr-created
+  patterns:
+    - &quot;**/*.ts&quot;
+    - &quot;**/*.tsx&quot;
+</code></pre>
+<h3>Part 3: Plugin Implementation</h3>
+<pre><code class="language-typescript">// src/index.ts
+
+import { Plugin, Context, Command } from '@anthropic/claude-code';
+
+export default class CodeReviewPlugin implements Plugin {
+  id = 'org.example.code-review';
+  name = 'Code Review Enhancement';
+  version = '1.0.0';
+
+  commands: Command[] = [];
+
+  async activate(context: Context) {
+    console.log('🔍 Code Review Plugin Activated');
+
+    // Register commands
+    this.registerCommands(context);
+
+    // Register event listeners
+    context.on('file-changed', this.onFileChanged.bind(this));
+    context.on('pr-created', this.onPRCreated.bind(this));
+  }
+
+  private registerCommands(context: Context) {
+    context.registerCommand('review-code', async (args) =&gt; {
+      const { path } = args;
+
+      return await this.reviewCode(path, context);
+    });
+
+    context.registerCommand('security-scan', async (args) =&gt; {
+      const { path } = args;
+
+      return await this.securityScan(path, context);
+    });
+  }
+
+  private async reviewCode(path: string, context: Context): Promise&lt;string&gt; {
+    console.log(`📋 Reviewing code at ${path}`);
+
+    // Read files
+    const files = await context.workspace.readDirectory(path);
+
+    // Conduct review using Claude
+    const review = await context.claude.review(files, {
+      style: context.config.get('review-style'),
+      includeSecurityScan: context.config.get('include-security-scan')
+    });
+
+    // Send to Slack if configured
+    if (context.config.get('integration.slack-webhook')) {
+      await this.notifySlack(review, context);
+    }
+
+    return review;
+  }
+
+  private async securityScan(path: string, context: Context): Promise&lt;string&gt; {
+    console.log(`🔒 Security scanning ${path}`);
+
+    const files = await context.workspace.readDirectory(path);
+
+    return await context.claude.securityScan(files, {
+      level: 'comprehensive'
+    });
+  }
+
+  private async onFileChanged(event: Event, context: Context) {
+    // Optionally run review on file changes
+    if (context.config.get('review-on-change')) {
+      await this.reviewCode(event.path, context);
+    }
+  }
+
+  private async onPRCreated(event: Event, context: Context) {
+    console.log('🔍 Automatically reviewing PR');
+
+    // Access PR information via GitHub MCP
+    const prFiles = await context.github.getPRFiles(event.prNumber);
+
+    const review = await context.claude.review(prFiles);
+
+    // Comment on PR
+    await context.github.createComment(event.prNumber, review);
+  }
+
+  private async notifySlack(review: string, context: Context) {
+    const webhook = context.config.get('integration.slack-webhook');
+
+    await fetch(webhook, {
+      method: 'POST',
+      body: JSON.stringify({
+        text: 'Code Review Complete',
+        blocks: [{
+          type: 'section',
+          text: { type: 'mrkdwn', text: review }
+        }]
+      })
+    });
+  }
+}
+</code></pre>
+<h3>Part 4: Testing</h3>
+<pre><code class="language-typescript">// tests/plugin.test.ts
+
+import { describe, it, expect, beforeEach } from '@jest/globals';
+import CodeReviewPlugin from '../src/index';
+import { MockContext } from '@anthropic/claude-code/testing';
+
+describe('Code Review Plugin', () =&gt; {
+  let plugin: CodeReviewPlugin;
+  let context: MockContext;
+
+  beforeEach(async () =&gt; {
+    plugin = new CodeReviewPlugin();
+    context = new MockContext();
+    await plugin.activate(context);
+  });
+
+  it('should register review-code command', () =&gt; {
+    expect(context.commands.has('review-code')).toBe(true);
+  });
+
+  it('should perform code review', async () =&gt; {
+    const result = await context.commands.run('review-code', {
+      path: 'src/'
+    });
+
+    expect(result).toContain('Review Summary');
+  });
+
+  it('should detect security issues', async () =&gt; {
+    const maliciousCode = `
+      eval(userInput);  // Security issue
+      password = &quot;hardcoded&quot;;  // Security issue
+    `;
+
+    context.workspace.mockFile('test.js', maliciousCode);
+
+    const result = await context.commands.run('security-scan', {
+      path: 'test.js'
+    });
+
+    expect(result).toContain('eval');
+    expect(result).toContain('hardcoded');
+  });
+
+  it('should notify Slack on completion', async () =&gt; {
+    context.config.set('integration.slack-webhook', 'https://hooks.slack.com/...');
+
+    const notified = jest.fn();
+    context.http.mockPost('**/hooks.slack.com/**', notified);
+
+    await context.commands.run('review-code', { path: 'src/' });
+
+    expect(notified).toHaveBeenCalled();
+  });
+});
+</code></pre>
+<h3>Part 5: Distribution</h3>
+<pre><code class="language-bash">#!/bin/bash
+# publish_plugin.sh
+
+# Build plugin
+npm run build
+
+# Test plugin
+npm test
+
+# Package plugin
+npm pack
+
+# Publish to registry
+npm publish --registry https://plugins.anthropic.com
+
+# Create release
+gh release create v1.0.0 \
+  --title &quot;Code Review Plugin v1.0.0&quot; \
+  --notes &quot;Initial release with security scanning and Slack integration&quot;
+
+# Announce
+echo &quot;✅ Plugin published!&quot;
+echo &quot;Install with: claude install org.example.code-review&quot;
+</code></pre>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Plugin Discovery</h3>
+<pre><code class="language-bash"># Users discover plugins
+claude search &quot;code review&quot;
+# → org.example.code-review
+
+# Install
+claude install org.example.code-review
+
+# Verify
+claude plugins list
+</code></pre>
+<h3>Pro Tip 2: Plugin Configuration</h3>
+<pre><code class="language-bash"># Configure after install
+claude config set code-review.review-style strict
+claude config set code-review.integration.slack-webhook https://...
+</code></pre>
+<h3>Pro Tip 3: Plugin Versioning</h3>
+<pre><code class="language-bash"># Semantic versioning
+# 1.0.0 → 1.0.1 (patch: bug fixes)
+#      → 1.1.0 (minor: new features)
+#      → 2.0.0 (major: breaking changes)
+
+npm version patch
+npm publish
+</code></pre>
+<hr />
+<h2>🚀 Real-World Example: Enterprise Security Plugin</h2>
+<pre><code class="language-bash">#!/bin/bash
+# enterprise_security_plugin_example.sh
+
+# Create plugin structure
+mkdir -p enterprise-security-plugin/src/{commands,skills,mcp}
+
+# Create manifest
+cat &gt; enterprise-security-plugin/plugin.yml &lt;&lt; 'EOF'
+id: enterprise.security-scanner
+name: Enterprise Security Scanner
+version: 1.0.0
+description: |
+  Comprehensive security scanning for enterprise teams.
+  - Scans for common vulnerabilities
+  - Enforces compliance standards
+  - Integrates with SIEM systems
+  - Generates audit reports
+EOF
+
+# Build and publish
+cd enterprise-security-plugin
+npm install
+npm test
+npm run build
+npm publish --registry https://plugins.anthropic.com
+
+# Teams install and use
+claude install enterprise.security-scanner
+claude scan-security src/
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<p><strong>Step 1:</strong> Create plugin directory structure</p>
+<p><strong>Step 2:</strong> Write plugin manifest (plugin.yml)</p>
+<p><strong>Step 3:</strong> Implement plugin entry point (src/index.ts)</p>
+<p><strong>Step 4:</strong> Write tests</p>
+<p><strong>Step 5:</strong> Build and test locally</p>
+<p><strong>Step 6:</strong> Publish to registry</p>
+<p><strong>Step 7:</strong> Document for users</p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>Plugins extend Claude Code permanently</strong> — not one-off automations  </li>
+<li><strong>Discovery enables adoption</strong> — users find what they need  </li>
+<li><strong>Versioning enables scale</strong> — updates don't break workflows  </li>
+<li><strong>Distribution accelerates adoption</strong> — team-wide and community-wide</li>
+</ol>
+<hr />
+<h2>⭐ Course Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+Over 16 episodes spanning 3 modules, you've learned Claude Code mastery—from basics to building production systems, multi-agent orchestration, MCP integration, CI/CD automation, and creating extensible plugins.</p>
+<p><strong>Your Achievement:</strong><br />
+You can now:
+- Use Claude Code for autonomous code generation<br />
+- Build sophisticated multi-agent workflows<br />
+- Integrate with external systems via MCP<br />
+- Automate entire development pipelines<br />
+- Create extensible systems that scale<br />
+- Teach others through plugins and templates  </p>
+<p><strong>Next Steps:</strong><br />
+- Apply knowledge to your projects<br />
+- Build and share plugins with your team<br />
+- Contribute to Claude Code community<br />
+- Mentor others in agentic development  </p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+The field evolves rapidly. Stay current by:
+- Reading Claude Code release notes<br />
+- Experimenting with new capabilities<br />
+- Sharing learnings with community<br />
+- Teaching others what you've learned  </p>
+<p>Thank you for completing this comprehensive training. You're now among the elite who can harness Claude Code's full potential for building the next generation of AI-assisted development systems.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-3-index.html" class="nav-link">← Back to Module 3</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

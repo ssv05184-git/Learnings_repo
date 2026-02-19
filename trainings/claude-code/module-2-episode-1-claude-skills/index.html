@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Skills | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Claude Skills</h1>
+    <p class="subtitle">Module 2 — Episode 1</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Claude Skills</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Claude Skills</h1>
+<blockquote>
+<p><strong>Module 2 — Episode 1</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Intermediate → Advanced<br />
+<strong>Time to Master:</strong> 25 minutes to learn | 1.5 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Understand what Claude Skills are and how they extend Claude Code's capabilities  </li>
+<li>✅ Learn the structure of skill.md files and their key components  </li>
+<li>✅ Create your first Claude Skill (commit message generator)  </li>
+<li>✅ Understand model-invoked behavior vs manually-triggered commands  </li>
+<li>✅ Leverage skills for automation and reusability across projects  </li>
+</ul>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Claude Skills are modular capabilities you can add to Claude Code. Unlike slash commands that you trigger manually, Claude Skills are model-invoked—Claude automatically decides when to use them based on your request. Each skill lives in a folder with a <code>skill.md</code> file that describes what the skill does and when to use it.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Manual prompts are inconsistent and produce variable results<br />
+- Complex workflows require repeating the same instructions<br />
+- Developers need reusable, predictable automation without writing custom code  </p>
+<p><strong>Where You'll Use This:</strong>
+- Automating code reviews and formatting<br />
+- Generating commit messages automatically<br />
+- Creating specialized workflows (PDF extraction, data cleanup)<br />
+- Building team-wide coding standards  </p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- How to use Claude Code in interactive mode<br />
+- Basic file system navigation<br />
+- Markdown syntax fundamentals  </p>
+<p><strong>If you're new to Claude Code:</strong><br />
+→ Start with <em>Module 1, Episode 4: Adding Features</em></p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: Model-Invoked Skills</h3>
+<p><strong>Definition:</strong><br />
+Claude automatically detects when a skill applies to your request and uses it without manual triggering.</p>
+<p><strong>Why It Matters:</strong><br />
+This removes friction—you don't need to remember to invoke a skill; Claude recognizes the context and acts appropriately.</p>
+<p><strong>When To Use:</strong><br />
+For workflows that should run automatically based on context (code reviews, commit messages, formatting).</p>
+<hr />
+<h3>Concept 2: Skill.md Structure</h3>
+<p><strong>Definition:</strong><br />
+A markdown file that contains three essential components: name, description, and instructions.</p>
+<p><strong>Why It Matters:</strong><br />
+The description tells Claude when to use the skill. Vague descriptions lead to missed opportunities; clear ones ensure proper activation.</p>
+<p><strong>When To Use:</strong><br />
+Be specific about what the skill does and under what conditions Claude should invoke it.</p>
+<hr />
+<h3>Concept 3: Global vs Project-Level Skills</h3>
+<p><strong>Definition:</strong><br />
+Global skills live in <code>~/.claude/skills/</code> and apply everywhere. Project-level skills live in <code>.claude/skills/</code> and apply only to that project.</p>
+<p><strong>Why It Matters:</strong><br />
+Global skills enable consistency across all your work. Project-level skills allow customization for specific repositories.</p>
+<p><strong>When To Use:</strong><br />
+Use global for universal standards (commit messages). Use project-level for domain-specific workflows.</p>
+<hr />
+<h2>🖼 Architecture &amp; Flow Diagrams</h2>
+<h3>Skill Discovery &amp; Invocation Flow</h3>
+<p><strong>Key Takeaway:</strong><br />
+Claude scans available skills, matches them to your request, and invokes them automatically without requiring manual commands.</p>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>How It Works: Step-by-Step</h3>
+<p><strong>Phase 1: Skill Creation &amp; Storage</strong>
+1. Create a folder: <code>mkdir ~/.claude/skills/commit-helper</code>
+2. Add <code>skill.md</code> file with name, description, and instructions
+3. Claude automatically discovers it on next startup</p>
+<p><strong>Phase 2: Skill Activation</strong>
+1. You make a request that matches the skill's description
+2. Claude recognizes the context
+3. Claude automatically applies the skill without you triggering it</p>
+<p><strong>Phase 3: Output &amp; Execution</strong>
+1. Claude executes the skill's instructions
+2. Results are delivered in the chat
+3. Skill becomes part of the broader workflow</p>
+<hr />
+<h2>📋 Building Your First Skill: Commit Message Generator</h2>
+<h3>Step 1: Create the Skill Folder</h3>
+<pre><code class="language-bash">mkdir -p ~/.claude/skills/commit-helper
+cd ~/.claude/skills/commit-helper
+</code></pre>
+<h3>Step 2: Create skill.md</h3>
+<pre><code class="language-markdown">---
+name: Commit Message Generator
+description: Generates professional, clean Git commit messages automatically. Use this after code changes to create descriptive commit messages that follow best practices.
+---
+
+## Instructions
+
+When Claude Code detects staged changes or when asked to generate a commit message:
+
+1. Analyze the code changes and identify the core functionality updated
+2. Categorize the change type (feat, fix, refactor, docs, style, test, chore)
+3. Write a concise subject line (max 50 characters)
+4. Provide a detailed body explaining the &quot;why&quot; behind changes
+5. Format according to conventional commits standard
+
+Example output:
+</code></pre>
+<p>feat: add user authentication module</p>
+<ul>
+<li>Implement JWT-based authentication</li>
+<li>Add password hashing with bcrypt</li>
+<li>Create login/logout endpoints</li>
+<li>Add session management</li>
+</ul>
+<pre><code>
+## When To Use This Skill
+
+Claude automatically uses this skill when:
+- Code changes are staged and ready for commit
+- User explicitly asks for a commit message
+- In CI/CD workflows requiring automated commit messages
+</code></pre>
+<h3>Step 3: Activate the Skill</h3>
+<p>Simply restart Claude Code:</p>
+<pre><code class="language-bash">claude
+</code></pre>
+<h3>Step 4: Test the Skill</h3>
+<pre><code class="language-bash">claude &quot;Generate a commit message for my staged changes&quot;
+</code></pre>
+<p>Claude automatically recognizes and invokes the skill.</p>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Be Specific in Descriptions</h3>
+<p>❌ Bad: "Generate commit messages"<br />
+✅ Good: "Generate professional Git commit messages following conventional commits standard. Use after code changes and at commit time."</p>
+<h3>Pro Tip 2: Include Examples in Instructions</h3>
+<p>Provide before/after examples so Claude understands expected output format.</p>
+<h3>Pro Tip 3: Nest Skills for Complex Workflows</h3>
+<p>Create dependent skills that call each other for multi-step automation.</p>
+<hr />
+<h2>✅ When To Use This Feature</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Standardizing commit messages across teams<br />
+- Automating code review checklists<br />
+- Generating documentation from code<br />
+- Enforcing coding standards  </p>
+<p>✅ <strong>Productivity Gains:</strong>
+- 70% faster commit workflow<br />
+- Consistent quality across all changes<br />
+- Reduced context switching  </p>
+<h3>Anti-Patterns: When NOT To Use</h3>
+<p>❌ <strong>Avoid When:</strong>
+- The task requires real-time user input<br />
+- Skill logic is too complex (use subagents instead)<br />
+- You need fine-grained control over execution  </p>
+<hr />
+<h2>🔧 Practical Implementation Guide</h2>
+<h3>Step 1: Analyze Your Workflow</h3>
+<p>Identify repetitive tasks that Claude should automate:
+- Code formatting checks<br />
+- Commit message generation<br />
+- PR description templates<br />
+- Documentation generation  </p>
+<h3>Step 2: Write Clear Skill Descriptions</h3>
+<p>Example for a code review skill:</p>
+<pre><code class="language-markdown">name: Code Review Assistant
+description: Automatically reviews recent code changes for quality, security, and maintainability issues. Triggered after new commits.
+</code></pre>
+<h3>Step 3: Define Explicit Instructions</h3>
+<p>Include:
+- What to analyze<br />
+- How to structure output<br />
+- Quality standards to check<br />
+- Output format requirements  </p>
+<h3>Step 4: Test in Isolation</h3>
+<p>Test skills before deploying globally:</p>
+<pre><code class="language-bash">claude &quot;Please use the [skill-name] skill to review this code&quot;
+</code></pre>
+<hr />
+<h2>🎓 Hands-On Exercise</h2>
+<h3>Exercise: Create a Code Cleanup Skill</h3>
+<p><strong>Objective:</strong> Build a skill that automatically formats messy code.</p>
+<p><strong>Steps:</strong>
+1. Create folder: <code>~/.claude/skills/code-cleanup</code>
+2. Create <code>skill.md</code> with:
+   - Name: "Code Cleanup"
+   - Description: Reformats code with proper indentation, removes debug statements, organizes imports
+   - Instructions: Define formatting rules for your language of choice</p>
+<ol>
+<li>Test it:</li>
+</ol>
+<pre><code class="language-bash">claude &quot;Cleanup this messy JavaScript code [paste code]&quot;
+</code></pre>
+<p><strong>Expected Outcome:</strong> Claude automatically invokes the skill and returns formatted code.</p>
+<hr />
+<h2>📚 Advanced Topics</h2>
+<h3>Creating Multi-Language Skills</h3>
+<p>Skills can support multiple programming languages:</p>
+<pre><code class="language-markdown">## Instructions
+
+For Python files:
+- Follow PEP 8 standards
+- Use Black formatter conventions
+
+For JavaScript:
+- Follow Prettier defaults
+- Use ESLint rules
+</code></pre>
+<h3>Skill Versioning</h3>
+<p>Track skill versions in metadata:</p>
+<pre><code class="language-markdown">---
+name: My Skill
+version: 1.2.0
+---
+</code></pre>
+<h3>Team Skills</h3>
+<p>Share skills across teams:
+- Store in version control (.claude/skills/)
+- Document in team guidelines<br />
+- Update collaboratively  </p>
+<hr />
+<h2>🔗 Key Takeaways</h2>
+<ol>
+<li><strong>Claude Skills automate repetitive tasks</strong> without manual triggering</li>
+<li><strong>Model-invoked behavior</strong> means Claude recognizes context and acts</li>
+<li><strong>Clear descriptions</strong> are crucial for proper skill activation</li>
+<li><strong>Skills are reusable</strong> across projects and teams</li>
+<li><strong>Start simple</strong> with one focused skill per task</li>
+</ol>
+<hr />
+<h2>🎯 Next Steps</h2>
+<ul>
+<li>✅ Create your first skill for a recurring task</li>
+<li>✅ Test it with different prompts</li>
+<li>✅ Share it with your team</li>
+<li>✅ Iterate based on feedback</li>
+</ul>
+<p><strong>Next Episode:</strong> Explore Claude Code's built-in output styles and how to customize them for different workflows.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-2-index.html" class="nav-link">← Back to Module 2</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

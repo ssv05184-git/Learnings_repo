@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Subagents - Task Delegation & Parallel Workflows | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Claude Code Subagents - Task Delegation & Parallel Workflows</h1>
+    <p class="subtitle">Module 2 — Episode 8</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Claude Code Subagents - Task Delegation & Parallel Workflows</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Claude Code Subagents - Task Delegation &amp; Parallel Workflows</h1>
+<blockquote>
+<p><strong>Module 2 — Episode 8</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Advanced → Expert<br />
+<strong>Time to Master:</strong> 35 minutes to learn | 2 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Understand subagent architecture and use cases  </li>
+<li>✅ Design workflows for task delegation and parallel execution  </li>
+<li>✅ Implement inter-agent communication patterns  </li>
+<li>✅ Handle coordination and synchronization  </li>
+<li>✅ Build a multi-agent code review system  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 35 minutes<br />
+- Architecture Design: 30 minutes<br />
+- Implementation: 1 hour</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Subagents are parallel Claude Code instances working on related tasks. Instead of a single Claude handling everything sequentially, you can spawn multiple agents to work on different components simultaneously—frontend agent, backend agent, testing agent—coordinating their work through updates to a shared context file.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Large projects are too complex for a single Claude session<br />
+- Sequential task execution is slow (build features one at a time)<br />
+- Different specialists are needed for different components (frontend, backend, infra)<br />
+- Coordination across components is manual and error-prone  </p>
+<p><strong>Where You'll Use This:</strong>
+- Large system development (architecture requires multiple specialists)<br />
+- Parallel testing and deployment<br />
+- Documentation and code review automation<br />
+- Content generation at scale (multiple publishers/authors)</p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- All Module 1 concepts thoroughly<br />
+- All Module 2 Episodes 1–7 (hooks, output styles, logging)<br />
+- Process coordination basics (shared files, synchronization)<br />
+- Advanced scripting and command-line tools</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: Subagent Architecture</h3>
+<p><strong>Definition:</strong><br />
+Independent Claude Code processes with their own context, coordinating through shared files and state management.</p>
+<p><strong>Why It Matters:</strong><br />
+Enables parallel work. While one agent writes components, another writes tests. While one deploys, another writes documentation.</p>
+<p><strong>When To Use:</strong><br />
+When tasks are truly independent or can be parallelized with minimal inter-dependencies.</p>
+<hr />
+<h3>Concept 2: Coordination Patterns</h3>
+<p><strong>Definition:</strong><br />
+Mechanisms for subagents to sync state, share discoveries, and coordinate work (shared CLAUDE.md, event files, queues).</p>
+<p><strong>Why It Matters:</strong><br />
+Without coordination, agents duplicate work or conflict. Good patterns enable safe, efficient collaboration.</p>
+<p><strong>When To Use:</strong><br />
+Always—coordination is essential for multi-agent workflows.</p>
+<hr />
+<h3>Concept 3: Context Inheritance vs Independence</h3>
+<p><strong>Definition:</strong><br />
+Subagents can inherit context from parent agent or start fresh. Each approach has tradeoffs.</p>
+<p><strong>Why It Matters:</strong><br />
+Inherited context speeds up subagent startup but increases complexity. Independent contexts are simpler but require careful initialization.</p>
+<p><strong>When To Use:</strong><br />
+Inherit for tightly-coupled tasks; start fresh for truly independent work.</p>
+<hr />
+<h2>🖼 Architecture &amp; Flow Diagrams</h2>
+<h3>Subagent Execution Model</h3>
+<pre><code>Parent Agent
+    ├─ Analyze task
+    ├─ Decide parallelization
+    └─ Spawn subagents
+        ├─ Frontend Agent (React components)
+        ├─ Backend Agent (APIs)
+        └─ Testing Agent (test suites)
+            ↓
+        All agents write to shared CLAUDE.md
+            ↓
+        Parent polls for completion
+            ↓
+            ├─ Integrate results
+            ├─ Run e2e tests
+            └─ Deploy
+</code></pre>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Pattern 1: Subagent Spawning &amp; Control</h3>
+<pre><code class="language-bash">#!/bin/bash
+# manage_subagents.sh
+
+MAIN_CONTEXT_FILE=&quot;CLAUDE.md&quot;
+AGENTS_DIR=&quot;.claude/agents&quot;
+mkdir -p $AGENTS_DIR
+
+spawn_subagent() {
+  local agent_name=&quot;$1&quot;
+  local agent_task=&quot;$2&quot;
+  local agent_context=&quot;$3&quot;
+
+  # Create isolated agent workspace
+  local agent_workspace=&quot;${AGENTS_DIR}/${agent_name}&quot;
+  mkdir -p &quot;$agent_workspace&quot;
+
+  # Create agent context
+  cat &gt; &quot;${agent_workspace}/CLAUDE.md&quot; &lt;&lt; EOF
+# ${agent_name} Agent Context
+
+## Task
+${agent_task}
+
+## Parent Context
+${agent_context}
+
+## Status
+Started at $(date)
+
+## Progress
+- [ ] Task initialized
+EOF
+
+  # Log agent spawn
+  jq -n \
+    --arg name &quot;$agent_name&quot; \
+    --arg task &quot;$agent_task&quot; \
+    --arg time &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+    '{
+      event: &quot;agent_spawned&quot;,
+      agent: $name,
+      task: $task,
+      timestamp: $time
+    }' &gt;&gt; &quot;${AGENTS_DIR}/agent_log.jsonl&quot;
+
+  # Start agent in background
+  (
+    cd &quot;$agent_workspace&quot;
+    claude &quot;$agent_task&quot; &gt;&gt; agent_output.log 2&gt;&amp;1
+
+    # Mark as complete
+    jq -n \
+      --arg name &quot;$agent_name&quot; \
+      --arg time &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+      '{
+        event: &quot;agent_completed&quot;,
+        agent: $name,
+        timestamp: $time
+      }' &gt;&gt; &quot;${AGENTS_DIR}/agent_log.jsonl&quot;
+  ) &amp;
+
+  echo &quot;$!&quot;
+}
+
+# Usage
+FRONTEND_PID=$(spawn_subagent \
+  &quot;frontend&quot; \
+  &quot;Create React components for auth UI&quot; \
+  &quot;$(cat CLAUDE.md)&quot;)
+
+BACKEND_PID=$(spawn_subagent \
+  &quot;backend&quot; \
+  &quot;Implement API endpoints for authentication&quot; \
+  &quot;$(cat CLAUDE.md)&quot;)
+
+echo &quot;Frontend Agent PID: $FRONTEND_PID&quot;
+echo &quot;Backend Agent PID: $BACKEND_PID&quot;
+</code></pre>
+<h3>Pattern 2: Shared State Management</h3>
+<pre><code class="language-bash">#!/bin/bash
+# shared_state.sh - Coordinate agent state
+
+STATE_FILE=&quot;.claude/agents/shared_state.json&quot;
+
+# Initialize shared state
+init_state() {
+  jq -n '{
+    agents: {},
+    progress: {
+      start_time: &quot;'$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)'&quot;,
+      completed: []
+    },
+    shared_context: {}
+  }' &gt; $STATE_FILE
+}
+
+# Update agent status
+update_agent_status() {
+  local agent_name=&quot;$1&quot;
+  local status=&quot;$2&quot;
+
+  jq --arg agent &quot;$agent_name&quot; \
+     --arg status &quot;$status&quot; \
+     --arg time &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+     '.agents[$agent] = {status: $status, updated_at: $time}' \
+     $STATE_FILE &gt; ${STATE_FILE}.tmp &amp;&amp; \
+     mv ${STATE_FILE}.tmp $STATE_FILE
+}
+
+# Record completion
+mark_complete() {
+  local agent_name=&quot;$1&quot;
+
+  jq --arg agent &quot;$agent_name&quot; \
+     '.progress.completed += [$agent]' \
+     $STATE_FILE &gt; ${STATE_FILE}.tmp &amp;&amp; \
+     mv ${STATE_FILE}.tmp $STATE_FILE
+}
+
+# Query all agents completed
+all_agents_complete() {
+  local expected_count=&quot;$1&quot;
+  local completed=$(jq '.progress.completed | length' $STATE_FILE)
+  [ &quot;$completed&quot; -eq &quot;$expected_count&quot; ]
+}
+
+# Wait for all agents
+wait_for_agents() {
+  local expected_count=&quot;$1&quot;
+  local timeout=&quot;${2:-300}&quot;  # 5 minutes
+  local elapsed=0
+
+  while [ $elapsed -lt $timeout ]; do
+    if all_agents_complete &quot;$expected_count&quot;; then
+      echo &quot;✅ All agents completed&quot;
+      return 0
+    fi
+
+    echo &quot;⏳ Waiting... (${elapsed}s)&quot;
+    sleep 5
+    elapsed=$((elapsed + 5))
+  done
+
+  echo &quot;❌ Agents did not complete within timeout&quot;
+  return 1
+}
+</code></pre>
+<h3>Pattern 3: Inter-Agent Communication</h3>
+<pre><code class="language-bash">#!/bin/bash
+# agent_communication.sh
+
+MESSAGES_DIR=&quot;.claude/agents/messages&quot;
+mkdir -p $MESSAGES_DIR
+
+# Send message from one agent to another
+send_message() {
+  local from_agent=&quot;$1&quot;
+  local to_agent=&quot;$2&quot;
+  local message=&quot;$3&quot;
+
+  local msg_file=&quot;${MESSAGES_DIR}/${from_agent}_to_${to_agent}_$(date +%s%N).json&quot;
+
+  jq -n \
+    --arg from &quot;$from_agent&quot; \
+    --arg to &quot;$to_agent&quot; \
+    --arg msg &quot;$message&quot; \
+    --arg time &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+    '{
+      from: $from,
+      to: $to,
+      message: $msg,
+      timestamp: $time,
+      read: false
+    }' &gt; &quot;$msg_file&quot;
+}
+
+# Get unread messages
+get_unread_messages() {
+  local agent_name=&quot;$1&quot;
+
+  for msg_file in ${MESSAGES_DIR}/*_to_${agent_name}_*.json; do
+    if [ -f &quot;$msg_file&quot; ]; then
+      cat &quot;$msg_file&quot; | jq 'select(.read == false)'
+    fi
+  done
+}
+
+# Mark messages as read
+mark_read() {
+  local agent_name=&quot;$1&quot;
+
+  for msg_file in ${MESSAGES_DIR}/*_to_${agent_name}_*.json; do
+    if [ -f &quot;$msg_file&quot; ]; then
+      jq '.read = true' &quot;$msg_file&quot; &gt; ${msg_file}.tmp &amp;&amp; mv ${msg_file}.tmp &quot;$msg_file&quot;
+    fi
+  done
+}
+</code></pre>
+<h3>Pattern 4: Result Aggregation</h3>
+<pre><code class="language-bash">#!/bin/bash
+# aggregate_results.sh
+
+RESULTS_DIR=&quot;.claude/agents/results&quot;
+mkdir -p $RESULTS_DIR
+
+# Each agent writes results
+write_agent_results() {
+  local agent_name=&quot;$1&quot;
+  local results_json=&quot;$2&quot;
+
+  echo &quot;$results_json&quot; &gt; &quot;${RESULTS_DIR}/${agent_name}_results.json&quot;
+}
+
+# Aggregate all results
+aggregate_results() {
+  jq -s 'map(
+    . as $file | 
+    {
+      agent: (input_filename | split(&quot;/&quot;) | .[-1] | gsub(&quot;_results.json&quot;; &quot;&quot;)),
+      results: $file
+    }
+  )' ${RESULTS_DIR}/*_results.json
+}
+
+# Merge results from multiple agents
+merge_agent_outputs() {
+  jq -s '{
+    frontend: .[0],
+    backend: .[1],
+    tests: .[2],
+    merged_at: &quot;'$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)'&quot;,
+    integration_ready: true
+  }' \
+    ${RESULTS_DIR}/frontend_results.json \
+    ${RESULTS_DIR}/backend_results.json \
+    ${RESULTS_DIR}/testing_results.json
+}
+</code></pre>
+<hr />
+<h2>✅ When To Use This Feature</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Large projects requiring multiple specialists<br />
+- Parallel feature development<br />
+- Testing while development continues<br />
+- Documentation generation at scale  </p>
+<hr />
+<h3>Anti-Patterns: When NOT To Use</h3>
+<p>❌ <strong>Avoid When:</strong>
+- Tasks have heavy dependencies (sequential is better)<br />
+- Coordination overhead exceeds benefits (small projects)<br />
+- Agents need real-time synchronization</p>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Health Checks</h3>
+<p><strong>The Technique:</strong> Periodically verify agents are making progress.</p>
+<pre><code class="language-bash">health_check() {
+  for agent in frontend backend testing; do
+    local log_file=&quot;.claude/agents/${agent}/agent_output.log&quot;
+    local last_update=$(stat -f %m $log_file 2&gt;/dev/null || echo 0)
+    local now=$(date +%s)
+    local idle_time=$((now - last_update))
+
+    if [ $idle_time -gt 600 ]; then
+      echo &quot;⚠️  Agent $agent idle for ${idle_time}s&quot;
+    fi
+  done
+}
+</code></pre>
+<p><strong>Expected Result:</strong> Detect stuck agents before timeout.</p>
+<hr />
+<h3>Pro Tip 2: Partial Failures</h3>
+<p><strong>The Technique:</strong> Continue with available results if some agents fail.</p>
+<pre><code class="language-bash">if [ -f &quot;frontend_results.json&quot; ] &amp;&amp; [ -f &quot;backend_results.json&quot; ]; then
+  # Merge what we have
+  echo &quot;⚠️  Testing agent failed; integrating partial results&quot;
+  merge_partial_outputs
+else
+  echo &quot;❌ Critical agents failed; aborting&quot;
+  exit 1
+fi
+</code></pre>
+<p><strong>Expected Result:</strong> Graceful degradation when some agents fail.</p>
+<hr />
+<h3>Pro Tip 3: Agent Restart Strategy</h3>
+<p><strong>The Technique:</strong> Restart failed agents with diminishing retry.</p>
+<pre><code class="language-bash">retry_agent() {
+  local agent_name=&quot;$1&quot;
+  local max_retries=3
+  local retry=0
+
+  while [ $retry -lt $max_retries ]; do
+    if spawn_subagent &quot;$agent_name&quot; ...; then
+      return 0
+    fi
+
+    retry=$((retry + 1))
+    sleep $((2 ** retry))  # Exponential backoff
+  done
+
+  return 1
+}
+</code></pre>
+<p><strong>Expected Result:</strong> Transient failures are retried; consistent failures fail fast.</p>
+<hr />
+<h2>🚀 Real-World Example: Multi-Agent Code Review</h2>
+<pre><code class="language-bash">#!/bin/bash
+# code_review_orchestrator.sh
+
+# Scenario: Review a PR across frontend, backend, security perspective
+
+init_state
+
+# Spawn code review agents
+echo &quot;🤖 Spawning review agents...&quot;
+
+FRONTEND_REVIEWER=$(spawn_subagent \
+  &quot;frontend_reviewer&quot; \
+  &quot;Review frontend code changes for accessibility, React best practices, performance&quot;)
+
+BACKEND_REVIEWER=$(spawn_subagent \
+  &quot;backend_reviewer&quot; \
+  &quot;Review backend API changes for security, error handling, performance&quot;)
+
+SECURITY_REVIEWER=$(spawn_subagent \
+  &quot;security_reviewer&quot; \
+  &quot;Review all changes for security vulnerabilities, injection risks, auth issues&quot;)
+
+# Wait for all reviews
+wait_for_agents 3 600
+
+# Aggregate results
+echo &quot;📋 Aggregating review results...&quot;
+AGGREGATED_REVIEW=$(aggregate_results)
+
+# Generate final report
+cat &gt; CODE_REVIEW_REPORT.md &lt;&lt; EOF
+# Code Review Report
+
+Generated: $(date)
+
+## Frontend Review
+$(echo &quot;$AGGREGATED_REVIEW&quot; | jq -r '.frontend.review_comments // &quot;No issues&quot;')
+
+## Backend Review
+$(echo &quot;$AGGREGATED_REVIEW&quot; | jq -r '.backend.review_comments // &quot;No issues&quot;')
+
+## Security Review
+$(echo &quot;$AGGREGATED_REVIEW&quot; | jq -r '.security.review_comments // &quot;No issues&quot;')
+
+## Recommendations
+$(echo &quot;$AGGREGATED_REVIEW&quot; | jq -r '.recommendations // &quot;Ready to merge&quot;')
+EOF
+
+echo &quot;✅ Review complete: CODE_REVIEW_REPORT.md&quot;
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Create Agent Manager</h3>
+<pre><code class="language-bash">cat &gt; claude_agent_manager.sh &lt;&lt; 'EOF'
+#!/bin/bash
+source manage_subagents.sh
+source shared_state.sh
+source agent_communication.sh
+
+init_state
+
+# Define your agents and tasks
+agents=(
+  &quot;frontend:Create React components&quot;
+  &quot;backend:Build API endpoints&quot;
+  &quot;testing:Write test suites&quot;
+)
+
+# Spawn all
+for agent_spec in ${agents[@]}; do
+  IFS=&quot;:&quot; read -r name task &lt;&lt;&lt; &quot;$agent_spec&quot;
+  spawn_subagent &quot;$name&quot; &quot;$task&quot; &quot;$(cat CLAUDE.md)&quot;
+done
+
+# Monitor
+wait_for_agents ${#agents[@]} 600
+echo &quot;✅ All agents completed&quot;
+EOF
+
+chmod +x claude_agent_manager.sh
+</code></pre>
+<h3>Step 2: Add Message Queue</h3>
+<p>Create <code>.claude/agents/message_queue.sh</code> for inter-agent communication.</p>
+<h3>Step 3: Run Multi-Agent Workflow</h3>
+<pre><code class="language-bash">./claude_agent_manager.sh
+</code></pre>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: Can agents access each other's code?</h3>
+<p><strong>A:</strong> Yes, through shared filesystem. Partition code by module to isolate concerns.</p>
+<h3>Q: What if agents conflict on the same file?</h3>
+<p><strong>A:</strong> Use git branching; each agent works on a feature branch, then merge results.</p>
+<h3>Q: How do I debug agent issues?</h3>
+<p><strong>A:</strong> Check <code>.claude/agents/*/agent_output.log</code> files.</p>
+<hr />
+<h2>📊 Performance &amp; Optimization</h2>
+<ul>
+<li><strong>Speedup:</strong> Up to 2-3x for properly parallelizable tasks  </li>
+<li><strong>Coordination Overhead:</strong> 5-10% of execution time  </li>
+<li><strong>Optimization:</strong> Minimize inter-agent dependencies</li>
+</ul>
+<hr />
+<h2>🔗 Related Topics &amp; Next Steps</h2>
+<p><strong>You Should Also Learn About:</strong>
+- Subagents Workflow &amp; Architecture (Episode 9) — deep dive<br />
+- Creating Subagents (Episode 10) — implementation patterns  </p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>Subagents enable parallelization</strong> — multiple agents work simultaneously  </li>
+<li><strong>Coordination is essential</strong> — shared state, messaging, synchronization  </li>
+<li><strong>Independence speeds up workflow</strong> — minimize inter-agent dependencies  </li>
+<li><strong>Graceful degradation handles failures</strong> — continue with partial results</li>
+</ol>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You understand subagent architecture and can design multi-agent workflows for large, complex projects.</p>
+<p><strong>How This Fits Into Real Development:</strong><br />
+Subagents are how Claude Code scales from single-task to multi-team projects. Teams can work in parallel, dramatically accelerating large system development.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Subagents Workflow &amp; Architecture</strong> (Episode 9) for detailed workflow patterns.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Start with simple parallelization (frontend + backend). As you master coordination, tackle more complex workflows with 5+ agents.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-2-index.html" class="nav-link">← Back to Module 2</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

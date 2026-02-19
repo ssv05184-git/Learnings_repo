@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Hooks - Lifecycle Events, Security & Automation | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Advanced Hooks - Lifecycle Events, Security & Automation</h1>
+    <p class="subtitle">Module 2 — Episode 4</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Advanced Hooks - Lifecycle Events, Security & Automation</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Advanced Hooks - Lifecycle Events, Security &amp; Automation</h1>
+<blockquote>
+<p><strong>Module 2 — Episode 4</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Advanced<br />
+<strong>Time to Master:</strong> 30 minutes to learn | 2.5 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Understand the complete hook lifecycle and execution order  </li>
+<li>✅ Implement pre/post hooks for security and validation  </li>
+<li>✅ Use lifecycle hooks for automation (onTaskStart, onFileChange, onTaskComplete)  </li>
+<li>✅ Create complex multi-hook workflows with proper error handling  </li>
+<li>✅ Build a secure code review automation system  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 30 minutes<br />
+- Core Implementation: 1.5 hours<br />
+- Advanced Workflows: 1 hour</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Hooks are event listeners that trigger code at specific moments in Claude's workflow. Advanced hooks let you inject security checks, automate logging, trigger external systems, and enforce coding standards—all without manual intervention. Understanding hook lifecycle and execution order is crucial for building robust automation.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Manual code reviews are inconsistent and time-consuming<br />
+- Security validations require repeating the same checks<br />
+- Workflow automation requires custom scripts and juggling multiple tools<br />
+- Team standards aren't enforced automatically  </p>
+<p><strong>Where You'll Use This:</strong>
+- Automated security scanning and validation<br />
+- CI/CD integration without leaving Claude<br />
+- Real-time code style enforcement<br />
+- Audit logging and compliance tracking<br />
+- Team workflow automation</p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- Claude Code fundamentals (Module 1)<br />
+- Basic hook concepts (Module 2, Episode 2)<br />
+- Shell scripting or Python basics<br />
+- File system operations</p>
+<p><strong>Recommended Reading:</strong>
+- <em>Module 2, Episode 2: Claude Code Output Styles</em> — hook basics<br />
+- <em>Module 2, Episode 7: PostToolUse Hook</em> — specific hook type</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: Hook Lifecycle &amp; Execution Order</h3>
+<p><strong>Definition:</strong><br />
+Hooks execute at specific moments: onTaskStart (task begins) → onFileChange (file modified) → onToolUse (tool executes) → onTaskComplete (task finishes).</p>
+<p><strong>Why It Matters:</strong><br />
+Understanding execution order prevents race conditions and ensures dependencies are met. A validation hook must run <em>before</em> a file is committed, not after.</p>
+<p><strong>When To Use:</strong><br />
+- onTaskStart: Initialize session data, load configuration<br />
+- onFileChange: Validate changes, trigger linters, update timestamps<br />
+- onToolUse: Pre-validate tool inputs, post-validate outputs<br />
+- onTaskComplete: Send notifications, update dashboards, run final checks</p>
+<hr />
+<h3>Concept 2: Security &amp; Validation Hooks</h3>
+<p><strong>Definition:</strong><br />
+Hooks that verify code meets security standards, dependency requirements, and compliance rules before execution.</p>
+<p><strong>Why It Matters:</strong><br />
+Automatic security validation prevents vulnerabilities from reaching production. Manual reviews miss edge cases; automated hooks catch them consistently.</p>
+<p><strong>When To Use:</strong><br />
+- Scanning for hardcoded secrets<br />
+- Verifying dependency licenses<br />
+- Checking code for SQL injection patterns<br />
+- Validating data access permissions</p>
+<hr />
+<h3>Concept 3: Multi-Hook Workflows &amp; Composition</h3>
+<p><strong>Definition:</strong><br />
+Complex workflows using multiple hooks working together, with data passing between them and fallback mechanisms for failures.</p>
+<p><strong>Why It Matters:</strong><br />
+Real-world automation requires orchestrating multiple validations and transformations. Hook composition allows building complex workflows from simple, reusable pieces.</p>
+<p><strong>When To Use:</strong><br />
+- Multi-stage approval workflows<br />
+- Chained transformations (format → lint → test → deploy)<br />
+- Complex validation with multiple failure modes</p>
+<hr />
+<h2>🖼 Architecture &amp; Flow Diagrams</h2>
+<h3>Hook Lifecycle Execution</h3>
+<pre><code>1. onTaskStart
+   ↓
+2. [Claude processes task]
+   ↓
+3. onFileChange (for each file modified)
+   ↓
+4. onToolUse (pre) → [Tool executes] → onToolUse (post)
+   ↓
+5. onTaskComplete
+</code></pre>
+<h3>Security Validation Hook Flow</h3>
+<pre><code>File Modified → Security Hook
+  ├─ Check secrets? ✓
+  ├─ Verify dependencies? ✓
+  ├─ Validate permissions? ✓
+  └─ PASS → Continue | FAIL → Block &amp; Alert
+</code></pre>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Hook 1: Pre-Task Validation (onTaskStart)</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/on-task-start.sh
+
+# Initialize logging
+LOG_FILE=$(pwd)/.claude/task_$(date +%s).log
+echo &quot;Task started at $(date)&quot; &gt;&gt; $LOG_FILE
+
+# Load environment
+if [ -f .env ]; then
+  source .env
+  echo &quot;Environment loaded&quot; &gt;&gt; $LOG_FILE
+else
+  echo &quot;WARNING: No .env file found&quot; &gt;&gt; $LOG_FILE
+fi
+
+# Check prerequisites
+if ! command -v git &amp;&gt; /dev/null; then
+  echo &quot;ERROR: Git not found&quot; &gt;&amp;2
+  exit 1
+fi
+
+echo &quot;Pre-task checks: PASSED&quot; &gt;&gt; $LOG_FILE
+</code></pre>
+<h3>Hook 2: File Change Security Validation (onFileChange)</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/on-file-change-security.sh
+# Validates files for security issues before they're saved
+
+FILE_PATH=&quot;${1}&quot;
+echo &quot;Scanning $FILE_PATH for security issues...&quot;
+
+# Check for hardcoded secrets
+if grep -E &quot;(aws_access_key_id|password|api_key)&quot; &quot;$FILE_PATH&quot;; then
+  echo &quot;ERROR: Detected hardcoded credentials in $FILE_PATH&quot; &gt;&amp;2
+  echo &quot;Use environment variables instead&quot; &gt;&amp;2
+  exit 1
+fi
+
+# Check for SQL injection patterns
+if grep -E &quot;SELECT.*\\\$|INSERT.*\\\$|DELETE.*\\\$&quot; &quot;$FILE_PATH&quot;; then
+  echo &quot;WARNING: Potential SQL injection pattern detected&quot; &gt;&amp;2
+fi
+
+# Check for unsafe deserialization
+if grep -E &quot;pickle|eval\(|exec\(&quot; &quot;$FILE_PATH&quot;; then
+  echo &quot;WARNING: Potentially unsafe code pattern detected&quot; &gt;&amp;2
+fi
+
+echo &quot;Security scan completed for $FILE_PATH&quot;
+</code></pre>
+<h3>Hook 3: Post-Tool Output Validation (onToolUse)</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/on-tool-use-post.sh
+# Validates output after tool execution
+
+TOOL_NAME=&quot;${1}&quot;
+OUTPUT=&quot;${2}&quot;
+
+case &quot;$TOOL_NAME&quot; in
+  &quot;npm_install&quot;)
+    # Validate package.json exists
+    if [ ! -f &quot;package.json&quot; ]; then
+      echo &quot;ERROR: npm install executed but package.json missing&quot; &gt;&amp;2
+      exit 1
+    fi
+    echo &quot;npm install validation: PASSED&quot;
+    ;;
+
+  &quot;git_commit&quot;)
+    # Validate commit was successful
+    if git rev-parse HEAD &gt; /dev/null 2&gt;&amp;1; then
+      echo &quot;Commit validation: PASSED&quot;
+    else
+      echo &quot;ERROR: Git commit failed&quot; &gt;&amp;2
+      exit 1
+    fi
+    ;;
+
+  *)
+    echo &quot;No validation for tool: $TOOL_NAME&quot;
+    ;;
+esac
+</code></pre>
+<h3>Hook 4: Task Completion Reporting (onTaskComplete)</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/on-task-complete.sh
+# Generates summary and sends notifications
+
+TASK_LOG=$(pwd)/.claude/task_$(date +%s).log
+
+# Count changes
+CHANGES=$(git diff --stat | tail -1)
+echo &quot;Files changed: $CHANGES&quot;
+
+# Generate summary
+cat &gt;&gt; TASK_SUMMARY.md &lt;&lt; EOF
+## Task Completion Summary
+- Timestamp: $(date)
+- Changes: $CHANGES
+- Status: COMPLETED
+- Log: $TASK_LOG
+
+### Changed Files
+$(git diff --name-only)
+
+### Review Checklist
+- [ ] Code follows style guide
+- [ ] Tests pass
+- [ ] Documentation updated
+- [ ] No hardcoded secrets
+EOF
+
+# Notify Slack (if configured)
+if [ ! -z &quot;$SLACK_WEBHOOK&quot; ]; then
+  curl -X POST $SLACK_WEBHOOK \
+    -H 'Content-Type: application/json' \
+    -d @- &lt;&lt; PAYLOAD
+{
+  &quot;text&quot;: &quot;Claude Code task completed&quot;,
+  &quot;blocks&quot;: [
+    {
+      &quot;type&quot;: &quot;section&quot;,
+      &quot;text&quot;: {
+        &quot;type&quot;: &quot;mrkdwn&quot;,
+        &quot;text&quot;: &quot;*Task Summary*\n$CHANGES&quot;
+      }
+    }
+  ]
+}
+PAYLOAD
+fi
+</code></pre>
+<hr />
+<h2>✅ When To Use This Feature</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Automated security scanning on every file change<br />
+- Enforcing coding standards without manual review<br />
+- Multi-stage approval workflows<br />
+- Audit logging for compliance<br />
+- Triggering external systems (CI/CD, notifications, webhooks)</p>
+<p>✅ <strong>Productivity Gains:</strong>
+- Eliminate manual security reviews (80% time saving)<br />
+- Catch errors before they reach testing<br />
+- Automatic compliance documentation</p>
+<hr />
+<h3>Anti-Patterns: When NOT To Use</h3>
+<p>❌ <strong>Avoid When:</strong>
+- Hooks become so complex they're hard to debug<br />
+- You have more than 5 hooks per trigger (composition issues)<br />
+- Hooks consistently fail (rethink design)  </p>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Non-Blocking Warnings</h3>
+<p><strong>The Technique:</strong> Use hooks for alerts without stopping execution.</p>
+<pre><code class="language-bash">#!/bin/bash
+# Don't exit with error—just warn
+
+if [[ &quot;$FILE_PATH&quot; == *.test.ts ]]; then
+  echo &quot;⚠️  WARNING: Test file modified&quot; &gt;&amp;2
+  # Don't exit, let task continue
+fi
+</code></pre>
+<p><strong>Expected Result:</strong> Non-critical issues are flagged but don't block work.</p>
+<hr />
+<h3>Pro Tip 2: Hook Data Sharing</h3>
+<p><strong>The Technique:</strong> Use temporary files to pass data between hooks.</p>
+<pre><code class="language-bash"># on-task-start.sh
+echo &quot;task_id=$RANDOM&quot; &gt; /tmp/claude_task.env
+
+# on-task-complete.sh
+source /tmp/claude_task.env
+echo &quot;Task $task_id cleanup completed&quot;
+</code></pre>
+<p><strong>Expected Result:</strong> Hooks coordinate without tight coupling.</p>
+<hr />
+<h3>Pro Tip 3: Conditional Hook Execution</h3>
+<p><strong>The Technique:</strong> Disable hooks for specific contexts.</p>
+<pre><code class="language-bash"># Only run security checks if SECURITY_SCAN=true
+if [ &quot;${SECURITY_SCAN}&quot; != &quot;true&quot; ]; then
+  exit 0
+fi
+
+# Run security validation...
+</code></pre>
+<p><strong>Expected Result:</strong> Manage hook overhead intelligently.</p>
+<hr />
+<h2>🚀 Real-World Examples</h2>
+<h3>Example 1: Automated Code Review Hook</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/automated-code-review.sh
+
+FILE=&quot;${1}&quot;
+
+# Check for common issues
+ISSUES=0
+
+# 1. Function length
+if grep -c &quot;^function &quot; &quot;$FILE&quot; | awk '{if ($1 &gt; 50) exit 1}'; then
+  echo &quot;❌ Function too long (&gt;50 lines)&quot;
+  ISSUES=$((ISSUES+1))
+fi
+
+# 2. Missing error handling
+if grep -E &quot;try|catch&quot; &quot;$FILE&quot; | wc -l | awk '{if ($1 &lt; 2) print &quot;⚠️  Limited error handling&quot;}'; then
+  ISSUES=$((ISSUES+1))
+fi
+
+# 3. Test coverage
+if [ -f &quot;${FILE%.js}.test.js&quot; ]; then
+  TEST_LINES=$(wc -l &lt; &quot;${FILE%.js}.test.js&quot;)
+  CODE_LINES=$(wc -l &lt; &quot;$FILE&quot;)
+
+  if [ &quot;$TEST_LINES&quot; -lt &quot;$((CODE_LINES / 2))&quot; ]; then
+    echo &quot;⚠️  Low test coverage ratio&quot;
+  fi
+fi
+
+if [ $ISSUES -gt 0 ]; then
+  echo &quot;Review Issues Found: $ISSUES&quot;
+  exit 1
+fi
+
+echo &quot;✅ Code review: PASSED&quot;
+</code></pre>
+<h3>Example 2: Dependency License Validation</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/validate-licenses.sh
+
+if [ &quot;$TOOL_NAME&quot; != &quot;npm_install&quot; ]; then
+  exit 0
+fi
+
+# Get list of restricted licenses
+RESTRICTED=&quot;GPL GPL-2.0 GPL-3.0 AGPL&quot;
+
+# Check installed packages
+npm list --json | jq '.dependencies | keys[]' | while read pkg; do
+  LICENSE=$(npm view &quot;$pkg&quot; license --json | tr -d '&quot;')
+
+  if [[ $RESTRICTED =~ $LICENSE ]]; then
+    echo &quot;❌ Restricted license found: $pkg ($LICENSE)&quot;
+    exit 1
+  fi
+done
+
+echo &quot;✅ License validation: PASSED&quot;
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Create Hook Structure</h3>
+<pre><code class="language-bash">mkdir -p .claude/hooks
+chmod +x .claude/hooks/*.sh
+</code></pre>
+<h3>Step 2: Register Hooks</h3>
+<p>Create <code>.claude/hooks-manifest.json</code>:</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;onTaskStart&quot;: &quot;.claude/hooks/on-task-start.sh&quot;,
+    &quot;onFileChange&quot;: [
+      &quot;.claude/hooks/on-file-change-security.sh&quot;,
+      &quot;.claude/hooks/on-file-change-format.sh&quot;
+    ],
+    &quot;onToolUse&quot;: {
+      &quot;pre&quot;: &quot;.claude/hooks/on-tool-use-pre.sh&quot;,
+      &quot;post&quot;: &quot;.claude/hooks/on-tool-use-post.sh&quot;
+    },
+    &quot;onTaskComplete&quot;: &quot;.claude/hooks/on-task-complete.sh&quot;
+  }
+}
+</code></pre>
+<h3>Step 3: Test Hooks</h3>
+<pre><code class="language-bash"># Test onTaskStart
+bash .claude/hooks/on-task-start.sh
+
+# Test onFileChange
+bash .claude/hooks/on-file-change-security.sh &quot;src/auth.ts&quot;
+
+# Verify task completion
+bash .claude/hooks/on-task-complete.sh
+</code></pre>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: What's the order if multiple hooks are registered for same event?</h3>
+<p><strong>A:</strong> Executed in order listed in manifest. If one fails, subsequent hooks don't execute unless configured otherwise.</p>
+<h3>Q: Can hooks communicate across different task runs?</h3>
+<p><strong>A:</strong> Yes, via shared files (logs, state files) or environment variables persisted in <code>.env</code>.</p>
+<h3>Q: What happens if a hook fails?</h3>
+<p><strong>A:</strong> By default, task execution stops. Set <code>critical: false</code> in manifest to continue despite failures.</p>
+<h3>Q: How do I debug hook issues?</h3>
+<p><strong>A:</strong> Add <code>set -x</code> in bash scripts, check <code>.claude/task_*.log</code> files, and test hooks independently via CLI.</p>
+<hr />
+<h2>📊 Performance &amp; Optimization</h2>
+<ul>
+<li><strong>Hook Overhead:</strong> 100–500ms per hook depending on complexity  </li>
+<li><strong>Best Practice:</strong> Keep hooks fast (&lt;100ms). Move heavy work to background jobs  </li>
+<li><strong>Optimization:</strong> Combine multiple validations into single hook</li>
+</ul>
+<hr />
+<h2>🔗 Related Topics &amp; Next Steps</h2>
+<p><strong>You Should Also Learn About:</strong>
+- Hook Data Processing with jq (Episode 5) — parse hook data<br />
+- Building Bash Command Logger (Episode 6) — practical hook application<br />
+- PostToolUse Hook (Episode 7) — specialized hook deep-dive</p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>Hooks execute at specific lifecycle moments</strong> — understand order for correct behavior  </li>
+<li><strong>Layered validation prevents errors</strong> — pre-validation catches issues early  </li>
+<li><strong>Automation brings consistency</strong> — remove manual, fallible steps  </li>
+<li><strong>Composable hooks build complex workflows</strong> — simple pieces, powerful combinations</li>
+</ol>
+<hr />
+<h2>🎓 Quick Reference</h2>
+<h3>Hook Registration</h3>
+<pre><code class="language-json">{
+  &quot;onTaskStart&quot;: &quot;script.sh&quot;,
+  &quot;onFileChange&quot;: &quot;validate.sh&quot;,
+  &quot;onToolUse&quot;: {&quot;pre&quot;: &quot;pre.sh&quot;, &quot;post&quot;: &quot;post.sh&quot;},
+  &quot;onTaskComplete&quot;: &quot;complete.sh&quot;
+}
+</code></pre>
+<h3>Common Patterns</h3>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Hook</th>
+<th>Script</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Security check</td>
+<td>onFileChange</td>
+<td>grep secrets</td>
+</tr>
+<tr>
+<td>Format validation</td>
+<td>onFileChange</td>
+<td>prettier</td>
+</tr>
+<tr>
+<td>Test run</td>
+<td>onTaskComplete</td>
+<td>npm test</td>
+</tr>
+<tr>
+<td>Notify team</td>
+<td>onTaskComplete</td>
+<td>curl webhook</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>⚠️ Common Mistakes to Avoid</h2>
+<ol>
+<li><strong>Not Testing Hooks</strong> — Test independently before deploying  </li>
+<li><strong>Hooks Too Complex</strong> — Keep them focused and simple  </li>
+<li><strong>Blocking Tasks Unnecessarily</strong> — Use warnings instead of hard exits  </li>
+<li><strong>Ignoring Error States</strong> — Handle and log all failure modes</li>
+</ol>
+<hr />
+<h2>🔐 Security &amp; Best Practices</h2>
+<p><strong>Hook Security:</strong>
+- Never store credentials in hook scripts<br />
+- Use environment variables for sensitive data<br />
+- Validate all inputs in hooks<br />
+- Log all hook executions for audit trails</p>
+<p><strong>Reliability:</strong>
+- Implement retry logic for external tool hooks<br />
+- Set reasonable timeouts<br />
+- Handle partial failures gracefully</p>
+<hr />
+<h2>📚 Extra Resources</h2>
+<p><strong>Official Documentation:</strong>
+- <a href="https://docs.anthropic.com">Claude Code Hooks Documentation</a><br />
+- <a href="https://mywiki.wooledge.org/BashGuide">Bash Scripting Best Practices</a>  </p>
+<p><strong>Tools:</strong>
+- <code>jq</code> for JSON parsing in hooks<br />
+- <code>shellcheck</code> for bash linting  </p>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You now understand the complete hook lifecycle, can implement security validations, and can compose complex automation workflows using advanced hooks.</p>
+<p><strong>How This Fits Into Real Development:</strong><br />
+Advanced hooks are the bridge between Claude Code and your existing development infrastructure. They enable automated security, compliance, and workflow orchestration that scales with your team.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Hook Data Processing with jq</strong> (Episode 5) to parse and transform hook data programmatically.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Build a reusable hook library for your organization. Version it, document each hook's purpose, and share across teams to standardize automation.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-2-index.html" class="nav-link">← Back to Module 2</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

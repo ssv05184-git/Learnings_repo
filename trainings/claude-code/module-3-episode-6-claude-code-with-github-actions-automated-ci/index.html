@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code with GitHub Actions - Automated CI/CD Workflows | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Claude Code with GitHub Actions - Automated CI/CD Workflows</h1>
+    <p class="subtitle">Module 3 — Episode 6</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Claude Code with GitHub Actions - Automated CI/CD Workflows</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Claude Code with GitHub Actions - Automated CI/CD Workflows</h1>
+<blockquote>
+<p><strong>Module 3 — Episode 6</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Advanced → Expert<br />
+<strong>Time to Master:</strong> 30 minutes to learn | 2.5 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Have Claude automatically generate GitHub Actions workflows  </li>
+<li>✅ Use Claude with GitHub MCP to manage workflows programmatically  </li>
+<li>✅ Build self-healing CI/CD pipelines  </li>
+<li>✅ Automate workflow optimization and maintenance  </li>
+<li>✅ Create sophisticated deployment automation  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 30 minutes<br />
+- Implementation: 2+ hours</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Claude Code can read your repository structure, understand your project, and automatically generate optimized GitHub Actions workflows. Instead of manual workflow creation, Claude orchestrates CI/CD generation and maintenance.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Writing workflows is time-consuming and error-prone<br />
+- Workflows need constant maintenance as projects evolve<br />
+- Scaling workflows to many projects is manual  </p>
+<p><strong>Where You'll Use This:</strong>
+- Automated workflow scaffolding for new projects<br />
+- Workflow optimization and modernization<br />
+- CI/CD pipeline maintenance and updates</p>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Pattern 1: Claude Generates GitHub Actions</h3>
+<pre><code class="language-bash">#!/bin/bash
+# claude_generate_actions.sh
+
+# Claude reads project structure
+claude &quot;
+1. Analyze the project structure in src/
+2. Understand the tech stack and dependencies
+3. Generate optimized GitHub Actions workflow for:
+   - Linting
+   - Testing
+   - Building
+   - Deploying to staging
+   - Deploying to production
+4. Create .github/workflows/ci-cd.yml with best practices
+5. Add secrets documentation
+&quot;
+
+# Claude creates workflows/ci-cd.yml automatically
+</code></pre>
+<h3>Pattern 2: Self-Healing Workflows</h3>
+<pre><code class="language-yaml">name: Self-Healing CI/CD
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * *'  # Daily check
+  workflow_run:
+    workflows: ['CI']
+    types: [failed]
+
+jobs:
+  check-and-heal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run diagnostic
+        id: diagnose
+        run: |
+          # Run tests to find issues
+          npm test --json &gt; test-results.json || true
+
+          # Parse failures
+          FAILURES=$(jq '.failures' test-results.json)
+          echo &quot;failures=$FAILURES&quot; &gt;&gt; $GITHUB_OUTPUT
+
+      - name: Claude fixes issues
+        if: steps.diagnose.outputs.failures != '0'
+        run: |
+          # Use Claude to fix detected issues
+          claude &quot;
+          Fix the failing tests identified in test-results.json:
+          $(cat test-results.json)
+          &quot;
+
+      - name: Verify fix
+        run: npm test
+
+      - name: Create PR if needed
+        if: github.event_name == 'workflow_run'
+        run: |
+          # If changes were made, create a PR
+          if [ -n &quot;$(git status --short)&quot; ]; then
+            git config user.name &quot;Claude Code Bot&quot;
+            git config user.email &quot;claude@anthropic.com&quot;
+            git add -A
+            git commit -m &quot;fix: Claude auto-fixed failing tests&quot;
+            git push origin HEAD:refs/heads/claude-fixes-$(date +%s)
+          fi
+</code></pre>
+<h3>Pattern 3: Claude with GitHub API</h3>
+<pre><code class="language-python">#!/usr/bin/env python3
+# claude_github_automation.py
+
+import os
+import json
+from anthropic import Anthropic
+
+class ClaudeGitHubAutomation:
+    def __init__(self):
+        self.client = Anthropic()
+
+    def generate_workflow(self, repo_path: str) -&gt; str:
+        &quot;&quot;&quot;Have Claude generate GitHub Actions workflow.&quot;&quot;&quot;
+
+        # Read project structure
+        structure = self._analyze_project(repo_path)
+
+        # Ask Claude to generate workflow
+        response = self.client.messages.create(
+            model=&quot;claude-opus&quot;,
+            max_tokens=4000,
+            messages=[{
+                &quot;role&quot;: &quot;user&quot;,
+                &quot;content&quot;: f&quot;&quot;&quot;
+Analyze this project structure and generate a GitHub Actions workflow:
+
+{structure}
+
+Requirements:
+- Include linting, testing, and building
+- Add deployment steps
+- Use best practices
+- Include environment variables and secrets
+
+Return only the YAML workflow content.
+&quot;&quot;&quot;
+            }]
+        )
+
+        return response.content[0].text
+
+    def _analyze_project(self, repo_path: str) -&gt; str:
+        &quot;&quot;&quot;Analyze project structure.&quot;&quot;&quot;
+        structure = []
+
+        for root, dirs, files in os.walk(repo_path):
+            # Skip hidden directories
+            dirs[:] = [d for d in dirs if not d.startswith('.')]
+
+            level = root.replace(repo_path, '').count(os.sep)
+            indent = ' ' * 2 * level
+            structure.append(f'{indent}{os.path.basename(root)}/')
+
+            subindent = ' ' * 2 * (level + 1)
+            for file in files[:5]:  # Limit files
+                if not file.startswith('.'):
+                    structure.append(f'{subindent}{file}')
+
+        return '\n'.join(structure[:100])  # Limit output
+
+# Usage
+if __name__ == &quot;__main__&quot;:
+    automation = ClaudeGitHubAutomation()
+    workflow = automation.generate_workflow(&quot;.&quot;)
+
+    # Write workflow file
+    os.makedirs(&quot;.github/workflows&quot;, exist_ok=True)
+    with open(&quot;.github/workflows/claude-generated.yml&quot;, &quot;w&quot;) as f:
+        f.write(workflow)
+
+    print(&quot;Workflow generated: .github/workflows/claude-generated.yml&quot;)
+</code></pre>
+<h3>Pattern 4: Intelligent Workflow Optimization</h3>
+<pre><code class="language-bash">#!/bin/bash
+# workflow_optimizer.sh
+
+# Analyze workflow performance
+analyze_workflows() {
+  echo &quot;Analyzing workflow performance...&quot;
+
+  # Get workflow runs from GitHub API
+  RUNS=$(curl -s \
+    -H &quot;Authorization: token $GITHUB_TOKEN&quot; \
+    &quot;https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs?per_page=10&quot; \
+    | jq '.')
+
+  # Pass to Claude for analysis
+  claude &quot;
+  Analyze these GitHub Actions runs and suggest optimizations:
+
+  $RUNS
+
+  Suggest:
+  1. Caching opportunities
+  2. Parallelization improvements
+  3. Timeout issues
+  4. Expensive operations
+  5. Cost optimizations
+  &quot;
+}
+
+# Implement suggestions
+implement_optimizations() {
+  echo &quot;Implementing Claude's suggestions...&quot;
+
+  # Claude modifies workflow files
+  claude &quot;
+  Update .github/workflows/*.yml to:
+  1. Add caching for dependencies
+  2. Parallelize test and lint jobs
+  3. Use pinned action versions
+  4. Add timeouts
+  5. Remove redundant steps
+  &quot;
+}
+
+# Run analysis and implement
+analyze_workflows
+implement_optimizations
+</code></pre>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Workflow Validation</h3>
+<pre><code class="language-bash"># Before committing, validate with Claude
+claude &quot;Validate this GitHub Actions workflow for errors:
+$(cat .github/workflows/ci.yml)&quot;
+</code></pre>
+<h3>Pro Tip 2: Automated Dependency Updates</h3>
+<pre><code class="language-yaml">name: Update Dependencies
+on:
+  schedule:
+    - cron: '0 3 * * 1'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm outdated --json &gt; outdated.json
+      - run: |
+          claude &quot;
+          Review these outdated packages and suggest updates:
+          $(cat outdated.json)
+          &quot;
+</code></pre>
+<h3>Pro Tip 3: Deployment Safety Checks</h3>
+<pre><code class="language-bash"># Claude verifies before deployment
+claude &quot;
+Before deploying to production:
+1. Verify all tests pass
+2. Check git history for issues
+3. Validate deployment checklist
+4. Review recent changes
+5. Confirm no breaking changes
+&quot;
+</code></pre>
+<hr />
+<h2>🚀 Real-World Example: Complete CI/CD Automation</h2>
+<pre><code class="language-bash">#!/bin/bash
+# automated_cicd_setup.sh
+
+echo &quot;🤖 Claude setting up complete CI/CD pipeline...&quot;
+
+# Step 1: Analyze project
+claude &quot;
+Analyze this project:
+1. What's the tech stack?
+2. What tests exist?
+3. What's the deployment target?
+4. What secrets/credentials are needed?
+&quot;
+
+# Step 2: Generate workflows
+claude &quot;
+Generate GitHub Actions workflows for:
+1. Lint check
+2. Unit tests with coverage
+3. Build application
+4. Deploy to staging
+5. Integration tests
+6. Deploy to production
+7. Automated rollback on failure
+&quot;
+
+# Step 3: Create deployment documentation
+claude &quot;
+Create DEPLOYMENT.md documenting:
+1. Required secrets
+2. Deployment process
+3. Rollback procedure
+4. Monitoring setup
+5. Alert configuration
+&quot;
+
+# Step 4: Add workflow monitoring
+claude &quot;
+Add GitHub Actions workflow monitoring:
+1. Slack notifications on failure
+2. Daily status reports
+3. Performance tracking
+4. Cost analysis
+&quot;
+
+echo &quot;✅ CI/CD setup complete&quot;
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<p><strong>Step 1:</strong> Enable GitHub MCP integration</p>
+<p><strong>Step 2:</strong> Create <code>.claude/workflows_analyzer.md</code>:</p>
+<pre><code class="language-markdown"># Workflow Analysis Configuration
+
+## Project Details
+- Tech stack: Node.js/React
+- Deployment: AWS Lambda
+- Database: PostgreSQL
+
+## Current Workflows
+- None yet
+
+## Desired Workflows
+- Lint + Test + Build + Deploy
+
+## Secrets Configured
+- GITHUB_TOKEN
+</code></pre>
+<p><strong>Step 3:</strong> Run Claude:</p>
+<pre><code class="language-bash">claude &quot;Generate complete GitHub Actions CI/CD using MCP&quot;
+</code></pre>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>Claude generates workflows autonomously</strong> — no manual YAML writing  </li>
+<li><strong>MCP enables GitHub integration</strong> — read/write workflows programmatically  </li>
+<li><strong>Workflows can self-heal</strong> — detect and fix issues automatically  </li>
+<li><strong>Continuous optimization</strong> — Claude improves workflows over time</li>
+</ol>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+Claude Code can fully automate CI/CD pipeline generation and maintenance using GitHub Actions and MCP.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Claude Code with GitHub Flow</strong> (Episode 7) for complete development workflow automation.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-3-index.html" class="nav-link">← Back to Module 3</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

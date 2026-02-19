@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Bash Command Logger with Hooks - End-to-End Implementation | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Building a Bash Command Logger with Hooks - End-to-End Implementation</h1>
+    <p class="subtitle">Module 2 — Episode 6</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Building a Bash Command Logger with Hooks - End-to-End Implementation</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Building a Bash Command Logger with Hooks - End-to-End Implementation</h1>
+<blockquote>
+<p><strong>Module 2 — Episode 6</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Advanced<br />
+<strong>Time to Master:</strong> 30 minutes to learn | 2.5 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Design a comprehensive command logging system using hooks  </li>
+<li>✅ Implement multi-stage logging with validation and transformation  </li>
+<li>✅ Capture, parse, and enrich command execution data  </li>
+<li>✅ Build structured logs for compliance and debugging  </li>
+<li>✅ Integrate logging with external systems (dashboards, alerts)  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 30 minutes<br />
+- Core Implementation: 1.5 hours<br />
+- Advanced Configuration: 1 hour</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+This episode ties together hooks, jq, and logging into a production-grade command logger. You'll build a system that captures every Claude command, validates it, enriches it with context, logs it with full audit trails, and sends it to monitoring systems.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Manual logging is incomplete and inconsistent<br />
+- Debugging issues requires reconstructing what Claude did<br />
+- Compliance requires audit trails but manual logs lack rigor<br />
+- Teams can't track productivity or resource usage<br />
+- Integration with monitoring systems is manual and error-prone  </p>
+<p><strong>Where You'll Use This:</strong>
+- Compliance and audit logging (SOC 2, HIPAA requirements)<br />
+- Debugging failed Claude tasks<br />
+- Team productivity analytics<br />
+- Cost tracking and optimization<br />
+- Security incident investigation  </p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- Advanced Hooks (Module 2, Episode 4)<br />
+- jq fundamentals (Module 2, Episode 5)<br />
+- Basic logging concepts (timestamps, levels, structured data)<br />
+- Shell scripting</p>
+<p><strong>Recommended Reading:</strong>
+- All previous Module 2 episodes for context  </p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: Multi-Layer Logging Architecture</h3>
+<p><strong>Definition:</strong><br />
+Logging occurs at multiple points: pre-execution (capture intent), during execution (track progress), post-execution (record results and errors).</p>
+<p><strong>Why It Matters:</strong><br />
+Layered logging provides complete visibility. If a task fails mid-execution, pre-execution logs show what was intended, mid-execution logs show progress, post-execution logs show failure cause.</p>
+<p><strong>When To Use:</strong><br />
+Always—it's fundamental to debugging and compliance.</p>
+<hr />
+<h3>Concept 2: Structured Logging</h3>
+<p><strong>Definition:</strong><br />
+Logs are JSON objects with consistent fields (timestamp, level, component, message, context) rather than unstructured text.</p>
+<p><strong>Why It Matters:</strong><br />
+Structured logs are machine-parseable. They enable filtering, aggregation, and alerting without manual text parsing. Dashboard and BI tools consume them automatically.</p>
+<p><strong>When To Use:</strong><br />
+For any production system. Non-structured logs are debugging-only.</p>
+<hr />
+<h3>Concept 3: Log Enrichment &amp; Context</h3>
+<p><strong>Definition:</strong><br />
+Adding contextual data to logs (user, environment, project, git state) that helps understand events in context.</p>
+<p><strong>Why It Matters:</strong><br />
+"File modified" is unhelpful. "File auth.ts modified by alice@acme.com in feature/oauth branch targeting production" is actionable.</p>
+<p><strong>When To Use:</strong><br />
+Always—richer context beats minimal logs.</p>
+<hr />
+<h2>🖼 Architecture &amp; Flow Diagrams</h2>
+<h3>Command Logger Architecture</h3>
+<pre><code>Task Execution
+    ↓ onTaskStart
+    ├─ Capture intent &amp; context
+    ├─ Create task ID
+    └─ Write pre-execution log
+    ↓ During execution
+    ├─ onFileChange logs modifications
+    ├─ onToolUse logs tool invocations
+    └─ Enrich with jq
+    ↓ onTaskComplete
+    ├─ Capture results &amp; metrics
+    ├─ Aggregate execution stats
+    └─ Send to ELK/Grafana/Splunk
+</code></pre>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Component 1: Pre-execution Capture</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/01-capture-task-start.sh
+
+TASK_ID=$(uuidgen | tr '[:upper:]' '[:lower:]')
+TIMESTAMP=$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)
+USER=$(whoami)
+PROJECT=$(basename $(pwd))
+
+# Capture initial context
+cat &gt; .claude/logs/task_${TASK_ID}.json &lt;&lt; EOF
+{
+  &quot;task_id&quot;: &quot;$TASK_ID&quot;,
+  &quot;timestamp_start&quot;: &quot;$TIMESTAMP&quot;,
+  &quot;user&quot;: &quot;$USER&quot;,
+  &quot;project&quot;: &quot;$PROJECT&quot;,
+  &quot;git_branch&quot;: &quot;$(git rev-parse --abbrev-ref HEAD 2&gt;/dev/null || echo 'unknown')&quot;,
+  &quot;git_commit&quot;: &quot;$(git rev-parse --short HEAD 2&gt;/dev/null || echo 'unknown')&quot;,
+  &quot;environment&quot;: &quot;$(uname -s)&quot;,
+  &quot;status&quot;: &quot;started&quot;
+}
+EOF
+
+# Echo task ID for subsequent hooks
+echo &quot;$TASK_ID&quot; &gt; /tmp/claude_task_id
+</code></pre>
+<h3>Component 2: File Change Logging with Enrichment</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/02-log-file-changes.sh
+
+FILE_PATH=&quot;${1}&quot;
+TASK_ID=$(cat /tmp/claude_task_id 2&gt;/dev/null || echo &quot;unknown&quot;)
+
+# Calculate file metrics
+FILE_SIZE=$(wc -c &lt; &quot;$FILE_PATH&quot;)
+LINE_COUNT=$(wc -l &lt; &quot;$FILE_PATH&quot;)
+CHANGE_TYPE=&quot;unknown&quot;
+
+if [ -z &quot;$(git ls-files $FILE_PATH 2&gt;/dev/null)&quot; ]; then
+  CHANGE_TYPE=&quot;created&quot;
+else
+  CHANGE_TYPE=&quot;modified&quot;
+fi
+
+# Get diff stats
+ADDITIONS=$(git diff &quot;$FILE_PATH&quot; 2&gt;/dev/null | grep '^+' | wc -l || echo &quot;0&quot;)
+DELETIONS=$(git diff &quot;$FILE_PATH&quot; 2&gt;/dev/null | grep '^-' | wc -l || echo &quot;0&quot;)
+
+# Create structured log entry
+CHANGE_LOG=$(jq -n \
+  --arg task_id &quot;$TASK_ID&quot; \
+  --arg file_path &quot;$FILE_PATH&quot; \
+  --arg change_type &quot;$CHANGE_TYPE&quot; \
+  --argjson file_size &quot;$FILE_SIZE&quot; \
+  --argjson line_count &quot;$LINE_COUNT&quot; \
+  --argjson additions &quot;$ADDITIONS&quot; \
+  --argjson deletions &quot;$DELETIONS&quot; \
+  --arg timestamp &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+  '
+  {
+    task_id: $task_id,
+    event_type: &quot;file_change&quot;,
+    timestamp: $timestamp,
+    file: {
+      path: $file_path,
+      type: $change_type,
+      size_bytes: $file_size,
+      lines: $line_count,
+      changes: {
+        additions: $additions,
+        deletions: $deletions
+      }
+    }
+  }
+  ')
+
+echo &quot;$CHANGE_LOG&quot; &gt;&gt; .claude/logs/events_${TASK_ID}.jsonl
+</code></pre>
+<h3>Component 3: Tool Execution Logging</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/03-log-tool-execution.sh
+
+TOOL_NAME=&quot;${1}&quot;
+TOOL_STATUS=&quot;${2:-unknown}&quot;
+TASK_ID=$(cat /tmp/claude_task_id 2&gt;/dev/null || echo &quot;unknown&quot;)
+
+# Create tool execution log
+TOOL_LOG=$(jq -n \
+  --arg task_id &quot;$TASK_ID&quot; \
+  --arg tool_name &quot;$TOOL_NAME&quot; \
+  --arg status &quot;$TOOL_STATUS&quot; \
+  --arg timestamp &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+  --arg user &quot;$(whoami)&quot; \
+  '
+  {
+    task_id: $task_id,
+    event_type: &quot;tool_execution&quot;,
+    timestamp: $timestamp,
+    tool: {
+      name: $tool_name,
+      status: $status,
+      invoked_by: $user
+    }
+  }
+  ')
+
+echo &quot;$TOOL_LOG&quot; &gt;&gt; .claude/logs/events_${TASK_ID}.jsonl
+</code></pre>
+<h3>Component 4: Task Completion with Aggregation</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/04-aggregate-task-completion.sh
+
+TASK_ID=$(cat /tmp/claude_task_id 2&gt;/dev/null || echo &quot;unknown&quot;)
+TASK_LOG_FILE=&quot;.claude/logs/task_${TASK_ID}.json&quot;
+EVENTS_FILE=&quot;.claude/logs/events_${TASK_ID}.jsonl&quot;
+
+# Read pre-execution task record
+TASK_RECORD=$(cat &quot;$TASK_LOG_FILE&quot;)
+
+# Aggregate event statistics
+STATS=$(cat &quot;$EVENTS_FILE&quot; | jq -s '
+  {
+    events_count: length,
+    file_changes: [.[] | select(.event_type == &quot;file_change&quot;)] | length,
+    files_modified: [.[] | select(.event_type == &quot;file_change&quot;) | .file.path] | unique,
+    total_additions: [.[] | select(.event_type == &quot;file_change&quot;) | .file.changes.additions] | add // 0,
+    total_deletions: [.[] | select(.event_type == &quot;file_change&quot;) | .file.changes.deletions] | add // 0,
+    tools_invoked: [.[] | select(.event_type == &quot;tool_execution&quot;) | .tool.name] | unique
+  }
+')
+
+# Create completion record
+COMPLETION_RECORD=$(echo &quot;$TASK_RECORD&quot; | jq \
+  --argjson stats &quot;$STATS&quot; \
+  --arg completion_time &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+  '
+  . +
+  {
+    timestamp_end: $completion_time,
+    status: &quot;completed&quot;,
+    statistics: $stats
+  }
+  ')
+
+# Save completion record
+echo &quot;$COMPLETION_RECORD&quot; &gt; &quot;$TASK_LOG_FILE&quot;
+
+echo &quot;✅ Task completion logged&quot;
+</code></pre>
+<h3>Component 5: Log Shipping to Monitoring</h3>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/05-ship-logs.sh
+
+TASK_ID=$(cat /tmp/claude_task_id 2&gt;/dev/null || echo &quot;unknown&quot;)
+TASK_LOG_FILE=&quot;.claude/logs/task_${TASK_ID}.json&quot;
+
+# Read completed task record
+TASK_RECORD=$(cat &quot;$TASK_LOG_FILE&quot;)
+
+# Ship to ELK Stack (Elasticsearch)
+if [ ! -z &quot;$ELK_ENDPOINT&quot; ]; then
+  curl -X POST &quot;$ELK_ENDPOINT/claude_logs/_doc&quot; \
+    -H 'Content-Type: application/json' \
+    -d &quot;$TASK_RECORD&quot; \
+    2&gt;/dev/null
+fi
+
+# Ship to Grafana Loki
+if [ ! -z &quot;$LOKI_ENDPOINT&quot; ]; then
+  curl -X POST &quot;$LOKI_ENDPOINT/loki/api/v1/push&quot; \
+    -H 'Content-Type: application/json' \
+    -d &quot;{\&quot;streams\&quot;: [{\&quot;stream\&quot;: {\&quot;job\&quot;: \&quot;claude_tasks\&quot;}, \&quot;values\&quot;: [[\&quot;$(date +%s%N)\&quot;, \&quot;$(echo $TASK_RECORD | jq -c .)\&quot;]]]}}&quot; \
+    2&gt;/dev/null
+fi
+
+# Ship to Datadog
+if [ ! -z &quot;$DATADOG_API_KEY&quot; ]; then
+  curl -X POST &quot;https://http-intake.logs.datadoghq.com/v1/input/$DATADOG_API_KEY&quot; \
+    -H 'Content-Type: application/json' \
+    -d &quot;$TASK_RECORD&quot; \
+    2&gt;/dev/null
+fi
+
+echo &quot;📤 Logs shipped to monitoring systems&quot;
+</code></pre>
+<hr />
+<h2>✅ When To Use This Feature</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Enterprise deployments requiring audit trails<br />
+- Teams needing productivity insights<br />
+- Debugging complex multi-step tasks<br />
+- Compliance and security auditing<br />
+- Cost tracking and resource optimization</p>
+<hr />
+<h3>Anti-Patterns: When NOT To Use</h3>
+<p>❌ <strong>Avoid When:</strong>
+- Small personal projects (overhead not justified)<br />
+- Real-time low-latency systems (logging adds latency)<br />
+- Confidential systems (encrypted logs still leak metadata)</p>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Asynchronous Log Shipping</h3>
+<p><strong>The Technique:</strong> Don't block task completion on log shipping.</p>
+<pre><code class="language-bash"># Ship logs in background
+(
+  # Shipping logic
+) &amp;
+
+# Don't wait for completion
+exit 0
+</code></pre>
+<p><strong>Expected Result:</strong> Tasks complete immediately; logs ship asynchronously.</p>
+<hr />
+<h3>Pro Tip 2: Log Rotation</h3>
+<p><strong>The Technique:</strong> Prevent logs from consuming disk space.</p>
+<pre><code class="language-bash">#!/bin/bash
+# .claude/hooks/manage-logs.sh
+
+LOG_MAX_SIZE=$((100 * 1024 * 1024))  # 100MB
+LOGS_DIR=&quot;.claude/logs&quot;
+
+find &quot;$LOGS_DIR&quot; -name &quot;*.json*&quot; -size +$LOG_MAX_SIZE -exec gzip {} \;
+</code></pre>
+<p><strong>Expected Result:</strong> Old logs are compressed; disk usage remains bounded.</p>
+<hr />
+<h3>Pro Tip 3: Sensitive Data Scrubbing</h3>
+<p><strong>The Technique:</strong> Redact sensitive data before logging.</p>
+<pre><code class="language-bash"># In logging hook
+jq '
+  .file.path |= gsub(&quot;users/[^/]+&quot;; &quot;users/***&quot;) |
+  .file.path |= gsub(&quot;[0-9]{3}-[0-9]{2}-[0-9]{4}&quot;; &quot;XXX-XX-XXXX&quot;)
+'
+</code></pre>
+<p><strong>Expected Result:</strong> Logs are safe for external systems.</p>
+<hr />
+<h2>🚀 Real-World Example: Complete Logger</h2>
+<pre><code class="language-bash">#!/bin/bash
+# Complete working logging system
+
+mkdir -p .claude/logs
+
+# Create unified logger
+LOGGER_SCRIPT=&quot;.claude/logger.sh&quot;
+cat &gt; &quot;$LOGGER_SCRIPT&quot; &lt;&lt; 'LOGGER_EOF'
+#!/bin/bash
+
+log_event() {
+  local event_type=&quot;$1&quot;
+  local message=&quot;$2&quot;
+  local task_id=${TASK_ID:-&quot;unknown&quot;}
+
+  local log_entry=$(jq -n \
+    --arg type &quot;$event_type&quot; \
+    --arg msg &quot;$message&quot; \
+    --arg task &quot;$task_id&quot; \
+    --arg ts &quot;$(date -u +&quot;%Y-%m-%dT%H:%M:%SZ&quot;)&quot; \
+    '{
+      type: $type,
+      timestamp: $ts,
+      task_id: $task,
+      message: $msg
+    }')
+
+  echo &quot;$log_entry&quot; &gt;&gt; .claude/logs/unified_${task_id}.jsonl
+}
+
+log_event &quot;info&quot; &quot;$@&quot;
+LOGGER_EOF
+
+chmod +x &quot;$LOGGER_SCRIPT&quot;
+
+# Register in hooks
+cat &gt; .claude/hooks-manifest.json &lt;&lt; 'MANIFEST_EOF'
+{
+  &quot;hooks&quot;: {
+    &quot;onTaskStart&quot;: [
+      &quot;.claude/hooks/01-capture-task-start.sh&quot;,
+      &quot;.claude/hooks/logger.sh info Task started&quot;
+    ],
+    &quot;onFileChange&quot;: [
+      &quot;.claude/hooks/02-log-file-changes.sh&quot;
+    ],
+    &quot;onToolUse&quot;: {
+      &quot;pre&quot;: &quot;.claude/hooks/03-log-tool-execution.sh&quot;,
+      &quot;post&quot;: &quot;.claude/hooks/03-log-tool-execution.sh&quot;
+    },
+    &quot;onTaskComplete&quot;: [
+      &quot;.claude/hooks/04-aggregate-task-completion.sh&quot;,
+      &quot;.claude/hooks/05-ship-logs.sh&quot;
+    ]
+  }
+}
+MANIFEST_EOF
+
+echo &quot;✅ Logging system initialized&quot;
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Create Log Directory</h3>
+<pre><code class="language-bash">mkdir -p .claude/logs
+chmod 750 .claude/logs
+</code></pre>
+<h3>Step 2: Implement Hooks</h3>
+<pre><code class="language-bash"># Copy hook scripts from Technical Deep Dive section
+cp &lt;hook-scripts&gt; .claude/hooks/
+chmod +x .claude/hooks/*.sh
+</code></pre>
+<h3>Step 3: Configure Log Shipping</h3>
+<pre><code class="language-bash"># Set environment variables
+export ELK_ENDPOINT=&quot;https://elasticsearch.company.com:9200&quot;
+export LOKI_ENDPOINT=&quot;https://loki.company.com&quot;
+export DATADOG_API_KEY=&quot;your_api_key&quot;
+</code></pre>
+<h3>Step 4: Test Logging</h3>
+<pre><code class="language-bash"># Trigger a task to test logging
+claude &quot;Create a helper function&quot;
+
+# Verify logs
+ls -la .claude/logs/
+cat .claude/logs/task_*.json | jq '.'
+</code></pre>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: How much disk space do logs consume?</h3>
+<p><strong>A:</strong> Approximately 500 bytes per log entry. Millions of entries = GB. Implement rotation.</p>
+<h3>Q: What if log shipping fails?</h3>
+<p><strong>A:</strong> Use non-blocking background shipping. Failed logs stay local; retry on next task.</p>
+<h3>Q: How do I search logs?</h3>
+<p><strong>A:</strong> With structured JSON logs, use jq: <code>cat *.jsonl | jq 'select(.status == "failed")'</code></p>
+<hr />
+<h2>📊 Performance &amp; Optimization</h2>
+<ul>
+<li><strong>Hook Overhead:</strong> 50-150ms total across all logging hooks  </li>
+<li><strong>Disk I/O:</strong> Optimize with asynchronous shipping  </li>
+<li><strong>Optimization:</strong> Batch events; ship in background</li>
+</ul>
+<hr />
+<h2>🔗 Related Topics &amp; Next Steps</h2>
+<p><strong>You Should Also Learn About:</strong>
+- PostToolUse Hook (Episode 7) — specialized output processing<br />
+- Claude Code Subagents (Episode 8) — multi-agent logging<br />
+- GitHub Actions integration (Module 3)  </p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>Layered logging captures complete context</strong> — pre, during, post execution  </li>
+<li><strong>Structured logs enable integration</strong> — JSON makes logs machine-parseable  </li>
+<li><strong>Log enrichment provides actionable insights</strong> — context beats raw data  </li>
+<li><strong>Asynchronous shipping scales</strong> — don't block critical paths</li>
+</ol>
+<hr />
+<h2>🎓 Quick Reference</h2>
+<h3>Hook Execution Order</h3>
+<pre><code>onTaskStart → capture intent
+    ↓
+onFileChange → log modifications
+    ↓
+onToolUse → log tool calls
+    ↓
+onTaskComplete → aggregate &amp; ship
+</code></pre>
+<h3>Log Schema</h3>
+<pre><code class="language-json">{
+  &quot;task_id&quot;: &quot;string&quot;,
+  &quot;timestamp&quot;: &quot;ISO8601&quot;,
+  &quot;event_type&quot;: &quot;started|file_change|tool_execution|completed&quot;,
+  &quot;status&quot;: &quot;string&quot;,
+  &quot;user&quot;: &quot;string&quot;,
+  &quot;data&quot;: {}
+}
+</code></pre>
+<hr />
+<h2>⚠️ Common Mistakes to Avoid</h2>
+<ol>
+<li><strong>Synchronous shipping</strong> — blocks task completion  </li>
+<li><strong>Duplicate logging</strong> — don't log the same event twice  </li>
+<li><strong>Missing context</strong> — always include task_id, user, timestamp  </li>
+<li><strong>Ignoring errors</strong> — log failures, not just successes</li>
+</ol>
+<hr />
+<h2>🔐 Security &amp; Best Practices</h2>
+<p><strong>Data Safety:</strong>
+- Encrypt logs at rest and in transit<br />
+- Scrub sensitive data (API keys, PII)<br />
+- Limit log access to authorized personnel  </p>
+<p><strong>Compliance:</strong>
+- Log retention per organizational policy<br />
+- Immutable log storage for audit trails<br />
+- User action attribution for accountability</p>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You've built a production-grade command logging system that captures complete execution context, enables compliance, and integrates with monitoring platforms.</p>
+<p><strong>How This Fits Into Real Development:</strong><br />
+Enterprise teams need logging as a non-negotiable baseline. This system provides visibility, accountability, and debugging capability.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>PostToolUse Hook for Output Cleaning</strong> (Episode 7) to further enhance automation.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Use logs to continuously improve. Analyze patterns—which tasks fail? Which are slowest? Use insights to optimize Claude workflows.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-2-index.html" class="nav-link">← Back to Module 2</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

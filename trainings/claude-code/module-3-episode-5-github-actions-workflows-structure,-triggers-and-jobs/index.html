@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Actions Workflows - Structure, Triggers & Jobs | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>GitHub Actions Workflows - Structure, Triggers & Jobs</h1>
+    <p class="subtitle">Module 3 — Episode 5</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>GitHub Actions Workflows - Structure, Triggers & Jobs</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>GitHub Actions Workflows - Structure, Triggers &amp; Jobs</h1>
+<blockquote>
+<p><strong>Module 3 — Episode 5</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Intermediate → Advanced<br />
+<strong>Time to Master:</strong> 30 minutes to learn | 2 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Design complex multi-job workflow architectures  </li>
+<li>✅ Master workflow triggers and filtering  </li>
+<li>✅ Implement job dependencies and conditionals  </li>
+<li>✅ Use secrets, vars, and context effectively  </li>
+<li>✅ Build production-grade CI/CD pipelines  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 30 minutes<br />
+- Architecture Design: 45 minutes<br />
+- Implementation: 1+ hours</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+Advanced workflows coordinate multiple jobs with dependencies, filters, and conditional logic. This episode teaches patterns for production CI/CD that scales from small projects to enterprise systems.</p>
+<p><strong>Where You'll Use This:</strong>
+- Multi-stage CI/CD pipelines<br />
+- Matrix testing across configurations<br />
+- Conditional deployments based on branch/tag<br />
+- Automated releases and notifications</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: Job Dependencies &amp; Order</h3>
+<p><strong>Definition:</strong><br />
+Jobs can depend on other jobs, executing sequentially only when dependencies succeed.</p>
+<p><strong>Why It Matters:</strong><br />
+Dependencies ensure correctness. Lint must succeed before tests run; tests before deployment.</p>
+<p><strong>When To Use:</strong><br />
+Whenever order matters.</p>
+<hr />
+<h3>Concept 2: Expressions &amp; Context Variables</h3>
+<p><strong>Definition:</strong><br />
+Dynamically computed values using <code>${{ expression }}</code> syntax with access to context (github, secrets, env).</p>
+<p><strong>Why It Matters:</strong><br />
+Context-aware workflows adapt to branch, event, commit SHA, etc. without hardcoding values.</p>
+<p><strong>When To Use:</strong><br />
+Whenever workflow behavior should depend on runtime context.</p>
+<hr />
+<h3>Concept 3: Filtering &amp; Conditionals</h3>
+<p><strong>Definition:</strong><br />
+Workflows and jobs can filter by branch/tag patterns and execute conditionally based on previous success/failure.</p>
+<p><strong>Why It Matters:</strong><br />
+Prevents unnecessary runs; executes different job paths based on conditions.</p>
+<p><strong>When To Use:</strong><br />
+For practical CI/CD (not every job needed on every trigger).</p>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>Multi-Stage Production Pipeline</h3>
+<pre><code class="language-yaml">name: Production CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # Stage 1: Quality Checks
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm ci &amp;&amp; npm run lint
+
+  # Stage 2: Testing
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci &amp;&amp; npm test
+      - uses: codecov/codecov-action@v3
+
+  # Stage 3: Build &amp; Artifact
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/setup-buildx-action@v2
+      - uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/metadata-action@v4
+        id: meta
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  # Stage 4: Deploy to Staging
+  deploy-staging:
+    needs: build
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://staging.example.com
+    steps:
+      - name: Deploy to staging
+        run: |
+          echo &quot;Deploying to staging...&quot;
+          # Deployment commands
+
+  # Stage 5: Integration Tests
+  integration-test:
+    needs: deploy-staging
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          API_URL: https://staging.example.com
+
+  # Stage 6: Deploy to Production
+  deploy-production:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://example.com
+    steps:
+      - name: Deploy to production
+        run: |
+          echo &quot;Deploying to production...&quot;
+          # Production deployment commands
+
+  # Stage 7: Notifications
+  notify:
+    needs: [build, deploy-staging, deploy-production]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack notification
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              &quot;text&quot;: &quot;Workflow ${{ job.status }}&quot;,
+              &quot;blocks&quot;: [
+                {
+                  &quot;type&quot;: &quot;section&quot;,
+                  &quot;text&quot;: {
+                    &quot;type&quot;: &quot;mrkdwn&quot;,
+                    &quot;text&quot;: &quot;Pipeline *${{ job.status }}* for `${{ github.ref }}`&quot;
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+</code></pre>
+<h3>Advanced Trigger Patterns</h3>
+<pre><code class="language-yaml">on:
+  # Push to any branch
+  push:
+    branches: ['**']
+    paths:
+      - 'src/**'
+      - 'package.json'
+    tags-ignore:
+      - 'pre-release-*'
+
+  # Pull request to main only
+  pull_request:
+    branches: [main]
+
+  # Schedule (cron)
+  schedule:
+    - cron: '0 2 * * 1'  # Monday 2 AM
+
+  # Manual trigger with inputs
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      version:
+        description: 'Release version'
+        required: false
+        type: string
+
+  # Triggered by another workflow
+  workflow_run:
+    workflows: ['Tests']
+    types: [completed]
+    branches: [main]
+</code></pre>
+<h3>Status Checks &amp; Conditional Jobs</h3>
+<pre><code class="language-yaml">jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm test
+      - if: failure()
+        run: npm run test:debug
+      - if: success()
+        run: npm run coverage:report
+
+  deploy:
+    needs: test
+    if: success() &amp;&amp; github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run deploy
+
+    # Continue even if previous job failed
+  cleanup:
+    if: always()  # Run regardless of previous job status
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo &quot;Cleanup step&quot;
+</code></pre>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Secrets Management</h3>
+<pre><code class="language-bash"># In GitHub Settings, create:
+SLACK_WEBHOOK
+DEPLOYMENT_TOKEN
+DATABASE_PASSWORD
+
+# Use in workflow:
+- run: deploy
+  env:
+    TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}
+</code></pre>
+<h3>Pro Tip 2: Skip Workflow Runs</h3>
+<pre><code class="language-bash"># In commit message:
+git commit -m &quot;Fix typo [skip ci]&quot;
+# Workflow won't run
+</code></pre>
+<h3>Pro Tip 3: Reusable Workflows</h3>
+<pre><code class="language-yaml"># common/test.yml
+on:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm test
+
+# main workflow
+jobs:
+  test-reusable:
+    uses: ./.github/workflows/common/test.yml
+</code></pre>
+<hr />
+<h2>🚀 Real-World Example: Complete CD Pipeline</h2>
+<pre><code class="language-yaml">name: Deploy Application
+
+on:
+  push:
+    branches: [main]
+    tags: ['release-*']
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.value }}
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci &amp;&amp; npm run build
+      - id: version
+        run: echo &quot;value=$(git rev-parse --short HEAD)&quot; &gt;&gt; $GITHUB_OUTPUT
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [staging, production]
+    environment:
+      name: ${{ matrix.environment }}
+    steps:
+      - run: |
+          echo &quot;Version: ${{ needs.build-and-test.outputs.version }}&quot;
+          echo &quot;Deploying to ${{ matrix.environment }}&quot;
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<p><strong>Step 1:</strong> Create complex workflow file in <code>.github/workflows/</code></p>
+<p><strong>Step 2:</strong> Test with manual trigger (<code>workflow_dispatch</code>)</p>
+<p><strong>Step 3:</strong> Gradually add stages</p>
+<p><strong>Step 4:</strong> Monitor runs and optimize</p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>Job dependencies control execution order</strong>  </li>
+<li><strong>Conditionals enable adaptive workflows</strong>  </li>
+<li><strong>Matrix strategy tests multiple configurations</strong>  </li>
+<li><strong>Secrets enable secure credential management</strong>  </li>
+<li><strong>Reusable workflows reduce duplication</strong></li>
+</ol>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You can design and implement sophisticated CI/CD pipelines with GitHub Actions.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Claude Code with GitHub Actions</strong> (Episode 6) where Claude automates workflow creation.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-3-index.html" class="nav-link">← Back to Module 3</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

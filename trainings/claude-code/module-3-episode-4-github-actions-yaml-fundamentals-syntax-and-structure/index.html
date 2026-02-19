@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Actions YAML Fundamentals - Syntax & Structure | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>GitHub Actions YAML Fundamentals - Syntax & Structure</h1>
+    <p class="subtitle">Module 3 — Episode 4</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>GitHub Actions YAML Fundamentals - Syntax & Structure</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>GitHub Actions YAML Fundamentals - Syntax &amp; Structure</h1>
+<blockquote>
+<p><strong>Module 3 — Episode 4</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Intermediate<br />
+<strong>Time to Master:</strong> 25 minutes to learn | 1 hour to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Understand YAML syntax for GitHub Actions  </li>
+<li>✅ Master workflow file structure and components  </li>
+<li>✅ Learn inputs, outputs, and environment variables  </li>
+<li>✅ Write reusable action templates  </li>
+<li>✅ Debug YAML validation issues  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 25 minutes<br />
+- Practice: 1 hour</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+GitHub Actions are defined in YAML files. Understanding the syntax, structure, and conventions is foundational for building CI/CD automation that Claude Code can orchestrate.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- YAML syntax errors break workflows<br />
+- Complex workflows are hard to understand and maintain<br />
+- Reusability requires understanding action structure</p>
+<p><strong>Where You'll Use This:</strong>
+- Writing workflow definitions<br />
+- Creating custom actions<br />
+- Maintaining CI/CD pipelines</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: YAML Structure</h3>
+<p><strong>Definition:</strong><br />
+YAML is a human-readable data format using indentation for nesting, hyphens for lists, and colons for key-value pairs.</p>
+<p><strong>Why It Matters:</strong><br />
+Incorrect indentation breaks workflows. Understanding structure prevents silent failures.</p>
+<p><strong>When To Use:</strong><br />
+Always; it's the foundation of GitHub Actions.</p>
+<hr />
+<h3>Concept 2: Workflow Triggers</h3>
+<p><strong>Definition:</strong><br />
+Events that cause workflows to execute (push, pull_request, schedule, manual trigger).</p>
+<p><strong>Why It Matters:</strong><br />
+Different tasks need different triggers. Wrong trigger = automation doesn't run when needed.</p>
+<p><strong>When To Use:</strong><br />
+For every workflow—be explicit about when it runs.</p>
+<hr />
+<h3>Concept 3: Job &amp; Step Structure</h3>
+<p><strong>Definition:</strong><br />
+Workflows contain jobs; jobs contain steps. Each step is an action or shell command.</p>
+<p><strong>Why It Matters:</strong><br />
+Understanding structure lets you compose complex workflows from simple pieces.</p>
+<p><strong>When To Use:</strong><br />
+In every workflow.</p>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>YAML Basics</h3>
+<pre><code class="language-yaml"># Basic structure
+name: Workflow Name
+on: push
+jobs:
+  job_id:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/name@version
+        with:
+          param: value
+      - run: shell command
+        env:
+          VAR: value
+</code></pre>
+<h3>Triggers</h3>
+<pre><code class="language-yaml">on:
+  # Trigger on push to main
+  push:
+    branches: [main]
+
+  # Trigger on pull request
+  pull_request:
+    branches: [main]
+
+  # Trigger on schedule (cron)
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+</code></pre>
+<h3>Matrix Strategy (Run Multiple Configurations)</h3>
+<pre><code class="language-yaml">jobs:
+  test:
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+</code></pre>
+<h3>Environment Variables &amp; Secrets</h3>
+<pre><code class="language-yaml">env:
+  GLOBAL_VAR: 'visible to all steps'
+
+jobs:
+  build:
+    env:
+      JOB_VAR: 'visible to all steps in this job'
+    steps:
+      - run: echo $JOB_VAR
+        env:
+          STEP_VAR: 'visible only to this step'
+          SECRET_VALUE: ${{ secrets.API_KEY }}
+</code></pre>
+<h3>Conditional Execution</h3>
+<pre><code class="language-yaml">steps:
+  - name: Run on success
+    if: success()
+    run: echo &quot;All previous steps succeeded&quot;
+
+  - name: Run on failure
+    if: failure()
+    run: echo &quot;A previous step failed&quot;
+
+  - name: Run on specific condition
+    if: github.ref == 'refs/heads/main'
+    run: echo &quot;Running on main branch&quot;
+</code></pre>
+<h3>Outputs &amp; Artifacts</h3>
+<pre><code class="language-yaml">jobs:
+  build:
+    outputs:
+      build-number: ${{ steps.build.outputs.number }}
+    steps:
+      - id: build
+        run: echo &quot;number=$(date +%s)&quot; &gt;&gt; $GITHUB_OUTPUT
+
+  deploy:
+    needs: build
+    steps:
+      - run: echo &quot;Built version ${{ needs.build.outputs.build-number }}&quot;
+
+  test:
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-output
+</code></pre>
+<hr />
+<h2>✅ Common YAML Patterns</h2>
+<h3>Pattern 1: Dependency Management</h3>
+<pre><code class="language-yaml">jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci &amp;&amp; npm run lint
+
+  test:
+    needs: lint  # Wait for lint to succeed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci &amp;&amp; npm test
+
+  build:
+    needs: test  # Wait for test to succeed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci &amp;&amp; npm run build
+</code></pre>
+<h3>Pattern 2: Conditional Deployment</h3>
+<pre><code class="language-yaml">  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'  # Only on main branch
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy to production
+        run: npm run deploy -- --env=production
+</code></pre>
+<h3>Pattern 3: Reusable Workflow</h3>
+<pre><code class="language-yaml"># reusable-workflow.yml
+name: Reusable Test Workflow
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+        type: string
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.node-version }}
+      - run: npm test
+
+# main-workflow.yml
+jobs:
+  test-matrix:
+    uses: ./.github/workflows/reusable-workflow.yml
+    with:
+      node-version: '18'
+</code></pre>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Debug Workflow Runs</h3>
+<p><strong>The Technique:</strong> Enable debug logging to see all variables.</p>
+<pre><code class="language-yaml">env:
+  ACTIONS_STEP_DEBUG: true
+</code></pre>
+<p><strong>Expected Result:</strong> Detailed logs show variable substitution and step execution.</p>
+<hr />
+<h3>Pro Tip 2: Validate YAML Before Committing</h3>
+<p><strong>The Technique:</strong> Use <code>yamllint</code> locally.</p>
+<pre><code class="language-bash">pip install yamllint
+yamllint .github/workflows/
+</code></pre>
+<p><strong>Expected Result:</strong> Catch YAML errors before pushing.</p>
+<hr />
+<h3>Pro Tip 3: Reuse with Composite Actions</h3>
+<p><strong>The Technique:</strong> Create reusable action wrapper.</p>
+<pre><code class="language-yaml"># composite-action.yml
+name: Setup and Test
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - run: npm ci
+      shell: bash
+
+    - run: npm test
+      shell: bash
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Create Workflow File</h3>
+<pre><code class="language-bash">mkdir -p .github/workflows
+cat &gt; .github/workflows/ci.yml &lt;&lt; 'EOF'
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: npm test
+EOF
+</code></pre>
+<h3>Step 2: Commit and Push</h3>
+<pre><code class="language-bash">git add .github/workflows/ci.yml
+git commit -m &quot;Add CI workflow&quot;
+git push origin main
+</code></pre>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: Why is my workflow not running?</h3>
+<p><strong>A:</strong> Check triggers. Use <code>workflow_dispatch</code> for manual testing.</p>
+<h3>Q: How do I use secrets in workflows?</h3>
+<p><strong>A:</strong> Define in repository settings; access via <code>${{ secrets.NAME }}</code>.</p>
+<h3>Q: Can I test workflows locally?</h3>
+<p><strong>A:</strong> Yes, use <code>act</code> tool: <code>brew install act &amp;&amp; act push</code>.</p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>YAML syntax is strict</strong> — indentation matters  </li>
+<li><strong>Triggers determine when workflows run</strong> — be explicit  </li>
+<li><strong>Jobs and steps compose complex workflows</strong> — build from simple pieces  </li>
+<li><strong>Secrets and outputs enable composition</strong> — coordinate across jobs</li>
+</ol>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You understand GitHub Actions YAML structure and can write basic workflows.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>GitHub Actions Workflows</strong> (Episode 5) for advanced patterns and orchestration.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Collect YAML patterns. Build a library of reusable workflows for your team.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-3-index.html" class="nav-link">← Back to Module 3</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

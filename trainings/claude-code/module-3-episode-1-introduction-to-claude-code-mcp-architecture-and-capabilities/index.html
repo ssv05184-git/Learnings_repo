@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Claude Code MCP - Architecture & Capabilities | Training Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+<header class="site-header">
+    <h1>Introduction to Claude Code MCP - Architecture & Capabilities</h1>
+    <p class="subtitle">Module 3 — Episode 1</p>
+</header>
+
+<main class="container reading-layout">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../../../index.html">Home</a>
+        <span>›</span>
+        <a href="../index.html">Training</a>
+        <span>›</span>
+        <span>Introduction to Claude Code MCP - Architecture & Capabilities</span>
+    </nav>
+
+    <!-- Notes Content -->
+    <article class="notes-content">
+        <h1>Introduction to Claude Code MCP - Architecture &amp; Capabilities</h1>
+<blockquote>
+<p><strong>Module 3 — Episode 1</strong><br />
+<strong>Training:</strong> Claude Code - A Highly Agentic Coding Assistant<br />
+<strong>Course Level:</strong> Intermediate → Advanced<br />
+<strong>Time to Master:</strong> 30 minutes to learn | 1.5 hours to practice</p>
+</blockquote>
+<hr />
+<h2>🎯 What You'll Learn</h2>
+<p>By the end of this episode, you will:</p>
+<ul>
+<li>✅ Understand MCP (Model Context Protocol) architecture and design  </li>
+<li>✅ Learn how Claude Code integrates with MCP servers  </li>
+<li>✅ Explore existing MCP servers (GitHub, Figma, Sentry, Notion)  </li>
+<li>✅ Understand capabilities and limitations  </li>
+<li>✅ Design your first MCP-enhanced Claude workflow  </li>
+</ul>
+<p><strong>Time Breakdown:</strong><br />
+- Learning: 30 minutes<br />
+- Exploration: 45 minutes<br />
+- Design Exercise: 30 minutes</p>
+<hr />
+<h2>🧭 Quick Overview</h2>
+<p><strong>The Big Picture:</strong><br />
+MCP servers extend Claude Code's capabilities by connecting to external systems—GitHub for code, Figma for design, Notion for documentation, Sentry for error monitoring. Instead of manually juggling tools, Claude can orchestrate them autonomously through standardized interfaces.</p>
+<p><strong>What Problem Does This Solve?</strong>
+- Claude lacks native access to external systems (GitHub, design tools, monitoring)<br />
+- Manual tool switching is inefficient and error-prone<br />
+- Context from different systems needs manual aggregation<br />
+- Building integrations is repetitive and brittle  </p>
+<p><strong>Where You'll Use This:</strong>
+- Full-stack development with GitHub, design tools, and CI/CD<br />
+- Cross-functional workflows (dev + design + product)<br />
+- Data integration across multiple platforms<br />
+- Automated monitoring and incident response  </p>
+<hr />
+<h2>🧱 Prerequisites &amp; Background</h2>
+<p><strong>You should already know:</strong>
+- Claude Code fundamentals (Module 1)<br />
+- Hooks and output styles (Module 2 Episodes 1-3)<br />
+- Basic API concepts (REST, JSON)<br />
+- Command-line tool usage</p>
+<hr />
+<h2>🔑 Core Concepts Explained</h2>
+<h3>Concept 1: MCP Architecture</h3>
+<p><strong>Definition:</strong><br />
+MCP is a standardized protocol for connecting client applications (Claude Code) to server implementations (GitHub, Figma, etc.) through request-response messages.</p>
+<p><strong>Why It Matters:</strong><br />
+Standard protocols enable ecosystem growth. Anyone can build an MCP server; Claude Code can use them without modification.</p>
+<p><strong>When To Use:</strong><br />
+Whenever you need to integrate external systems with Claude workflows.</p>
+<hr />
+<h3>Concept 2: Capabilities &amp; Resources</h3>
+<p><strong>Definition:</strong><br />
+MCP servers expose capabilities (what they can do) and resources (what data they can access). Claude discovers and uses these dynamically.</p>
+<p><strong>Why It Matters:</strong><br />
+Claude doesn't need pre-programmed knowledge of each server. It learns server capabilities at runtime and adapts.</p>
+<p><strong>When To Use:</strong><br />
+When building servers, clearly define capabilities so Claude knows what's possible.</p>
+<hr />
+<h3>Concept 3: Security &amp; Authentication</h3>
+<p><strong>Definition:</strong><br />
+MCP servers are isolated processes. Claude communicates through defined APIs. Credentials are managed centrally.</p>
+<p><strong>Why It Matters:</strong><br />
+Isolation prevents one server compromise from affecting others. Centralized credential management reduces secrets sprawl.</p>
+<p><strong>When To Use:</strong><br />
+Always—security is built-in to MCP design.</p>
+<hr />
+<h2>🖼 Architecture &amp; Flow Diagrams</h2>
+<h3>MCP System Architecture</h3>
+<pre><code>Claude Code
+    ↓
+MCP Client Interface
+    ↓
+    ├─ GitHub MCP Server
+    ├─ Figma MCP Server
+    ├─ Sentry MCP Server
+    ├─ Notion MCP Server
+    └─ Custom Local MCP Server
+        ↓
+        ├─ GitHub APIs
+        ├─ Figma Design System
+        ├─ Sentry Monitoring
+        ├─ Notion Databases
+        └─ Local File System
+</code></pre>
+<hr />
+<h2>⚙️ Technical Deep Dive</h2>
+<h3>MCP Protocol Basics</h3>
+<p><strong>Request-Response Pattern:</strong></p>
+<pre><code class="language-json">// Client Request
+{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;id&quot;: 1,
+  &quot;method&quot;: &quot;resources/list&quot;,
+  &quot;params&quot;: {}
+}
+
+// Server Response
+{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;id&quot;: 1,
+  &quot;result&quot;: {
+    &quot;resources&quot;: [
+      {
+        &quot;uri&quot;: &quot;github://owner/repo/blob/main/README.md&quot;,
+        &quot;name&quot;: &quot;README.md&quot;,
+        &quot;description&quot;: &quot;Project documentation&quot;
+      }
+    ]
+  }
+}
+</code></pre>
+<h3>Available MCP Servers</h3>
+<p><strong>1. GitHub MCP Server</strong></p>
+<pre><code class="language-bash"># Capabilities:
+# - Read repository files
+# - List issues and PRs
+# - Create commits
+# - Manage repositories
+
+# Example Usage:
+claude &quot;Analyze this repo's architecture: github://anthropics/anthropic-sdk-python&quot;
+</code></pre>
+<p><strong>2. Figma MCP Server</strong></p>
+<pre><code class="language-bash"># Capabilities:
+# - Read design files
+# - Extract components
+# - Get design specifications
+# - Generate code from designs
+
+# Example Usage:
+claude &quot;Convert this Figma design to React: figma://file-key/...&quot;
+</code></pre>
+<p><strong>3. Sentry MCP Server</strong></p>
+<pre><code class="language-bash"># Capabilities:
+# - Query error events
+# - Get performance metrics
+# - Search issues
+# - Analyze stack traces
+
+# Example Usage:
+claude &quot;Analyze top errors from production&quot;
+</code></pre>
+<p><strong>4. Notion MCP Server</strong></p>
+<pre><code class="language-bash"># Capabilities:
+# - Query databases
+# - Create pages
+# - Update properties
+# - Search content
+
+# Example Usage:
+claude &quot;Create documentation in Notion for new API&quot;
+</code></pre>
+<hr />
+<h2>✅ When To Use This Feature</h2>
+<h3>Ideal Use Cases</h3>
+<p>✅ <strong>Perfect For:</strong>
+- Full-stack projects requiring design + code integration<br />
+- Cross-platform development (GitHub + monitoring + docs)<br />
+- Automated incident response (error detection + code changes)<br />
+- Documentation automation (code → Notion → deployment)</p>
+<hr />
+<h3>Anti-Patterns: When NOT To Use</h3>
+<p>❌ <strong>Avoid When:</strong>
+- Work is purely local (no external systems involved)<br />
+- Speed is critical (MCP adds latency)<br />
+- Systems are highly sensitive (security concerns)</p>
+<hr />
+<h2>💡 Practical Tips &amp; Tricks</h2>
+<h3>Pro Tip 1: Server Discovery</h3>
+<p><strong>The Technique:</strong> List available servers and their capabilities.</p>
+<pre><code class="language-bash"># List installed MCP servers
+claude --list-mcp-servers
+
+# Describe server capabilities
+claude --mcp-describe github
+</code></pre>
+<p><strong>Expected Result:</strong> Know what's available before designing workflows.</p>
+<hr />
+<h3>Pro Tip 2: Credential Management</h3>
+<p><strong>The Technique:</strong> Use environment variables for server authentication.</p>
+<pre><code class="language-bash">export GITHUB_TOKEN=&quot;ghp_...&quot;
+export FIGMA_TOKEN=&quot;figd_...&quot;
+export SENTRY_AUTH_TOKEN=&quot;...&quot;
+
+# Servers automatically authenticate
+claude &quot;Read GitHub repository&quot;
+</code></pre>
+<p><strong>Expected Result:</strong> Secure, centralized credential management.</p>
+<hr />
+<h3>Pro Tip 3: Resource Caching</h3>
+<p><strong>The Technique:</strong> Cache frequently-accessed resources to reduce API calls.</p>
+<pre><code class="language-bash"># In Claude config
+{
+  &quot;mcp&quot;: {
+    &quot;caching&quot;: {
+      &quot;enabled&quot;: true,
+      &quot;ttl_seconds&quot;: 3600,
+      &quot;servers&quot;: [&quot;github&quot;, &quot;figma&quot;]
+    }
+  }
+}
+</code></pre>
+<p><strong>Expected Result:</strong> Faster workflows; fewer API rate limits.</p>
+<hr />
+<h2>🚀 Real-World Example: GitHub-to-Figma Workflow</h2>
+<p><strong>Scenario:</strong> Convert GitHub issue requirements into Figma wireframes.</p>
+<pre><code class="language-bash"># Claude orchestrates:
+# 1. Read GitHub issue with requirements
+# 2. Understand design specs
+# 3. Create Figma design
+# 4. Generate React code from design
+# 5. Push code to GitHub
+
+claude &quot;
+1. From issue #42 in anthropics/anthropic-sdk-python, extract feature requirements
+2. Create a Figma design for these requirements
+3. Convert design to React components
+4. Create a PR for these components
+5. Link Figma design in PR comments
+&quot;
+</code></pre>
+<hr />
+<h2>🛠 Implementation Guide</h2>
+<h3>Step 1: Install MCP Servers</h3>
+<pre><code class="language-bash"># GitHub
+npm install @modelcontextprotocol/server-github
+
+# Figma
+npm install @modelcontextprotocol/server-figma
+
+# Sentry
+npm install @modelcontextprotocol/server-sentry
+
+# Notion
+npm install @modelcontextprotocol/server-notion
+</code></pre>
+<h3>Step 2: Configure Claude Code</h3>
+<p>Create <code>.claude/mcp.json</code>:</p>
+<pre><code class="language-json">{
+  &quot;servers&quot;: [
+    {
+      &quot;name&quot;: &quot;github&quot;,
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;node_modules/@modelcontextprotocol/server-github/index.js&quot;],
+      &quot;env&quot;: {
+        &quot;GITHUB_PERSONAL_ACCESS_TOKEN&quot;: &quot;${GITHUB_TOKEN}&quot;
+      }
+    },
+    {
+      &quot;name&quot;: &quot;figma&quot;,
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;node_modules/@modelcontextprotocol/server-figma/index.js&quot;],
+      &quot;env&quot;: {
+        &quot;FIGMA_PERSONAL_TOKEN&quot;: &quot;${FIGMA_TOKEN}&quot;
+      }
+    }
+  ]
+}
+</code></pre>
+<h3>Step 3: Test Integration</h3>
+<pre><code class="language-bash"># Start MCP servers
+claude --init-mcp
+
+# Test server availability
+claude &quot;List GitHub repositories&quot;
+</code></pre>
+<hr />
+<h2>🤔 Common Questions &amp; Troubleshooting</h2>
+<h3>Q: How do I check if MCP server is running?</h3>
+<p><strong>A:</strong> <code>claude --mcp-status</code> shows all connected servers.</p>
+<h3>Q: What if an MCP server fails?</h3>
+<p><strong>A:</strong> Claude automatically retries. Check <code>.claude/logs/mcp_errors.log</code> for details.</p>
+<h3>Q: Can I write my own MCP server?</h3>
+<p><strong>A:</strong> Yes! See Episode 3 for building custom servers.</p>
+<hr />
+<h2>📊 Performance &amp; Optimization</h2>
+<ul>
+<li><strong>MCP Latency:</strong> 50-200ms per request depending on network  </li>
+<li><strong>Caching Benefits:</strong> 10-100x speedup on repeated requests  </li>
+<li><strong>Rate Limits:</strong> Vary by server; GitHub: 5000/hour, Figma: up to your tier</li>
+</ul>
+<hr />
+<h2>🔗 Related Topics &amp; Next Steps</h2>
+<p><strong>You Should Also Learn About:</strong>
+- Connecting Notion &amp; Sentry (Episode 2) — practical integration<br />
+- Building Custom Local MCP Servers (Episode 3) — extend capabilities<br />
+- GitHub Actions integration (Module 3, Episodes 4-6)  </p>
+<hr />
+<h2>📌 Key Takeaways</h2>
+<ol>
+<li><strong>MCP is standardized protocol</strong> — enables ecosystem growth  </li>
+<li><strong>Servers expose capabilities</strong> — Claude discovers and uses them  </li>
+<li><strong>Security is built-in</strong> — isolated processes, centralized secrets  </li>
+<li><strong>Caching improves performance</strong> — reduce API load dynamically</li>
+</ol>
+<hr />
+<h2>🎓 Quick Reference</h2>
+<h3>Common MCP Methods</h3>
+<pre><code class="language-bash">resources/list        # List available resources
+resources/read        # Read specific resource
+tools/list            # List available tools
+tools/call            # Execute tool on server
+</code></pre>
+<h3>Credential Setup</h3>
+<pre><code class="language-bash">export GITHUB_TOKEN=&quot;ghp_...&quot;
+export FIGMA_TOKEN=&quot;figd_...&quot;
+export SENTRY_TOKEN=&quot;...&quot;
+export NOTION_TOKEN=&quot;ntn_...&quot;
+</code></pre>
+<hr />
+<h2>⚠️ Common Mistakes to Avoid</h2>
+<ol>
+<li><strong>Not setting up credentials</strong> — servers need auth to function  </li>
+<li><strong>Assuming all servers are available</strong> — install what you need  </li>
+<li><strong>Not using caching</strong> — unnecessary API load and latency  </li>
+<li><strong>Mixing credentials across accounts</strong> — use environment separation</li>
+</ol>
+<hr />
+<h2>🔐 Security &amp; Best Practices</h2>
+<p><strong>Credential Management:</strong>
+- Store tokens in <code>.env</code> or secrets manager<br />
+- Never commit tokens to git<br />
+- Rotate tokens regularly<br />
+- Use read-only tokens when possible  </p>
+<p><strong>Server Trust:</strong>
+- Only use official/trusted MCP servers<br />
+- Review custom servers before use<br />
+- Monitor server logs for anomalies  </p>
+<hr />
+<h2>📚 Extra Resources</h2>
+<p><strong>Official Documentation:</strong>
+- <a href="https://modelcontextprotocol.io/">Model Context Protocol Documentation</a><br />
+- <a href="https://modelcontextprotocol.io/servers">Available MCP Servers</a>  </p>
+<p><strong>Community:</strong>
+- MCP Server Registry<br />
+- GitHub discussions  </p>
+<hr />
+<h2>⭐ Conclusion</h2>
+<p><strong>What You've Mastered:</strong><br />
+You understand MCP architecture, can configure existing servers, and know when to use MCP for integration.</p>
+<p><strong>How This Fits Into Real Development:</strong><br />
+MCP transforms Claude Code from code-focused tool to full-stack workflow orchestrator. It connects code, design, monitoring, and documentation into unified workflows.</p>
+<p><strong>Your Next Challenge:</strong><br />
+Explore <strong>Connecting Notion and Sentry</strong> (Episode 2) for practical integration patterns.</p>
+<p><strong>Pro Tip for Long-Term Mastery:</strong><br />
+Build your application's MCP server. This gives Claude direct access to your domain-specific logic, enabling even more sophisticated automation.</p>
+    </article>
+
+    <!-- Navigation -->
+    <nav class="episode-navigation">
+        <a href="../module-3-index.html" class="nav-link">← Back to Module 3</a>
+        <a href="../../index.html" class="nav-link">Home →</a>
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Claude Code Training. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
